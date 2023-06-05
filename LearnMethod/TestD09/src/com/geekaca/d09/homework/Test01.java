@@ -6,6 +6,7 @@ import java.util.Random;
 public class Test01 {
     public static void main(String[] args) {
         int[] arr = new int[6];
+        String[] a = new String[3];
         makeArray(arr);
         System.out.println(Arrays.toString(arr));
         System.out.println("所有元素和为：" + arrSum(arr));
