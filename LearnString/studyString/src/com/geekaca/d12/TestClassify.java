@@ -7,10 +7,10 @@ public class TestClassify {
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入：");
         String input = scanner.next();
-        Classify(input);
+        classify(input);
     }
 
-    public static void Classify(String str) {
+    public static void classify(String str) {
         int alpNum = 0;
         int numNum = 0;
         for (int i = 0; i < str.length(); i++) {
