@@ -15,14 +15,26 @@ public class TestSearch {
 
     public static void arrayListSearch(ArrayList<Student> arrayList) {
         Scanner scanner = new Scanner(System.in);
+        boolean ifFind = false;
         while (true) {
-            System.out.println("请输入学号：");
+            System.out.println("请输入查找内容：");
             String intput = scanner.next();
+
             for (int i = 0; i < arrayList.size(); i++) {
-                if (intput.equals(arrayList.get(i).getStuNum())) {
+                Student student = arrayList.get(i);
+                if ((student.getStuNum().contains(intput))) {
                     System.out.println(arrayList.get(i));
+                    ifFind = true;
                 }
+                if ((student.getName().contains(intput))) {
+                    System.out.println(arrayList.get(i));
+                    ifFind = true;
+                }
+            }
+            if (!ifFind) {
+                System.out.println("没有找到");
             }
         }
     }
+
 }
