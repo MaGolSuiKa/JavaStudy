@@ -16,6 +16,11 @@ public class ATMSystem {
         mainPage(accountList, sc);
     }
 
+    /**
+     * 主界面
+     * @param accounts
+     * @param sc
+     */
     private static void mainPage(ArrayList<Account> accounts, Scanner sc) {
         System.out.println("======欢迎您进入到ATM系统===============");
         while (true) {
@@ -46,6 +51,11 @@ public class ATMSystem {
         }
     }
 
+    /**
+     * 登录界面
+     * @param accounts
+     * @param sc
+     */
     private static void login(ArrayList<Account> accounts, Scanner sc) {
 
         System.out.println("==================欢迎您进入到登录操作======================");
@@ -80,11 +90,14 @@ public class ATMSystem {
         }
     }
 
+    /**
+     * 注册界面
+     * @param accountList 账户库
+     * @param sc 键盘输入
+     */
     private static void registered(ArrayList<Account> accountList, Scanner sc) {
 
-        /**
-         *   注册
-         */
+
         System.out.println("================欢迎进入开户操作================");
         Account account = new Account();
         System.out.println("请输入账户名称：");
@@ -152,6 +165,12 @@ public class ATMSystem {
         account2.setQuotaMoney(30000);
         accountList.add(account2);
     }
+
+    /**
+     * 用户界面
+     * @param acc 登录的账户
+     * @param accountList
+     */
 
     private static void userPage(Account acc, ArrayList<Account> accountList) {
         System.out.println("======欢迎您进入到ATM系统===============");
@@ -239,7 +258,14 @@ public class ATMSystem {
                     return;
                 case 7:
                     //注销
-                    break;
+
+                    if (accountList.remove(acc)){
+                        System.out.println("账户已注销");
+                    }else {
+                        System.out.println("注销失败");
+                    }
+
+                    return;
 
                 default:
                     System.out.println("输入有误！");
@@ -248,6 +274,10 @@ public class ATMSystem {
         }
     }
 
+    /**
+     * 显示账户信息
+     * @param acc
+     */
     private static void showInfo(Account acc) {
         System.out.println("=======您当前账户信息如下=======");
         System.out.println("卡号：" + acc.getCardId());
@@ -258,6 +288,7 @@ public class ATMSystem {
     }
 
     /**
+     * 转账
      * @param acc         你的账号
      * @param accountList 账户库
      * @param sc          键盘输入
