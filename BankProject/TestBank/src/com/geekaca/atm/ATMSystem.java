@@ -132,6 +132,7 @@ public class ATMSystem {
             for (int i = 0; i < accountList.size(); i++) {
                 Account accTemp = accountList.get(i);
                 if (cardId.equals(accTemp.getCardId())) {
+                    cardId = "";//重置，不重置会残留之前的卡号，导致位数变多
                     break;
                 } else {
                     account.setCardId(cardId);
@@ -251,6 +252,7 @@ public class ATMSystem {
                             System.out.println("两次密码不相同");
                         }
                     }
+                    mainPage(accountList,sc);
                     break;
                 case 6:
 
