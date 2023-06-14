@@ -6,22 +6,38 @@ import java.util.Scanner;
 
 
 public class ATMSystem {
+    public static final int LOGIN = 1;
+    public static final int ENROLL = 2;
+    public static final int QUIT = 3;
+    public static final int INQUIRE = 1;
+    public static final int SAVE_MONEY = 2;
+    public static final int GET_MONEY = 3;
+    public static final int TRANSFER_MONEY = 4;
+    public static final int CHANGE_PASSWORD = 5;
+    public static final int EXIT = 6;
+    public static final int CANCEL_ACCOUNT = 7;
+
     public static void main(String[] args) {
         /**
          * 保存所有账户
+         * 在AccountList中创建集合
          */
-        ArrayList<Account> accountList = new ArrayList<>();
-        initAccounts(accountList);
+        //ArrayList<Account> accountList = new ArrayList<>();
+
+        initAccounts(AccountList.getList());
         Scanner sc = new Scanner(System.in);
-        mainPage(accountList, sc);
+        mainPage(AccountList.getList(), sc);
     }
+
 
     /**
      * 主界面
+     *
      * @param accounts
      * @param sc
      */
     private static void mainPage(ArrayList<Account> accounts, Scanner sc) {
+
         System.out.println("======欢迎您进入到ATM系统===============");
         while (true) {
             System.out.println("1、登录账户");
@@ -32,15 +48,15 @@ public class ATMSystem {
             //命令
             int command = sc.nextInt();
             switch (command) {
-                case 1:
+                case LOGIN:
                     //登录
                     login(accounts, sc);
                     break;
-                case 2:
+                case ENROLL:
                     //注册(扩展)
                     registered(accounts, sc);
                     break;
-                case 3:
+                case QUIT:
                     //退出程序
                     System.exit(0);
                     break;
@@ -53,6 +69,7 @@ public class ATMSystem {
 
     /**
      * 登录界面
+     *
      * @param accounts
      * @param sc
      */
@@ -92,8 +109,9 @@ public class ATMSystem {
 
     /**
      * 注册界面
+     *
      * @param accountList 账户库
-     * @param sc 键盘输入
+     * @param sc          键盘输入
      */
     private static void registered(ArrayList<Account> accountList, Scanner sc) {
 
@@ -149,6 +167,7 @@ public class ATMSystem {
 
     /**
      * 初始化两个账户
+     *
      * @param accountList
      */
     private static void initAccounts(ArrayList<Account> accountList) {
@@ -169,7 +188,8 @@ public class ATMSystem {
 
     /**
      * 用户界面
-     * @param acc 登录的账户
+     *
+     * @param acc         登录的账户
      * @param accountList
      */
 
@@ -190,11 +210,11 @@ public class ATMSystem {
             //命令
             int command = sc.nextInt();
             switch (command) {
-                case 1:
+                case INQUIRE:
                     //查询
                     showInfo(acc);
                     break;
-                case 2:
+                case SAVE_MONEY:
                     //存款
                     System.out.println("=======存款操作=======");
                     while (true) {
@@ -211,7 +231,7 @@ public class ATMSystem {
                     }
                     break;
 
-                case 3:
+                case GET_MONEY:
                     //取款
                     System.out.println("=======取款操作=======");
                     while (true) {
@@ -233,11 +253,11 @@ public class ATMSystem {
                         }
                     }
                     break;
-                case 4:
+                case TRANSFER_MONEY:
                     //转账
                     transferMoney(acc, accountList, sc);
                     break;
-                case 5:
+                case CHANGE_PASSWORD:
                     //修改密码
                     System.out.println("=======修改密码=======");
                     while (true) {
@@ -252,18 +272,18 @@ public class ATMSystem {
                             System.out.println("两次密码不相同");
                         }
                     }
-                    mainPage(accountList,sc);
+                    mainPage(accountList, sc);
                     break;
-                case 6:
-
+                case EXIT:
                     //退出
+                    mainPage(accountList, sc);
                     return;
-                case 7:
+                case CANCEL_ACCOUNT:
                     //注销
 
-                    if (accountList.remove(acc)){
+                    if (accountList.remove(acc)) {
                         System.out.println("账户已注销");
-                    }else {
+                    } else {
                         System.out.println("注销失败");
                     }
 
@@ -278,6 +298,7 @@ public class ATMSystem {
 
     /**
      * 显示账户信息
+     *
      * @param acc
      */
     private static void showInfo(Account acc) {
@@ -291,6 +312,7 @@ public class ATMSystem {
 
     /**
      * 转账
+     *
      * @param acc         你的账号
      * @param accountList 账户库
      * @param sc          键盘输入
