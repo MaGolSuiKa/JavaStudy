@@ -6,16 +6,16 @@ import java.util.Scanner;
 
 
 public class ATMSystem {
-    public static final int LOGIN = 1;
-    public static final int ENROLL = 2;
-    public static final int QUIT = 3;
-    public static final int INQUIRE = 1;
-    public static final int SAVE_MONEY = 2;
-    public static final int GET_MONEY = 3;
-    public static final int TRANSFER_MONEY = 4;
-    public static final int CHANGE_PASSWORD = 5;
-    public static final int EXIT = 6;
-    public static final int CANCEL_ACCOUNT = 7;
+    public static final int MAIN_LOGIN = 1;
+    public static final int MAIN_ENROLL = 2;
+    public static final int MAIN_QUIT = 3;
+    public static final int USERPAGE_INQUIRE = 1;
+    public static final int USERPAGE_SAVE_MONEY = 2;
+    public static final int USERPAGE_GET_MONEY = 3;
+    public static final int USERPAGE_TRANSFER_MONEY = 4;
+    public static final int USERPAGE_CHANGE_PASSWORD = 5;
+    public static final int USERPAGE_EXIT = 6;
+    public static final int USERPAGE_CANCEL_ACCOUNT = 7;
 
     public static void main(String[] args) {
         /**
@@ -24,19 +24,18 @@ public class ATMSystem {
          */
         //ArrayList<Account> accountList = new ArrayList<>();
 
-        initAccounts(AccountList.getList());
+        initAccounts();
         Scanner sc = new Scanner(System.in);
-        mainPage(AccountList.getList(), sc);
+        mainPage(sc);
     }
 
 
     /**
      * 主界面
      *
-     * @param accounts
      * @param sc
      */
-    private static void mainPage(ArrayList<Account> accounts, Scanner sc) {
+    private static void mainPage(Scanner sc) {
 
         System.out.println("======欢迎您进入到ATM系统===============");
         while (true) {
@@ -48,15 +47,15 @@ public class ATMSystem {
             //命令
             int command = sc.nextInt();
             switch (command) {
-                case LOGIN:
+                case MAIN_LOGIN:
                     //登录
-                    login(accounts, sc);
+                    login(sc);
                     break;
-                case ENROLL:
+                case MAIN_ENROLL:
                     //注册(扩展)
-                    registered(accounts, sc);
+                    registered(sc);
                     break;
-                case QUIT:
+                case MAIN_QUIT:
                     //退出程序
                     System.exit(0);
                     break;
@@ -70,10 +69,9 @@ public class ATMSystem {
     /**
      * 登录界面
      *
-     * @param accounts
      * @param sc
      */
-    private static void login(ArrayList<Account> accounts, Scanner sc) {
+    private static void login(Scanner sc) {
 
         System.out.println("==================欢迎您进入到登录操作======================");
 
@@ -92,13 +90,13 @@ public class ATMSystem {
              * 判断卡号和密码是否正确
              */
             boolean isRight = false;
-            for (int i = 0; i < accounts.size(); i++) {
-                Account accTemp = accounts.get(i);
+            for (int i = 0; i < AccountList.getList().size(); i++) {
+                Account accTemp = AccountList.getList().get(i);
                 if ((accTemp.getCardId().equals(cardNo)) && (accTemp.getPassWord().equals(passwd))) {
                     System.out.println("欢迎" + accTemp.getUserName() + "先生/女士，进入系统，现在可以开始办理业务了");
                     isRight = true;
                     //进入用户操作页，查询 存取 等
-                    userPage(accTemp, accounts);
+                    userPage(accTemp);
                 }
             }
             if (!isRight) {
@@ -110,10 +108,9 @@ public class ATMSystem {
     /**
      * 注册界面
      *
-     * @param accountList 账户库
-     * @param sc          键盘输入
+     * @param sc 键盘输入
      */
-    private static void registered(ArrayList<Account> accountList, Scanner sc) {
+    private static void registered(Scanner sc) {
 
 
         System.out.println("================欢迎进入开户操作================");
@@ -147,8 +144,8 @@ public class ATMSystem {
             for (int i = 0; i < 8; i++) {
                 cardId += random.nextInt(10);
             }
-            for (int i = 0; i < accountList.size(); i++) {
-                Account accTemp = accountList.get(i);
+            for (int i = 0; i < AccountList.getList().size(); i++) {
+                Account accTemp = AccountList.getList().get(i);
                 if (cardId.equals(accTemp.getCardId())) {
                     cardId = "";//重置，不重置会残留之前的卡号，导致位数变多
                     break;
@@ -161,39 +158,36 @@ public class ATMSystem {
                 break;
             }
         }
-        accountList.add(account);
+        AccountList.getList().add(account);
         System.out.println("恭喜您开户完成，你的卡号为：" + cardId);
     }
 
     /**
      * 初始化两个账户
-     *
-     * @param accountList
      */
-    private static void initAccounts(ArrayList<Account> accountList) {
+    private static void initAccounts() {
         Account account = new Account();
         account.setUserName("张三");
         account.setPassWord("abc123");
         account.setCardId("987654321");
         account.setQuotaMoney(4000);
-        accountList.add(account);
+        AccountList.getList().add(account);
         Account account2 = new Account();
         account2.setUserName("李四");
         account2.setPassWord("111111");
         account2.setCardId("123456");
         account2.setMoney(5000);
         account2.setQuotaMoney(30000);
-        accountList.add(account2);
+        AccountList.getList().add(account2);
     }
 
     /**
      * 用户界面
      *
-     * @param acc         登录的账户
-     * @param accountList
+     * @param acc 登录的账户
      */
 
-    private static void userPage(Account acc, ArrayList<Account> accountList) {
+    private static void userPage(Account acc) {
         System.out.println("======欢迎您进入到ATM系统===============");
         while (true) {
             System.out.println("***********************");
@@ -210,11 +204,11 @@ public class ATMSystem {
             //命令
             int command = sc.nextInt();
             switch (command) {
-                case INQUIRE:
+                case USERPAGE_INQUIRE:
                     //查询
                     showInfo(acc);
                     break;
-                case SAVE_MONEY:
+                case USERPAGE_SAVE_MONEY:
                     //存款
                     System.out.println("=======存款操作=======");
                     while (true) {
@@ -231,7 +225,7 @@ public class ATMSystem {
                     }
                     break;
 
-                case GET_MONEY:
+                case USERPAGE_GET_MONEY:
                     //取款
                     System.out.println("=======取款操作=======");
                     while (true) {
@@ -253,11 +247,11 @@ public class ATMSystem {
                         }
                     }
                     break;
-                case TRANSFER_MONEY:
+                case USERPAGE_TRANSFER_MONEY:
                     //转账
-                    transferMoney(acc, accountList, sc);
+                    transferMoney(acc, sc);
                     break;
-                case CHANGE_PASSWORD:
+                case USERPAGE_CHANGE_PASSWORD:
                     //修改密码
                     System.out.println("=======修改密码=======");
                     while (true) {
@@ -272,16 +266,16 @@ public class ATMSystem {
                             System.out.println("两次密码不相同");
                         }
                     }
-                    mainPage(accountList, sc);
+                    mainPage(sc);
                     break;
-                case EXIT:
+                case USERPAGE_EXIT:
                     //退出
-                    mainPage(accountList, sc);
+                    mainPage(sc);
                     return;
-                case CANCEL_ACCOUNT:
+                case USERPAGE_CANCEL_ACCOUNT:
                     //注销
 
-                    if (accountList.remove(acc)) {
+                    if (AccountList.getList().remove(acc)) {
                         System.out.println("账户已注销");
                     } else {
                         System.out.println("注销失败");
@@ -313,22 +307,21 @@ public class ATMSystem {
     /**
      * 转账
      *
-     * @param acc         你的账号
-     * @param accountList 账户库
-     * @param sc          键盘输入
-     *                    str.startsWith("a");
+     * @param acc 你的账号
+     * @param sc  键盘输入
+     *            str.startsWith("a");
      */
-    private static void transferMoney(Account acc, ArrayList<Account> accountList, Scanner sc) {
+    private static void transferMoney(Account acc, Scanner sc) {
         System.out.println("=======转账操作=======");
         while (true) {
-            if (accountList.size() <= 1) {
+            if (AccountList.getList().size() <= 1) {
                 System.out.println("只有一个账号");
                 return;
             }
             System.out.println("请输入对方卡号：");
             String cardID = sc.next();
-            for (int i = 0; i < accountList.size(); i++) {
-                Account accTemp = accountList.get(i);
+            for (int i = 0; i < AccountList.getList().size(); i++) {
+                Account accTemp = AccountList.getList().get(i);
                 if (accTemp.getCardId().equals(cardID)) {
                     String tempName = accTemp.getUserName().substring(1);
 
