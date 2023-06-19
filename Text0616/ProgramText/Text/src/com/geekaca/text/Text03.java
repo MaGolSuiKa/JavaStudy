@@ -7,7 +7,10 @@ public class Text03 {
     }
 
     public static int findMax(int[] nums) {
-        int temp = nums[1];
+        if(nums == null){
+            return 0;
+        }
+        int temp = nums[0];
         for (int i = 0; i < nums.length; i++) {
             if (temp < nums[i]) {
                 temp = nums[i];
