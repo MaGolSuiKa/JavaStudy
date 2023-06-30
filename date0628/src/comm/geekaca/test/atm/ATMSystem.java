@@ -87,6 +87,7 @@ public class ATMSystem {
                     isRight[0] = true;
                     //进入用户操作页，查询 存取 等
                     userPage(accTemp);
+                    return ;
                 }
             });
 
@@ -337,11 +338,11 @@ public class ATMSystem {
                         }
                     } else {
                         System.out.println("姓氏输入错误");
-                        //break;
+                        return;
                     }
                 } else {
                     System.out.println("对方账号不存在");
-                    //break;
+                    return;
                 }
             });
         }
