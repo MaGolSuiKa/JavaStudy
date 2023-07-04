@@ -46,21 +46,21 @@ public class TestFileSearch {
                         if (toSearchName.equals(dir.getName())) {
                             System.out.println("已找到文件:" + dir.getName());
                             System.out.println("地址：" + file.getPath());
-                            writeFile(file.getName(), file.getPath());
+                            writeFile(file);
                         }
                         String[] fileLastName = file.getName().split("\\.");
                         if (fileLastName[1].equals(toSearchName)) {
                             System.out.println("找到扩展名为:" + fileLastName[1]);
                             System.out.println("地址：" + file.getPath());
-                            writeFile(file.getName(), file.getPath());
+                            writeFile(file);
                             if(fileLastName[1].equals("png")){
-                                copyFile(file.getPath(),file.getName());
+                                copyFile(file);
                             }
                         }
                         if (fileLastName[0].equals(toSearchName)) {
                             System.out.println("找到文件名为:" + fileLastName[0]);
                             System.out.println("地址：" + file.getPath());
-                            writeFile(file.getName(), file.getPath());
+                            writeFile(file);
                         }
                     } else if (file.isDirectory()) {
                         //如果是当前file也指向一个目录
@@ -71,11 +71,11 @@ public class TestFileSearch {
         }
     }
 
-    public static void writeFile(String name, String address) {
+    public static void writeFile(File file) {
 
         try (OutputStream fileOutputStream = new FileOutputStream("D:\\study\\git\\LearnIO\\FileList.txt",true)) {
-            fileOutputStream.write(("文件名：" + name).getBytes(StandardCharsets.UTF_8));
-            fileOutputStream.write(("地址：" + address).getBytes(StandardCharsets.UTF_8));
+            fileOutputStream.write(("文件名：" + file.getName()).getBytes(StandardCharsets.UTF_8));
+            fileOutputStream.write(("地址：" + file.getPath()).getBytes(StandardCharsets.UTF_8));
             fileOutputStream.write("\r\n".getBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -84,11 +84,11 @@ public class TestFileSearch {
         }
     }
 
-    public static void copyFile(String sourceFile,String fileName){
-        File file = new File(sourceFile);
+    public static void copyFile(File file){
+        File files = new File(file.getPath());
 
         try (InputStream fileInputStream = new FileInputStream(file);
-        OutputStream fileOutputStream = new FileOutputStream("D:\\study\\git\\LearnIO\\copyPNG\\"+fileName)){
+        OutputStream fileOutputStream = new FileOutputStream("D:\\study\\git\\LearnIO\\copyPNG\\"+file.getName())){
             byte[] buffer = new byte[1024];
             int len = -1;
             while ((len = fileInputStream.read(buffer)) != -1) {
