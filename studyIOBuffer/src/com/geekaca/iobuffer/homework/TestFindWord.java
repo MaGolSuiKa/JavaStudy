@@ -11,15 +11,15 @@ public class TestFindWord {
         Map<String, Integer> wordMap = new HashMap<>();
         int wordCount = 0;
         try (
-                FileInputStream is = new FileInputStream(new File("src\\JavaWordList.txt"));
+                Reader reader = new FileReader(new File("src\\JavaWordList.txt"));
+                BufferedReader br = new BufferedReader(reader);
         ) {
-            BufferedInputStream bis = new BufferedInputStream(is);
-            int len = -1;
-            byte[] buffer = new byte[512];
+
+            String words = null;
             Pattern pattern = Pattern.compile("[a-zA-Z]+");
 
-            while ((len = bis.read(buffer)) != -1) {
-                Matcher matcher = pattern.matcher(new String(buffer, 0, len));
+            while ((words = br.readLine()) != null) {
+                Matcher matcher = pattern.matcher(words);
                 while (matcher.find()) {
                     Integer wordsNo = wordMap.get(matcher.group());
                     if (wordsNo == null) {
