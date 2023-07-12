@@ -9,17 +9,20 @@ public class TestClient {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            Socket socket = new Socket("192.168.1.5", 7894);
+            //创建客户端socket   指定 要连接的服务端 ip地址   服务端的端口
+            //Connection refused: connect 没有启动server情况下，去连接，会拒绝
+            Socket socket = new Socket("localhost", 7894);
             OutputStream ops = socket.getOutputStream();
             InputStream ips = socket.getInputStream();
             PrintStream ps = new PrintStream(ops);
-
+            //客户端连接server端，连接成功后，读取来自server的所有信息
             BufferedReader br = new BufferedReader(new InputStreamReader(ips));
             String mess = null;
             while ((mess = br.readLine()) != null) {
                 System.out.println("服务器信息：" + mess);
                 break;
             }
+            //客户端接收用户的键盘录入
             while (true){
                 System.out.println("请输入信息：");
                 String input = scanner.next();
