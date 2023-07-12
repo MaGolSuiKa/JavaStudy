@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * guo
+ */
 public class TestClient {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -19,10 +22,10 @@ public class TestClient {
             //客户端连接server端，连接成功后，读取来自server的所有信息
             BufferedReader br = new BufferedReader(new InputStreamReader(ips));
             String mess = null;
-            while ((mess = br.readLine()) != null) {
-                System.out.println("服务器信息：" + mess);
-                break;
-            }
+//            while ((mess = br.readLine()) != null) {
+//                System.out.println("服务器信息：" + mess);
+//                break;
+//            }
             //客户端接收用户的键盘录入
             while (true){
                 System.out.println("请输入信息：");

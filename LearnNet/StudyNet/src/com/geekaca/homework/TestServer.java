@@ -2,8 +2,12 @@ package com.geekaca.homework;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.*;
 
 public class TestServer {
+    private static ExecutorService pool = new ThreadPoolExecutor(5, 10, 10, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(5), Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+
     public static void main(String[] args) {
         int port = 7894;
         //ServerSocket门口保安大爷，等待连接
@@ -18,8 +22,10 @@ public class TestServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("有人连接上了:" + clientSocket.getRemoteSocketAddress());
                 //每一个ServerThread对象都类似一个导游    一个导游对应一个客人clientSocket
-                ServerThread serverThread = new ServerThread(clientSocket);
-                serverThread.start();
+                //来一个客人，雇佣一个导游，比较浪费
+//                ServerThread serverThread = new ServerThread(clientSocket);
+//                serverThread.start();
+                pool.execute(new ServerThread(clientSocket));
             }
 //            //打开客户端的输入流，为了读取客户端发送来的数据
 //            InputStream clientIps = clientSocket.getInputStream();

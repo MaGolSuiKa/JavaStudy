@@ -10,7 +10,7 @@ import java.net.Socket;
  * <p>
  * ServerThread导游
  */
-public class ServerThread extends Thread {
+public class ServerThread implements Runnable {
     private Socket socket;
 
     public ServerThread(Socket socket) {
