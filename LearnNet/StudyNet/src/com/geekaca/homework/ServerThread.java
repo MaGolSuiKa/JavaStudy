@@ -36,6 +36,16 @@ public class ServerThread implements Runnable {
             String str = null;
             while ((str = br.readLine()) != null) {
                 System.out.println(clientInfo + " :" + str);
+                //收到了客户端说的一句话，需要广播给房间（当前连接上来的所有客户端）中的所有人
+                for (int i = 0; i < TestServer.clients.size(); i++) {
+                    //循环访问每一个客户端，发送消息，广播出去
+                    Socket soct = TestServer.clients.get(i);
+                    OutputStream ops = soct.getOutputStream();
+                    PrintWriter pw = new PrintWriter(ops);
+                    pw.write(str);
+                    pw.write("\r\n");
+                    pw.flush();
+                }
             }
         } catch (IOException e) {
             System.out.println(clientInfo +" 断开连接: " + e.getMessage());

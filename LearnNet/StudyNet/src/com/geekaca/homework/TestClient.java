@@ -19,13 +19,15 @@ public class TestClient {
             OutputStream ops = socket.getOutputStream();
             InputStream ips = socket.getInputStream();
             PrintStream ps = new PrintStream(ops);
-            //客户端连接server端，连接成功后，读取来自server的所有信息
+            //客户端连接server端，连接成功后，读取来自server的所有信息，来自服务端的问好
             BufferedReader br = new BufferedReader(new InputStreamReader(ips));
             String mess = null;
-//            while ((mess = br.readLine()) != null) {
-//                System.out.println("服务器信息：" + mess);
-//                break;
-//            }
+            while ((mess = br.readLine()) != null) {
+                System.out.println("服务器信息：" + mess);
+                break;
+            }
+            //客户端缺少一个 接收server的信息的逻辑 ，要依赖多线程
+            new ClientReaderThread(socket).start();
             //客户端接收用户的键盘录入
             while (true){
                 System.out.println("请输入信息：");
@@ -37,7 +39,6 @@ public class TestClient {
                     return;
                 }
             }
-
 
 
 
