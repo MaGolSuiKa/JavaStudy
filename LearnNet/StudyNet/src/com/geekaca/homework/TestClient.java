@@ -12,6 +12,7 @@ public class TestClient {
             //创建客户端socket   指定 要连接的服务端 ip地址   服务端的端口
             //Connection refused: connect 没有启动server情况下，去连接，会拒绝
             Socket socket = new Socket("localhost", 7894);
+            System.out.println("客户端连接成功 客户端自己的端口：" + socket.getLocalPort());
             OutputStream ops = socket.getOutputStream();
             InputStream ips = socket.getInputStream();
             PrintStream ps = new PrintStream(ops);
