@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+<!--    这是注释   lt   less than
+gt  greater than
+-->
+    <book id="0001" desc="我是第一本书">
+        <name>    &lt; JavaWeb开发教程</name>
+        <author> 张孝祥    </author>
+        <sale>100.00元</sale>
+    </book>
+    <book id="0002">
+        <name>三国演义</name>
+        <author>罗贯中</author>
+        <sale>100.00元</sale>
+    </book>
+    
+</books>
