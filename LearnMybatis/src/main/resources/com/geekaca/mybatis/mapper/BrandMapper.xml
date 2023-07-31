@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+    告诉mybatis 到哪里去找mapper类
+-->
+
+<mapper namespace="com.geekaca.mybatis.mapper.BrandMapper">
+
+<!--    结果集映射
+  当数据库列名字，和java对象属性 不对应时候
+
+  通过resultMap节点，告诉mybatis如何对应
+-->
+    <resultMap id="brandMap" type="com.geekaca.mybatis.pojo.Brand">
+        <id column="id" property="id"  jdbcType="INTEGER"/>
+        <result column="brand_name" property="brandName" />
+        <result column="company_name" property="companyName" />
+    </resultMap>
+
+    <!-- sql 语句 -->
+
+<!--    用来发送select  sql语句
+    resultType : 查询的结果，每一行记录 对应的java对象
+    resultMap 告诉mybatis结果 如何映射
+-->
+    <select id="selectAll" resultMap="brandMap">
+        SELECT * FROM tb_brand
+    </select>
+    <select id="selectById" resultMap="brandMap">
+        SELECT * FROM tb_brand where id = #{id}
+
+    </select>
+    <delete id="deleteById" >
+        delete from tb_brand where id = #{id};
+
+    </delete>
+
+</mapper>
