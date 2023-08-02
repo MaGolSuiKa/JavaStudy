@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+-->
+
+<mapper namespace="com.geekaca.db.mapper.BrandMapper">
+
+    <!--
+        数据库表的字段名称  和  实体类的属性名称 不一样，则不能自动封装数据
+            * 起别名：对不一样的列名起别名，让别名和实体类的属性名一样
+                * 缺点：每次查询都要定义一次别名
+                    * sql片段
+                        * 缺点：不灵活
+            * resultMap：
+                1. 定义<resultMap>标签
+                2. 在<select>标签中，使用resultMap属性替换 resultType属性
+
+    -->
+    <!--
+        id：唯一标识
+        type：映射的类型，支持别名
+    -->
+    <resultMap id="brandResultMap" type="Brand">
+        <!--
+            id：完成主键字段的映射
+                column：表的列名
+                property：实体类的属性名
+            result：完成一般字段的映射
+                column：表的列名
+                property：实体类的属性名
+        -->
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+    </resultMap>
+    <!--    insert 时候， 此处的字段 直接从POJO类  属性身上拿  #{}-->
+    <insert id="insertBrand">
+        insert into tb_brand(brand_name, company_name, ordered, description, status)
+        values (#{brandName}, #{companyName}, #{ordered}, #{description}, #{status})
+    </insert>
+
+
+    <select id="selectAllBrands" resultMap="brandResultMap">
+        select *
+        from tb_brand
+
+    </select>
+    <!--    #{}  传入参数-->
+    <select id="selectById" resultMap="brandResultMap">
+        select *
+        from tb_brand
+        where id = #{id}
+    </select>
+
+    <!--    查询所有id < 3 的数据 -->
+    <!--    XML的CDATA元素，放在其中的内容就不会对XML结构造成干扰，保持原样   -->
+    <select id="selectByCondition" resultMap="brandResultMap">
+        select *
+        from tb_brand
+        where id
+        <![CDATA[
+            <
+
+        ]]>
+            #{id}
+    </select>
+    <!--    动态sql ，可以根据传递过来的参数值，是否为空来动态的组装sql
+        <where> 标签 能够自动去除 多余的and
+        当有多个条件组合的时候
+        每一个子条件都要加上and
+    -->
+    <select id="selectByConditionDynamic" resultMap="brandResultMap" parameterType="Brand">
+        select * from tb_brand
+
+        <where>
+            <if test="companyName != null and companyName != '' ">
+                company_name like concat('%', #{companyName}, '%')
+            </if>
+            <if test="brandName != null">
+                brand_name like concat('%', #{brandName}, '%')
+            </if>
+        </where>
+    </select>
+<!--     多个条件是互斥的，只能有一个生效，类似java 的switch语句  只有一个case生效-->
+    <select id="selectByOneCondition" resultMap="brandResultMap">
+        select * from tb_brand
+        <where>
+            <choose>
+                <when test="status != null">
+                    status = #{status}
+                </when>
+                <when test="companyName != null and companyName != '' ">
+                    company_name like concat('%', #{companyName}, '%')
+                </when>
+                <when test="brandName != null and brandName != '' ">
+                    brand_name like concat('%', #{brandName}, '%')
+                </when>
+                <otherwise>
+                    status = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+
+</mapper>

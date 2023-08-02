@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+-->
+
+<mapper namespace="com.geekaca.db.mapper.OrderMapper">
+
+
+<!--    使用DB生成的id 主键值回填到对象
+  insert语句发出去后，数据库生成了id的值，mybatis会把id值填充回来到参数Order对象身上
+-->
+    <insert id="addOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_order(payment, payment_type, status)
+        values(#{payment}, #{paymentType}, #{status})
+
+    </insert>
+
+    <update id="updateOrderDynamic">
+        update tb_order
+        <set>
+            <if test="payment != null and payment != '' ">
+                payment = #{payment},
+            </if>
+            <if test="paymentType != null ">
+                payment_type = #{paymentType},
+            </if>
+            <if test="status != null ">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteByIds">
+        delete from t_user where id in
+        <foreach collection="myIds" item="id" open="(" close=")"
+                 separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

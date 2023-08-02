@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+-->
+
+<mapper namespace="com.geekaca.db.mapper.OrderGoodsMapper">
+
+
+
+    <insert id="addOrderGoods">
+        insert into tb_order_goods(order_id, goods_id, count)
+        values(#{orderId}, #{goodsId}, #{count})
+
+    </insert>
+
+
+</mapper>
