@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+-->
+
+<mapper namespace="com.geekaca.testdb.mapper.UserMapper">
+
+    <!--
+        //id, name, pwd, age, tel, deleted, version
+         id;userName;userPwd;userAge;userTel;userDeleted;userVersion;
+    -->
+    <!--
+        id：唯一标识
+        type：映射的类型，支持别名
+    -->
+    <resultMap id="UserResultMap" type="User">
+        <!--
+            id：完成主键字段的映射
+                column：表的列名
+                property：实体类的属性名
+            result：完成一般字段的映射
+                column：表的列名
+                property：实体类的属性名
+        -->
+        <id column="id" property="id"/>
+        <result column="name" property="userName"/>
+        <result column="pwd" property="userPwd"/>
+        <result column="age" property="userAge"/>
+        <result column="tel" property="userTel"/>
+        <result column="deleted" property="userDeleted"/>
+        <result column="version" property="userVersion"/>
+    </resultMap>
+    <update id="updateUser">
+        update t_user
+        <set>
+            <if test="userName != null and userName != '' ">
+                name = #{userName},
+            </if>
+            <if test="userPwd != null and userPwd != '' ">
+                pwd = #{userPwd},
+            </if>
+            <if test="userAge != null">
+                age = #{userAge},
+            </if>
+            <if test="userTel != null and userTel != '' ">
+                tel = #{userTel},
+            </if>
+            <if test="userDeleted != null">
+                deleted = #{userDeleted},
+            </if>
+            <if test="userVersion != null">
+                version = #{userVersion},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from t_user where id =
+        #{userid}
+    </delete>
+    <select id="selectById" resultMap="UserResultMap">
+        select * from t_user where id in
+        <foreach collection="userIds" item="id" open="(" close=")"
+                 separator=",">
+        #{id}
+        </foreach>
+    </select>
+    <select id="loginByUser" resultMap="UserResultMap">
+        select * from t_user where
+        name = #{userName}
+        and
+        pwd = #{userPwd};
+    </select>
+
+</mapper>
