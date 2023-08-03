@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    声明 要使用哪个属性文件-->
+    <properties resource="pool.properties"/>
+    <settings>
+<!--        把mybatis的信息，包括sql打印到控制台-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+        <!--开启驼峰式命名自动映射
+        下划线 ，把表中的下划线列名 自动对应到驼峰法命名的pojo实体类的属性上
+        这样就可以省去resultMap映射了
+        -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.geekaca.review.pojo"/>
+    </typeAliases>
+    
+    <!--
+    environments：配置数据库连接环境信息。可以配置多个environment，通过default属性切换不同的environment
+    -->
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--数据库连接信息-->
+                <property name="driver" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+
+    </environments>
+    <mappers>
+
+
+        <!--Mapper代理方式  ,指向mapper类所在的包
+        如果不配置，会报错
+        BindingException: Type interface com.geekaca.review.mapper.EmployeeMapper
+         is not known to the MapperRegistry
+        -->
+        <package name="com.geekaca.review.mapper"/>
+
+    </mappers>
+
+
+</configuration>
