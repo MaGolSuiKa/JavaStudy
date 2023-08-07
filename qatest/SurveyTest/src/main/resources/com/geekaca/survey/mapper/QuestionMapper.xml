@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.survey.mapper.QuestionMapper">
+
+    <resultMap id="questionMap" type="QuestionInfo">
+        <result column="id_question" property="idQuestion"/>
+        <result column="answer_a" property="answerA"/>
+        <result column="answer_b" property="answerB"/>
+        <result column="answer_c" property="answerC"/>
+        <result column="answer_d" property="answerD"/>
+        <result column="answer_e" property="answerE"/>
+    </resultMap>
+
+
+
+
+</mapper>
