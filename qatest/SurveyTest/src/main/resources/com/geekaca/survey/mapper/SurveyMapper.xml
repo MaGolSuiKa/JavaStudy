@@ -6,11 +6,21 @@
 
     <resultMap id="surveyMap" type="SurveyInfo">
         <result column="id_survey" property="idSurvey"/>
-        <result column="id_main" property="idMain"/>
+        <!--result column="id_main" property="idMain"/-->
+        <collection  column="id_main" property="idMain" ofType="mainInfo">
+            <result column="title_main" property="titleMain"/>
+            <result column="date_main" property="dateMain"/>
+        </collection>
     </resultMap>
 
-
-
+    <insert id="insertSurvey">
+        insert into survey_info(id_main,q1,q2,q3,q4,q5)
+            value  (#{idMain}, #{q1}, #{q2}, #{q3}, #{q4}, #{q5})
+    </insert>
+    <select id="searchByIdSurvey" resultMap="surveyMap" >
+        select * from survey_info sur, main_info main
+        where sur.id_main = main.id;
+    </select>
 
 
 </mapper>

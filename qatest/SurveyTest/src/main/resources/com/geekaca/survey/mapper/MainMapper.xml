@@ -8,8 +8,10 @@
         <result column="title_main" property="titleMain"/>
         <result column="date_main" property="dateMain"/>
     </resultMap>
-
-
+    <insert id="insertMain"  parameterType="MainInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into main_info(title_main,date_main)
+        value  (#{titleMain}, #{dateMain})
+    </insert>
 
 
 </mapper>
