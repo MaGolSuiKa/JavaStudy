@@ -39,7 +39,7 @@ public class SearchServlet extends HttpServlet {
             writer.write("没有找到含有: " + userName + " 的用户");
             return;
         }
-        writer.write("<table>");
+        writer.write("<table border=1>");
         writer.write("<tr>\n" +
                 "        <td>id</td>\n" +
                 "        <td>用户名</td>\n" +
