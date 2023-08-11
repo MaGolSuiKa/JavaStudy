@@ -33,7 +33,8 @@ public class RegisterServlet extends HttpServlet {
         SqlSession sqlSession = openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         User user = new User();
-
+        user.setUsername(userName);
+        user.setPassword(passWord);
         if (passWord == null || passWord2 == null) {
             //不允许为空
             writer.write("密码不允许为空!");
@@ -41,15 +42,21 @@ public class RegisterServlet extends HttpServlet {
             writer.flush();
             return;
         }
+        int cnt = userMapper.selectUserName(user);
+        if (cnt > 0) {
+            writer.write("用户名已存在！");
+            writer.write("<a href=\"register.html\">返回</a>!");
+            return;
+        }
         if (passWord2.equals(passWord)) {
-            user.setUsername(userName);
-            user.setPassword(passWord);
+
             int count = userMapper.insertUser(user);
             if (count > 0) {
                 writer.write("注册成功!");
                 writer.write("<a href=\"login.html\">点击登录</a>!");
             } else {
                 writer.write("注册失败！");
+                writer.write("<a href=\"register.html\">返回</a>!");
                 return;
             }
 
