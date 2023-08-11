@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>搜索</title>
+
+</head>
+
+<body>
+
+    <!--    action: 指定 请求提交给谁   input name属性 传递变量-->
+    <form action="/RegLogServlet/search" id="form" method="post">
+        <h1 id="loginMsg">搜索</h1>
+        <p>请输入要搜索的用户名:<input name="username" type="text"></p>
+
+        <div id="subDiv">
+            <input type="submit" class="button" value="搜索">
+            <input type="reset" class="button" value="重置">&nbsp;&nbsp;&nbsp;
+
+        </div>
+    </form>
+
+    <br/>
+    <a href="/RegLogServlet/login.html"> 访问</a>
+
+</body>
+</html>
