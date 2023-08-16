@@ -27,6 +27,13 @@ public class BrandService {
         return i;
     }
 
+    public Brand searchById(Integer id){
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        Brand brand = brandMapper.selectById(id);
+        sqlSession.close();
+        return brand;
+    }
     public int updateBrand(Brand brand){
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);

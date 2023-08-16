@@ -8,7 +8,7 @@
         <id property="id" column="id"/>
         <result property="brandName" column="brand_name"/>
         <result property="companyName" column="company_name"/>
-        <result property="companyName" column="type_id"/>
+        <result property="typeId" column="type_id"/>
 
     </resultMap>
     <insert id="insertBrand">
@@ -32,5 +32,8 @@
     <select id="selectBrand" resultMap="brandMap">
         select *
         from tb_brand;
+    </select>
+    <select id="selectById" resultMap="brandMap">
+        select * from tb_brand where id = #{id}
     </select>
 </mapper>

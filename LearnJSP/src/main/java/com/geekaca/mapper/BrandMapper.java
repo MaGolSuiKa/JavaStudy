@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BrandMapper {
         List<Brand> selectBrand();
+        Brand selectById(Integer id);
         int insertBrand(Brand brand);
         int updateBrand(Brand brand);
         int deleteBrand(@Param("brandId") Integer id);

@@ -33,7 +33,8 @@
     <%--    items：指定 要循环的变量   var ：从集合中拿到每个变量名字--%>
     <c:forEach items="${brandList}" var="brand" varStatus="status">
         <tr align="center">
-            <td>${brand.id}</td>
+<%--            <td>${brand.id}</td>--%>
+            <td>${status.count}</td>
             <td>${brand.brandName}</td>
             <td>${brand.companyName}</td>
             <td>${brand.ordered}</td>
@@ -45,9 +46,7 @@
                 <td>禁用</td>
             </c:if>
 
-            <td><a href="/LearnJSP/updateBrand?
-                         id=${brand.id}&brandName=${brand.brandName}&companyName=${brand.companyName}
-                         &ordered=${brand.ordered}&description=${brand.description}&status=${brand.status}">修改</a>
+            <td><a href="/LearnJSP/updateBrand?id=${brand.id}">修改</a>
                 <a href="/LearnJSP/deleteBrand?id=${brand.id}">删除</a>
             </td>
         </tr>

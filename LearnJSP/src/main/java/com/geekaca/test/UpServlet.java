@@ -17,12 +17,16 @@ public class UpServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-
+        String id = req.getParameter("id");
         String brandName = req.getParameter("brandName");
         String companyName = req.getParameter("companyName");
         String description = req.getParameter("description");
         String ordered = req.getParameter("ordered");
         String status = req.getParameter("status");
+        Brand brand = new Brand(Integer.parseInt(id),
+                brandName, companyName, Integer.parseInt(ordered),
+                description, Integer.parseInt(status));
+
         StringBuilder msg = new StringBuilder();
         if (status == null || "".equals(status.trim())) {
             msg.append("状态不能为空<br>");
@@ -32,11 +36,12 @@ public class UpServlet extends HttpServlet {
         }
 
         if (!"".equals(msg.toString())) {
+            req.setAttribute("brand", brand);
             req.setAttribute("error", msg.toString());
             req.getRequestDispatcher("/jstl-update.jsp").forward(req, resp);
             return;
         }
-        Brand brand = new Brand(null, brandName, companyName, Integer.parseInt(ordered), description, Integer.parseInt(status));
+
         int ud = brandService.updateBrand(brand);
         if (ud > 0) {
             resp.sendRedirect("/LearnJSP/test");
