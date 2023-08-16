@@ -22,6 +22,9 @@ public class TestServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("JSTL Test");
         req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
+        String uname = (String)session.getAttribute("uname");
+        session.setAttribute("uname", uname);
         List<Brand> brandList = brandService.getAllBrands();
         req.setAttribute("brandList", brandList);
         req.getRequestDispatcher("/jstl-foreach.jsp").forward(req,resp);

@@ -10,7 +10,8 @@
     <title>Title</title>
 </head>
 <body>
-
+用户名：${uname}<br>
+<a href="/LearnJSP/remove"> 注销 </a><br>
 <a href="jstl-add.jsp"> 新增 </a>
 <hr>
 <table border="1" cellspacing="0" width="800">

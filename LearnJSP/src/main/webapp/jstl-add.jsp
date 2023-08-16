@@ -6,7 +6,8 @@
     <title>新增</title>
 </head>
 <body>
-
+用户名：${uname}<br>
+<a href="/LearnJSP/remove"> 注销 </a><br>
 <h3>添加品牌</h3>
 <font color="red">${error}</font>
 
