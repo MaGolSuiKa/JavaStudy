@@ -10,6 +10,8 @@
     <title>Title</title>
 </head>
 <body>
+
+<a href="jstl-add.jsp"> 新增 </a>
 <hr>
 <table border="1" cellspacing="0" width="800">
     <tr>
@@ -26,6 +28,8 @@
     <%--    用JSTL Java 标准标签库 来去循环 从servlet 传递过来的变量 jstl-foreach.jsp
     items: 要对谁进行循环
     var： 从集合中取出的当前元素
+    id=${brand.id}&brandName=${brand.brandName}&companyName=${brand.companyName}
+                         &ordered=${brand.ordered}&description=${brand.description}&status=${brand.status}
     <%--    items：指定 要循环的变量   var ：从集合中拿到每个变量名字--%>
     <c:forEach items="${brandList}" var="brand" varStatus="status">
         <tr align="center">
@@ -41,7 +45,11 @@
                 <td>禁用</td>
             </c:if>
 
-            <td><a href="#">修改</a> <a href="#">删除</a></td>
+            <td><a href="/LearnJSP/updateBrand?
+                         id=${brand.id}&brandName=${brand.brandName}&companyName=${brand.companyName}
+                         &ordered=${brand.ordered}&description=${brand.description}&status=${brand.status}">修改</a>
+                <a href="/LearnJSP/deleteBrand?id=${brand.id}">删除</a>
+            </td>
         </tr>
 
     </c:forEach>

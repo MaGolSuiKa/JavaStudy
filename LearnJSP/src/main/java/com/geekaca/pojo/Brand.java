@@ -18,6 +18,8 @@ public class Brand {
     // 状态：0：禁用  1：启用
     private Integer status;
 
+    private Integer typeId;
+
 
     public Brand() {
     }
@@ -86,6 +88,14 @@ public class Brand {
         this.status = status;
     }
 
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
     @Override
     public String toString() {
         return "Brand{" +
@@ -95,6 +105,7 @@ public class Brand {
                 ", ordered=" + ordered +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", typeId=" + typeId +
                 '}';
     }
 }

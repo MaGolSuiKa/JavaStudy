@@ -8,9 +8,29 @@
         <id property="id" column="id"/>
         <result property="brandName" column="brand_name"/>
         <result property="companyName" column="company_name"/>
+        <result property="companyName" column="type_id"/>
+
     </resultMap>
+    <insert id="insertBrand">
+        insert into tb_brand(brand_name, company_name, ordered, description, status, type_id)
+        values (#{brandName}, #{companyName}, #{ordered}, #{description}, #{status}, 1);
+    </insert>
+    <update id="updateBrand">
+        update tb_brand
+        set brand_name   = #{brandName},
+            company_name = #{companyName},
+            ordered      = #{ordered},
+            description  = #{description},
+            status       = #{status},
+            type_id      = 1
+        where id = #{id};
+    </update>
+    <delete id="deleteBrand">
+        delete from tb_brand where id = #{brandId};
+    </delete>
 
     <select id="selectBrand" resultMap="brandMap">
-        select * from tb_brand
+        select *
+        from tb_brand;
     </select>
 </mapper>
