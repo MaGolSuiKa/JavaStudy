@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/sessionServlet")
+@WebServlet(urlPatterns = "/s")
 public class SessionServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -17,6 +17,6 @@ public class SessionServlet extends HttpServlet {
         System.out.println(username);
         session.setAttribute("uname", username);
 
-        resp.sendRedirect(req.getContextPath()+"/main.jsp");
+        resp.sendRedirect(req.getContextPath() + "/main.jsp");
     }
 }

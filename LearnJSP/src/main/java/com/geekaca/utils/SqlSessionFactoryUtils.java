@@ -25,10 +25,11 @@ public class SqlSessionFactoryUtils {
     }
 
 
-    public static SqlSessionFactory getSqlSessionFactory(){
+    public static SqlSessionFactory getSqlSessionFactory() {
         return sqlSessionFactory;
     }
-    public static SqlSession openSession(){
+
+    public static SqlSession openSession() {
         return sqlSessionFactory.openSession(true);
     }
 }

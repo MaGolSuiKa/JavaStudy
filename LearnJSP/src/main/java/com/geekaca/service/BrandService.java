@@ -11,7 +11,7 @@ import java.util.List;
 public class BrandService {
 
     //有利于单独进行测试
-    public List<Brand> getAllBrands(){
+    public List<Brand> getAllBrands() {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         List<Brand> brands = brandMapper.selectBrand();
@@ -19,7 +19,7 @@ public class BrandService {
         return brands;
     }
 
-    public int addBrand(Brand brand){
+    public int addBrand(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         int i = brandMapper.insertBrand(brand);
@@ -27,14 +27,23 @@ public class BrandService {
         return i;
     }
 
-    public Brand searchById(Integer id){
+    public Brand searchById(Integer id) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         Brand brand = brandMapper.selectById(id);
         sqlSession.close();
         return brand;
     }
-    public int updateBrand(Brand brand){
+
+    public List<Brand> searchByName(String input) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        List<Brand> brands = brandMapper.selectByName(input);
+        sqlSession.close();
+        return brands;
+    }
+
+    public int updateBrand(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         int i = brandMapper.updateBrand(brand);
@@ -42,7 +51,7 @@ public class BrandService {
         return i;
     }
 
-    public int deleteBrand(Integer id){
+    public int deleteBrand(Integer id) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         int i = brandMapper.deleteBrand(id);

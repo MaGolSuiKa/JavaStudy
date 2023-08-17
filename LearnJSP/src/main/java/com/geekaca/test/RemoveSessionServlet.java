@@ -12,9 +12,10 @@ import java.io.IOException;
 public class RemoveSessionServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("remove");
         HttpSession session = req.getSession();
-        String uname = (String)session.getAttribute("uname");
-        session.removeAttribute(uname);
-        resp.sendRedirect(req.getContextPath()+"/index.jsp");
+        session.removeAttribute("uname");
+        session.invalidate();
+        resp.sendRedirect(req.getContextPath() + "/index.jsp");
     }
 }

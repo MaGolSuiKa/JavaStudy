@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page isELIgnored="false"%>
+<%@ page isELIgnored="false" %>
 
 <html>
 <head>
@@ -11,7 +11,7 @@
 <h3>添加品牌</h3>
 <font color="red">${error}</font>
 
-<form action="/LearnJSP/addBrand" method="post">
+<form action="${pageContext.request.contextPath}/addBrand" method="post">
     品牌名称：<input name="brandName"><br>
     企业名称：<input name="companyName"><br>
     排序：<input name="ordered"><br>

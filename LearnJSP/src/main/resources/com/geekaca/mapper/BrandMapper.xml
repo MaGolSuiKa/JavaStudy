@@ -26,7 +26,9 @@
         where id = #{id};
     </update>
     <delete id="deleteBrand">
-        delete from tb_brand where id = #{brandId};
+        delete
+        from tb_brand
+        where id = #{brandId};
     </delete>
 
     <select id="selectBrand" resultMap="brandMap">
@@ -34,6 +36,15 @@
         from tb_brand;
     </select>
     <select id="selectById" resultMap="brandMap">
-        select * from tb_brand where id = #{id}
+        select *
+        from tb_brand
+        where id = #{id}
+    </select>
+    <select id="selectByName" resultMap="brandMap">
+        select *
+        from tb_brand
+        where (brand_name like concat('%', #{searchInput}, '%'))
+           or (company_name like concat('%', #{searchInput}, '%'))
+           or (description like concat('%', #{searchInput}, '%'));
     </select>
 </mapper>

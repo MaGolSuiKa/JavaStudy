@@ -18,16 +18,23 @@ import java.util.List;
 @WebServlet(urlPatterns = "/test")
 public class TestServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("JSTL Test");
         req.setCharacterEncoding("UTF-8");
+        /**
+         * 检查用户是否登陆
+         */
         HttpSession session = req.getSession();
-        String uname = (String)session.getAttribute("uname");
-        session.setAttribute("uname", uname);
+        Object uname = session.getAttribute("uname");
+        if (uname == null) {
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            return;
+        }
         List<Brand> brandList = brandService.getAllBrands();
         req.setAttribute("brandList", brandList);
-        req.getRequestDispatcher("/jstl-foreach.jsp").forward(req,resp);
+        req.getRequestDispatcher("/jstl-foreach.jsp").forward(req, resp);
 
     }
 }

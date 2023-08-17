@@ -18,9 +18,15 @@ public class UpServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        /**
+         * 检查用户是否登陆
+         */
         HttpSession session = req.getSession();
-        String uname = (String)session.getAttribute("uname");
-        session.setAttribute("uname", uname);
+        Object uname = session.getAttribute("uname");
+        if (uname == null) {
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            return;
+        }
         String id = req.getParameter("id");
         String brandName = req.getParameter("brandName");
         String companyName = req.getParameter("companyName");

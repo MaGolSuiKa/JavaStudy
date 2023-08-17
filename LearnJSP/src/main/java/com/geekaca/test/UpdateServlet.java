@@ -19,6 +19,7 @@ public class UpdateServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         System.out.println("update Brand");
+
         String id = req.getParameter("id");
         Brand brand = brandService.searchById(Integer.parseInt(id));
 

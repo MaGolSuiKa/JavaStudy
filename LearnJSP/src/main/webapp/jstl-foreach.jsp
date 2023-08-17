@@ -12,7 +12,8 @@
 <body>
 用户名：${uname}<br>
 <a href="/LearnJSP/remove"> 注销 </a><br>
-<a href="jstl-add.jsp"> 新增 </a>
+<a href="jstl-add.jsp"> 新增 </a><br>
+<a href="jstl-search.jsp"> 查找 </a><br>
 <hr>
 <table border="1" cellspacing="0" width="800">
     <tr>
@@ -34,7 +35,7 @@
     <%--    items：指定 要循环的变量   var ：从集合中拿到每个变量名字--%>
     <c:forEach items="${brandList}" var="brand" varStatus="status">
         <tr align="center">
-<%--            <td>${brand.id}</td>--%>
+                <%--            <td>${brand.id}</td>--%>
             <td>${status.count}</td>
             <td>${brand.brandName}</td>
             <td>${brand.companyName}</td>
@@ -47,8 +48,8 @@
                 <td>禁用</td>
             </c:if>
 
-            <td><a href="/LearnJSP/updateBrand?id=${brand.id}">修改</a>
-                <a href="/LearnJSP/deleteBrand?id=${brand.id}">删除</a>
+            <td><a href="${pageContext.request.contextPath}/updateBrand?id=${brand.id}">修改</a>
+                <a href="${pageContext.request.contextPath}/deleteBrand?id=${brand.id}">删除</a>
             </td>
         </tr>
 

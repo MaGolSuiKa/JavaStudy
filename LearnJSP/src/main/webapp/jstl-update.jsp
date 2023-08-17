@@ -14,8 +14,8 @@
 和新增逻辑类似
 但是发送的是更新语句
 --%>
-<form action="/LearnJSP/update" method="post">
-<%--    不显示在网页上的--%>
+<form action="${pageContext.request.contextPath}/update" method="post">
+    <%--    不显示在网页上的--%>
     <input type="hidden" name="id" value="${brand.id}"/>
     品牌名称：<input name="brandName" value="${brand.brandName}"><br>
     企业名称：<input name="companyName" value="${brand.companyName}"><br>
