@@ -1,7 +1,9 @@
 package com.geekaca.servlet;
 
 import com.geekaca.pojo.Brand;
+import com.geekaca.pojo.Type;
 import com.geekaca.service.BrandService;
+import com.geekaca.service.TypeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +17,7 @@ import java.util.List;
 @WebServlet(urlPatterns = "/search")
 public class SearchServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
-
+    private TypeService typeService = new TypeService();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("JSTL find");
@@ -31,7 +33,8 @@ public class SearchServlet extends HttpServlet {
             return;
         }
         String Input = req.getParameter("userInput");
-        List<Brand> brandList = brandService.searchByName(Input);
+        //List<Brand> brandList = brandService.searchByName(Input);
+        List<Type> brandList = typeService.searchBy(Input);
         req.setAttribute("brandList", brandList);
         req.getRequestDispatcher("/showcase.jsp").forward(req, resp);
     }

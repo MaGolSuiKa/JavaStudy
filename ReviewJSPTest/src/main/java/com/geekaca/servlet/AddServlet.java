@@ -1,7 +1,9 @@
 package com.geekaca.servlet;
 
 import com.geekaca.pojo.Brand;
+import com.geekaca.pojo.Type;
 import com.geekaca.service.BrandService;
+import com.geekaca.service.TypeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +16,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/add")
 public class AddServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
-
+    private TypeService typeService = new TypeService();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -33,10 +35,12 @@ public class AddServlet extends HttpServlet {
         String ordered = req.getParameter("ordered");
         String description = req.getParameter("description");
         String typeId = req.getParameter("typeId");
+        String typeName = req.getParameter("typeName");
         String status = req.getParameter("status");
 
 
         StringBuilder msg = new StringBuilder();
+
         if (status == null || "".equals(status.trim())) {
             msg.append("状态不能为空<br>");
         }
@@ -51,7 +55,9 @@ public class AddServlet extends HttpServlet {
         }
         System.out.println("add brand");
         Brand brand = new Brand(null, brandName, companyName, Integer.parseInt(ordered), description, Integer.parseInt(status),Integer.parseInt(typeId));
+        Type type = new Type(Integer.parseInt(typeId),typeName);
         int add = brandService.addBrand(brand);
+        int addtype = typeService.addType(type);
         if (add > 0) {
             resp.sendRedirect("/ReviewJSPTest/show");
         } else {

@@ -42,7 +42,7 @@
         <%--    items：指定 要循环的变量   var ：从集合中拿到每个变量名字--%>
         <c:forEach items="${brandList}" var="brand" varStatus="status">
             <tr align="center">
-                    <%--            <td>${brand.id}</td>--%>
+
                 <td>${status.count}</td>
                 <td>${brand.brandName}</td>
                 <td>${brand.companyName}</td>
@@ -55,7 +55,7 @@
                 <c:if test="${brand.status != 1}">
                     <td>禁用</td>
                 </c:if>
-                        <td>${brand.typeName}</td>
+                <td>${brand.typeName}</td>
                 <td><a href="${pageContext.request.contextPath}/update?id=${brand.id}">修改</a>
                     <a href="${pageContext.request.contextPath}/delete?id=${brand.id}">删除</a>
                 </td>

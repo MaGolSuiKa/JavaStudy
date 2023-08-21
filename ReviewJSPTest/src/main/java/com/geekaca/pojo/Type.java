@@ -7,6 +7,11 @@ public class Type extends Brand{
     private Integer typeid;
     private String typeName;
 
+    public Type(Integer typeid,String typeName) {
+        this.typeid = typeid;
+        this.typeName = typeName;
+    }
+
     public Integer getIdt() {
         return idt;
     }

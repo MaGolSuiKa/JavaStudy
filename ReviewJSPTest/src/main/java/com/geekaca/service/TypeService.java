@@ -31,4 +31,12 @@ public class TypeService {
         sqlSession.close();
         return types;
     }
+
+    public List<Type> searchBy(String input) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        TypeMapper typeMapper = sqlSession.getMapper(TypeMapper.class);
+        List<Type> types = typeMapper.selectBy(input);
+        sqlSession.close();
+        return types;
+    }
 }

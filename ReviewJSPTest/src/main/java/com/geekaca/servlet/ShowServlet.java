@@ -22,6 +22,7 @@ public class ShowServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("show Test");
         req.setCharacterEncoding("UTF-8");
+        resp.setHeader("Content-Type", " text/html; charset=UTF-8");
         /**
          * 检查用户是否登陆
          */

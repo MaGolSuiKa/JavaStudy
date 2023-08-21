@@ -12,4 +12,6 @@ public interface TypeMapper {
     int updateType(Type type);
     //查询
     List<Type> selectAll();
+    //
+    List<Type> selectBy(String input);
 }

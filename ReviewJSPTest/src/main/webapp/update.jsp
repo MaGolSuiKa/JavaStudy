@@ -25,7 +25,7 @@
         企业名称：<input name="companyName" value="${brand.companyName}"><br>
         排序：<input name="ordered" value="${brand.ordered}"><br>
         描述信息：<textarea rows="5" cols="20" name="description">${brand.description}</textarea><br>
-        类型：<input name="type" value="${brand.typeName}"><br>
+        类型：<input name="typeName" value="${brand.typeName}"><br>
         状态：
         <input type="radio" name="status" value="0" ${brand.status == 0?"checked":" "}>禁用
         <input type="radio" name="status" value="1" ${brand.status == 1?"checked":" "}>启用

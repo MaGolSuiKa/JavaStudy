@@ -24,7 +24,7 @@
         企业名称：<input name="companyName"><br>
         排序：<input name="ordered"><br>
         描述信息：<textarea rows="5" cols="20" name="description"></textarea><br>
-        类型：<input name="type"><br>
+        类型：<input name="typeName"><br>
         状态：
         <input type="radio" name="status" value="0">禁用
         <input type="radio" name="status" value="1">启用
