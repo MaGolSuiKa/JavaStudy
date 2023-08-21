@@ -31,6 +31,6 @@ public class DeleteServlet extends HttpServlet {
         LOGGER.info("service : ", id);
         int delete = brandService.deleteBrand(Integer.parseInt(id));
 
-        req.getRequestDispatcher("/test").forward(req, resp);
+        req.getRequestDispatcher("/show").forward(req, resp);
     }
 }

@@ -29,6 +29,7 @@
             <th>排序</th>
             <th>品牌介绍</th>
             <th>状态</th>
+            <th>类型</th>
             <th>操作</th>
 
         </tr>
@@ -47,19 +48,14 @@
                 <td>${brand.companyName}</td>
                 <td>${brand.ordered}</td>
                 <td>${brand.description}</td>
-                <c:if test="${brand.typeId == 1}">
-                    <td>test</td>
-                </c:if>
-                <c:if test="${brand.typeId != 1}">
-                    <td>online</td>
-                </c:if>
+
                 <c:if test="${brand.status == 1}">
                     <td>启用</td>
                 </c:if>
                 <c:if test="${brand.status != 1}">
                     <td>禁用</td>
                 </c:if>
-
+                        <td>${brand.typeName}</td>
                 <td><a href="${pageContext.request.contextPath}/update?id=${brand.id}">修改</a>
                     <a href="${pageContext.request.contextPath}/delete?id=${brand.id}">删除</a>
                 </td>

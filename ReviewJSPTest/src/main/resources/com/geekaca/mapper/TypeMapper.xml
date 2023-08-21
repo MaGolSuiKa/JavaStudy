@@ -4,10 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.geekaca.mapper.TypeMapper">
     <resultMap id="typeMap" type="type">
-        <id property="idt" column="id"/>
+
+        <result property="idt" column="id"/>
         <result property="typeid" column="type_id"/>
         <result property="typeName" column="type_name"/>
+
     </resultMap>
+
     <insert id="insertType">
         insert into tb_type(type_id, type_name)
         values (#{typeid}, #{typeName});
@@ -18,4 +21,10 @@
             type_name = #{typeName}
         where id = #{idt};
     </update>
+    <select id="selectAll" resultMap="typeMap">
+        select b.id, b.brand_name, b.company_name, b.ordered, b.description, b.status, t.type_name
+        from tb_brand b,
+             tb_type t
+        where b.type_id = t.type_id;
+    </select>
 </mapper>
