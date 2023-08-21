@@ -20,7 +20,7 @@ public class Brand {
     public Brand() {
     }
 
-    public Brand(Integer id, String brandName, String companyName, Integer ordered, String description, Integer status,Integer typeId) {
+    public Brand(Integer id, String brandName, String companyName, Integer ordered, String description, Integer status, Integer typeId) {
         this.id = id;
         this.brandName = brandName;
         this.companyName = companyName;
@@ -86,7 +86,6 @@ public class Brand {
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
-
 
 
     @Override

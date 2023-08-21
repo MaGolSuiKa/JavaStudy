@@ -24,6 +24,22 @@ public class TypeService {
         return i;
     }
 
+    public List<Type> searchType() {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        TypeMapper typeMapper = sqlSession.getMapper(TypeMapper.class);
+        List<Type> types = typeMapper.selectType();
+        sqlSession.close();
+        return types;
+    }
+
+    public Type searchNameById(Integer id) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        TypeMapper typeMapper = sqlSession.getMapper(TypeMapper.class);
+        Type tname = typeMapper.selectTypeName(id);
+        sqlSession.close();
+        return tname;
+    }
+
     public List<Type> searchAll() {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         TypeMapper typeMapper = sqlSession.getMapper(TypeMapper.class);

@@ -1,14 +1,12 @@
 package com.geekaca.pojo;
 
 
-//id, type_id, type_name
-public class Type extends Brand{
+//type_id, type_name
+public class Type {
     private Integer idt;
-    private Integer typeid;
     private String typeName;
 
-    public Type(Integer typeid,String typeName) {
-        this.typeid = typeid;
+    public Type(String typeName) {
         this.typeName = typeName;
     }
 
@@ -18,14 +16,6 @@ public class Type extends Brand{
 
     public void setIdt(Integer idt) {
         this.idt = idt;
-    }
-
-    public Integer getTypeid() {
-        return typeid;
-    }
-
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
     }
 
     public String getTypeName() {
@@ -40,7 +30,6 @@ public class Type extends Brand{
     public String toString() {
         return "Type{" +
                 "id=" + idt +
-                ", typeId=" + typeid +
                 ", typeName='" + typeName + '\'' +
                 '}';
     }

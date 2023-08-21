@@ -10,33 +10,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = "/show")
-public class ShowServlet extends HttpServlet {
+// 点击了编辑链接后，把当前的这一条数据详情 传过来
+// 中转站
+@WebServlet(urlPatterns = "/edit")
+public class EditServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
     private TypeService typeService = new TypeService();
 
+    //Tomcat容器来访问 你的service方法，"回调方法"
+    // 多线程  重写Thread  run()     callback 回调方法
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("show Test");
         req.setCharacterEncoding("UTF-8");
         resp.setHeader("Content-Type", " text/html; charset=UTF-8");
-        /**
-         * 检查用户是否登陆
-         */
-        HttpSession session = req.getSession();
-        Object uname = session.getAttribute("uname");
-        if (uname == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
-        }
-        List<Brand> brandList = brandService.getAllBrands();
-        //List<Type> brandList = typeService.searchAll();
-        req.setAttribute("brandList", brandList);
-        req.getRequestDispatcher("/showcase.jsp").forward(req, resp);
+        String id = req.getParameter("id");
+        Integer bid = Integer.parseInt(id);
 
+        Brand brand = brandService.searchById(bid);
+        Type typeName = typeService.searchNameById(brand.getTypeId());
+        req.setAttribute("brand", brand);
+        req.setAttribute("typeNameById", typeName.getTypeName());
+        req.getRequestDispatcher("/update.jsp").forward(req, resp);
     }
 }

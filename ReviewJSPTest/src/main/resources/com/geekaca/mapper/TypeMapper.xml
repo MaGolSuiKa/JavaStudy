@@ -3,22 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.geekaca.mapper.TypeMapper">
-    <resultMap id="typeMap" type="type">
-        <id property="id" column="id"/>
-        <result property="idt" column="id"/>
-        <result property="typeid" column="type_id"/>
+    <resultMap id="typeMap" type="Type">
+        <result property="idt" column="t_id"/>
         <result property="typeName" column="type_name"/>
-        <result property="brandName" column="brand_name"/>
-        <result property="companyName" column="company_name"/>
     </resultMap>
 
     <insert id="insertType">
-        insert into tb_type(type_id, type_name)
+        insert into tb_type(t_id, type_name)
         values (#{typeid}, #{typeName});
     </insert>
     <update id="updateType">
         update tb_type
-        set type_id   = #{typeid},
+        set t_id      = #{typeid},
             type_name = #{typeName}
         where id = #{idt};
     </update>
@@ -26,7 +22,7 @@
         select b.id, b.brand_name, b.company_name, b.ordered, b.description, b.status, t.type_name
         from tb_brand b,
              tb_type t
-        where b.type_id = t.type_id;
+        where b.type_id = t.t_id;
     </select>
     <select id="selectBy" resultMap="typeMap">
         select b.id, b.brand_name, b.company_name, b.ordered, b.description, b.status, t.type_name
@@ -34,7 +30,16 @@
              tb_type t
         where (brand_name like concat('%', #{searchInput}, '%'))
            or (company_name like concat('%', #{searchInput}, '%'))
-           or (description like concat('%', #{searchInput}, '%'))
-           or (type_name like concat('%', #{searchInput}, '%'));
+           or (description like concat('%', #{searchInput}, '%'));
+
+    </select>
+    <select id="selectType" resultMap="typeMap">
+        select *
+        from tb_type
+    </select>
+    <select id="selectTypeName" resultMap="typeMap">
+        select *
+        from tb_type
+        where t_id = #{typeId};
     </select>
 </mapper>

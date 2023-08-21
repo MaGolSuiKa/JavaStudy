@@ -55,8 +55,17 @@
                 <c:if test="${brand.status != 1}">
                     <td>禁用</td>
                 </c:if>
-                <td>${brand.typeName}</td>
-                <td><a href="${pageContext.request.contextPath}/update?id=${brand.id}">修改</a>
+                <c:if test="${brand.typeId == 1}">
+                    <td>test</td>
+                </c:if>
+                <c:if test="${brand.typeId == 2}">
+                    <td>类型1</td>
+                </c:if>
+                <c:if test="${brand.typeId == 3}">
+                    <td>类型2</td>
+                </c:if>
+
+                <td><a href="${pageContext.request.contextPath}/edit?id=${brand.id}">修改</a>
                     <a href="${pageContext.request.contextPath}/delete?id=${brand.id}">删除</a>
                 </td>
             </tr>

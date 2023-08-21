@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/add")
 public class AddServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
-    private TypeService typeService = new TypeService();
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -34,10 +34,8 @@ public class AddServlet extends HttpServlet {
         String companyName = req.getParameter("companyName");
         String ordered = req.getParameter("ordered");
         String description = req.getParameter("description");
-        String typeId = req.getParameter("typeId");
-        String typeName = req.getParameter("typeName");
         String status = req.getParameter("status");
-
+        String typeId = req.getParameter("typeId");
 
         StringBuilder msg = new StringBuilder();
 
@@ -54,10 +52,12 @@ public class AddServlet extends HttpServlet {
             return;
         }
         System.out.println("add brand");
-        Brand brand = new Brand(null, brandName, companyName, Integer.parseInt(ordered), description, Integer.parseInt(status),Integer.parseInt(typeId));
-        Type type = new Type(Integer.parseInt(typeId),typeName);
+        Brand brand = new Brand(null, brandName,
+                companyName, Integer.parseInt(ordered), description,
+                Integer.parseInt(status), Integer.parseInt(typeId));
+
         int add = brandService.addBrand(brand);
-        int addtype = typeService.addType(type);
+
         if (add > 0) {
             resp.sendRedirect("/ReviewJSPTest/show");
         } else {

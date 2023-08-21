@@ -18,6 +18,7 @@ import java.util.List;
 public class SearchServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
     private TypeService typeService = new TypeService();
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("JSTL find");
@@ -33,8 +34,8 @@ public class SearchServlet extends HttpServlet {
             return;
         }
         String Input = req.getParameter("userInput");
-        //List<Brand> brandList = brandService.searchByName(Input);
-        List<Type> brandList = typeService.searchBy(Input);
+        List<Brand> brandList = brandService.searchByName(Input);
+        //List<Type> brandList = typeService.searchBy(Input);
         req.setAttribute("brandList", brandList);
         req.getRequestDispatcher("/showcase.jsp").forward(req, resp);
     }

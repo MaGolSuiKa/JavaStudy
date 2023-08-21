@@ -27,7 +27,7 @@ public class RegisterServlet extends HttpServlet {
             String userName = req.getParameter("username");
             String passWord = req.getParameter("password");
             String userType = req.getParameter("userType");
-            User user = new User(userName, passWord,Integer.parseInt(userType));
+            User user = new User(userName, passWord, Integer.parseInt(userType));
             int findUser = userService.searchUserName(user);
             if (findUser > 0) {
                 req.setAttribute("error", "用户已存在");
