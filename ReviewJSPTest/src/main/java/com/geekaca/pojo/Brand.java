@@ -20,21 +20,16 @@ public class Brand {
     public Brand() {
     }
 
-    public Brand(Integer id, String brandName, String companyName, String description) {
-        this.id = id;
-        this.brandName = brandName;
-        this.companyName = companyName;
-        this.description = description;
-    }
-
-    public Brand(Integer id, String brandName, String companyName, Integer ordered, String description, Integer status) {
+    public Brand(Integer id, String brandName, String companyName, Integer ordered, String description, Integer status,Integer typeId) {
         this.id = id;
         this.brandName = brandName;
         this.companyName = companyName;
         this.ordered = ordered;
         this.description = description;
         this.status = status;
+        this.typeId = typeId;
     }
+
 
     public Integer getId() {
         return id;
@@ -91,6 +86,8 @@ public class Brand {
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
+
+
 
     @Override
     public String toString() {

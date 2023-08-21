@@ -10,9 +10,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, Integer userType) {
         this.username = username;
         this.password = password;
+        this.userType = userType;
     }
 
     public Integer getId() {

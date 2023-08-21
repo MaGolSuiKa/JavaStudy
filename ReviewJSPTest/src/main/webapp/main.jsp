@@ -17,9 +17,9 @@
         <h1>欢迎您:${uname}<br></h1>
     </div>
 
-    <a href="/LearnJSP/test"> 查看列表</a><br>
-    <a href="jstl-search.jsp"> 查找 </a><br>
-    <a href="/LearnJSP/remove"> 注销 </a><br>
+    <a href="${pageContext.request.contextPath}/show"> 查看列表</a><br>
+    <a href="search.jsp"> 查找 </a><br>
+    <a href="${pageContext.request.contextPath}/remove"> 注销 </a><br>
 </div>
 
 

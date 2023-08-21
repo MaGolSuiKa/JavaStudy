@@ -37,7 +37,7 @@
         <div id="subDiv">
             <input type="submit" class="button" value="登录">
             <input type="reset" class="button" value="重置"><br>
-            未持有账户的请<a href="${pageContext.request.contextPath}/jstl-register.jsp"> 注册 </a>
+            未持有账户的请<a href="${pageContext.request.contextPath}/register.jsp"> 注册 </a>
         </div>
     </form>
 </div>

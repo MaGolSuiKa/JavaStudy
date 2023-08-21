@@ -15,7 +15,7 @@
 <div class="form-div">
     <div class="reg-content">
         <h1>欢迎注册</h1>
-        <span>已有帐号？</span> <a href="index.jsp">登录</a>
+        <span>已有帐号？</span> <a href="login.jsp">登录</a>
     </div>
     <font color="red">${error}</font>
     <form id="reg-form" action="${pageContext.request.contextPath}/register" method="post">
@@ -36,6 +36,13 @@
                     <input name="password" type="password" id="password">
                     <br>
                     <span id="password_err" class="err_msg" style="display: none">密码格式有误</span>
+                </td>
+            </tr>
+            <tr>
+                <td>类型</td>
+                <td class="inputs">
+                    <input type="radio" name="userType" value="0">类型一
+                    <input type="radio" name="userType" value="1">类型二
                 </td>
             </tr>
 

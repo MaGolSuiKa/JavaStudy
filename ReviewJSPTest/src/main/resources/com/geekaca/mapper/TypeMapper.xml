@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.mapper.TypeMapper">
+    <resultMap id="typeMap" type="type">
+        <id property="idt" column="id"/>
+        <result property="typeid" column="type_id"/>
+        <result property="typeName" column="type_name"/>
+    </resultMap>
+    <insert id="insertType">
+        insert into tb_type(type_id, type_name)
+        values (#{typeid}, #{typeName});
+    </insert>
+    <update id="updateType">
+        update tb_type
+        set type_id   = #{typeid},
+            type_name = #{typeName}
+        where id = #{idt};
+    </update>
+</mapper>

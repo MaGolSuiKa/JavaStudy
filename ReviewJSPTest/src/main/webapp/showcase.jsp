@@ -17,9 +17,9 @@
     <div>
         <h1>查询结果</h1>
         用户名：${uname}<br>
-        <a href="/LearnJSP/remove"> 注销 </a><br>
-        <a href="jstl-add.jsp"> 新增 </a><br>
-        <a href="jstl-search.jsp"> 查找 </a><br>
+        <a href="${pageContext.request.contextPath}/remove"> 注销 </a><br>
+        <a href="addbrand.jsp"> 新增 </a><br>
+        <a href="search.jsp"> 查找 </a><br>
     </div>
     <table border="1" cellspacing="0" width="800">
         <tr>
@@ -47,6 +47,12 @@
                 <td>${brand.companyName}</td>
                 <td>${brand.ordered}</td>
                 <td>${brand.description}</td>
+                <c:if test="${brand.typeId == 1}">
+                    <td>test</td>
+                </c:if>
+                <c:if test="${brand.typeId != 1}">
+                    <td>online</td>
+                </c:if>
                 <c:if test="${brand.status == 1}">
                     <td>启用</td>
                 </c:if>
@@ -54,8 +60,8 @@
                     <td>禁用</td>
                 </c:if>
 
-                <td><a href="${pageContext.request.contextPath}/updateBrand?id=${brand.id}">修改</a>
-                    <a href="${pageContext.request.contextPath}/deleteBrand?id=${brand.id}">删除</a>
+                <td><a href="${pageContext.request.contextPath}/update?id=${brand.id}">修改</a>
+                    <a href="${pageContext.request.contextPath}/delete?id=${brand.id}">删除</a>
                 </td>
             </tr>
 
