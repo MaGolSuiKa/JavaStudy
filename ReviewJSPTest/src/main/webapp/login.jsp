@@ -34,6 +34,7 @@
             </tr>
         </table>
         <p>记住我：<input type="checkbox" name="rememberMe"/></p>
+        <a href="${pageContext.request.contextPath}/clearCookie"> 清除cookie </a><br>
         <div id="subDiv">
             <input type="submit" class="button" value="登录">
             <input type="reset" class="button" value="重置"><br>

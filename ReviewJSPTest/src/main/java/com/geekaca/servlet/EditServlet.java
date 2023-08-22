@@ -23,8 +23,7 @@ public class EditServlet extends HttpServlet {
     // 多线程  重写Thread  run()     callback 回调方法
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setHeader("Content-Type", " text/html; charset=UTF-8");
+
         String id = req.getParameter("id");
         Integer bid = Integer.parseInt(id);
 

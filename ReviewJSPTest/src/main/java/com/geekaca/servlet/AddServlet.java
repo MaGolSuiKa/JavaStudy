@@ -1,16 +1,13 @@
 package com.geekaca.servlet;
 
 import com.geekaca.pojo.Brand;
-import com.geekaca.pojo.Type;
 import com.geekaca.service.BrandService;
-import com.geekaca.service.TypeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = "/add")
@@ -19,16 +16,6 @@ public class AddServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        /**
-         * 检查用户是否登陆
-         */
-        HttpSession session = req.getSession();
-        Object uname = session.getAttribute("uname");
-        if (uname == null) {
-            resp.sendRedirect(req.getContextPath() + "/index.jsp");
-            return;
-        }
 
         String brandName = req.getParameter("brandName");
         String companyName = req.getParameter("companyName");

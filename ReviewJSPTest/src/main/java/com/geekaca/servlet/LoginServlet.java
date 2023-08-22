@@ -1,15 +1,12 @@
 package com.geekaca.servlet;
 
-import com.geekaca.pojo.Type;
 import com.geekaca.pojo.User;
-import com.geekaca.service.TypeService;
 import com.geekaca.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -17,8 +14,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setHeader("Content-Type", " text/html; charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
+
         String uname = req.getParameter("username");
         String password = req.getParameter("password");
         String rememberMe = req.getParameter("rememberMe");
