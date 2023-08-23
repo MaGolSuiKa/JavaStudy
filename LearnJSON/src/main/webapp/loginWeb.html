@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+</head>
+<body>
+<div id="app">
+  <!-- 超链接 用vue的方式指定  超链接 的点击后跳转地址
+      v-bind是vue的指令，所以他引用变量无需加{{}}
+   -->
+    <h2>{{err}}</h2>
+  <form action="#" method="post">
+    用户名:<input v-model="username"><br>
+    密码：<input v-model = "pass"/><br>
+    <input type="button" value="登陆" @click="login()"/>
+  </form>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<!-- html 引入Javascript -->
+<script>
+  // javascript
+  //Vue 就是一个Javascript 的库
+  //1. 创建Vue核心对象
+  new Vue({
+    el:"#app",
+    // data 是定义vue变量的地方
+    data(){
+      return {
+        username:"",
+        pass:"",
+         err: ""
+      }
+    },
+    methods:{
+       login(){
+         var _this = this;
+         //调用axios 发送登陆请求  ,默认 是把参数整合在一起 用JSON格式提交
+         axios({
+           method: "post",
+           url: "http://localhost:8080/LearnJSON/login",
+           data : {
+             uname: _this.username,
+             pwd : _this.pass
+           }
+         }).then(function (resp) {
+             let s = JSON.stringify(resp.data);
+             let parse = JSON.parse(s);
+             console.log(parse);
+             // alert(parse.code);
+             if (parse.code == 200){
+                 //登陆成功
+                 window.location.href = "brand.html";
+             }else{
+                 //登陆失败
+                 _this.err = "登陆失败";
+             }
+         })
+       }
+    }
+  });
+
+</script>
+
+</body>
+</html>

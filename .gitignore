@@ -2,3 +2,6 @@
 .idea/
 *.iml
 target/
+*.png
+*.js
+element-ui/
