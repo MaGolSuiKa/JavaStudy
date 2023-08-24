@@ -52,7 +52,34 @@
             <if test="status != null">
                 and status = #{status}
             </if>
+            <if test="typeId != null">
+                and typeId = #{typeId}
+            </if>
         </where>
+    </select>
+    <select id="selectAll" resultMap="brandMap">
+        select * from tb_brand  limit #{start}, #{pageSize}
+    </select>
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        select count(*) from tb_brand
+    </select>
+    <select id="selectWithPage" resultMap="brandMap" parameterType="Brand">
+        select * from tb_brand
+        <where>
+            <if test="brandName != null and brandName != '' ">
+                brand_name like concat('%', #{brandName}, '%')
+            </if>
+            <if test="companyName != null and companyName != '' ">
+                and company_name like concat('%', #{companyName}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="typeId != null">
+                and typeId = #{typeId}
+            </if>
+        </where>
+        limit #{start}, #{pageSize};
     </select>
 
 </mapper>

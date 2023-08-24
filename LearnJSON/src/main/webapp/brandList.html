@@ -37,7 +37,16 @@
                 <el-option label="任意" value=null></el-option>
             </el-select>
         </el-form-item>
+        <el-form-item label="类别">
+            <el-select v-model="brand.typeId" placeholder="品牌类别">
 
+                <el-option v-for="item in allTypes" :key="item.typeId"
+                           :label="item.typeName"
+                           :value="item.typeId"
+                ></el-option>
+
+            </el-select>
+        </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSearch">查询</el-button>
         </el-form-item>
@@ -78,7 +87,16 @@
             <el-form-item label="备注">
                 <el-input type="textarea" v-model="brand.description"></el-input>
             </el-form-item>
+            <el-form-item label="类别">
+                <el-select v-model="brand.typeId" placeholder="品牌类别">
 
+                    <el-option v-for="item in allTypes" :key="item.typeId"
+                               :label="item.typeName"
+                               :value="item.typeId"
+                    ></el-option>
+
+                </el-select>
+            </el-form-item>
             <el-form-item label="状态">
                 <el-switch v-model="brand.status"
                            active-value="1"
@@ -122,6 +140,12 @@
                     <p v-if="scope.row.status == 0"> 禁用</p>
                 </template>
             </el-table-column>
+            <el-table-column
+                    prop="typeId"
+                    align="center"
+                    label="品牌类别">
+            </el-table-column>
+
             <!-- 单独的一列 放修改 ，删除按钮-->
             <el-table-column
                     align="center"
@@ -135,6 +159,15 @@
             </el-table-column>
         </el-table>
     </template>
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCnts">
+    </el-pagination>
 </div>
 
 <script src="js/vue.js"></script>
@@ -148,6 +181,7 @@
         mounted() {
             //当页面加载完成后，发送异步请求，获取数据
             this.selectAll();
+            this.selectAllTypes();
         },
         methods: {
             // 查询所有数据
@@ -160,7 +194,20 @@
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
-                    _this.myTableData = resp.data;
+                    _this.myTableData = resp.data.brands;
+                    _this.totalCnts = resp.data.cnt;
+                })
+            },
+            selectAllTypes() {
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/LearnJSON/allTypes"
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    _this.allTypes = resp.data;
                 })
             },
             onSearch() {
@@ -188,9 +235,13 @@
                 if (_this.dialogType == 0) {
                     toUrl = "http://localhost:8080/LearnJSON/update";
                 }
+                let token = localStorage.getItem("token");
                 axios({
                     method: "post",
                     url: toUrl,
+                    headers: {
+                        token: token
+                    },
                     data: _this.brand
                 }).then(function (resp) {
                     let s = JSON.stringify(resp.data);
@@ -225,6 +276,31 @@
                 this.brand = {};
                 done();
             },
+            //当页面点击 页码，第几页 变化时候触发的函数
+            // 访问后端接口，参数{ 页码， 每页条数} ，获取这一页的数据
+            handleCurrentChange(val) {
+                // alert(val);
+                //重新查询
+                var _this = this;
+                //Javascript 的Http库  pageNo 当前第几页，页码   cntPerPage:每页显示记录条数
+                //和~ 在同一个按键上   `
+                axios({
+                    method: "get",
+                    url: `http://localhost:8080/LearnJSON/all?pageNo=${val}&cntPerPage=${_this.pageSize}`
+                }).then(function (resp) {
+                    //收到server的返回数据  JSON
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    _this.myTableData = parse.brands;
+                    _this.totalCnts = parse.cnt;
+                })
+            },
+            //分页  ,下拉框  修改 每页显示的记录条数时候会触发的函数
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.pageSize = val;
+                this.selectAll();
+            },
             onDelete(row) {
                 console.log(row.id);
                 var _this = this;
@@ -252,41 +328,27 @@
             //控制对话框的显示还是隐藏
             dialogVisible: false,
             dialogTitle: '',
+            //向后端发送 当前页码，第几页
+            currentPage: 1,
+            //每页显示记录条数
+            pageSize: 10,
+            //来自于后端接口 总记录条数
+            totalCnts: 20,
+
             brand: {
                 brandName: '',
                 companyName: '',
                 status: ''
             },
-            myTableData: []
+            //数据list
+            myTableData: [],
+            //所有品牌类别list
+            allTypes: [],
         }
+
     })
 
 
-    // {
-    //     id: "9",
-    //         brandName: '三星',
-    //     companyName: '三星有限公司',
-    //     ordered: '100',
-    //     status: "1"
-    // }, {
-    //     id: "10",
-    //         brandName: '华为',
-    //         companyName: '华为科技有限公司',
-    //         ordered: '100',
-    //         status: "1"
-    // }, {
-    //     id: "11",
-    //         brandName: '苹果',
-    //         companyName: '苹果有限公司',
-    //         ordered: '100',
-    //         status: "1"
-    // }, {
-    //     id: "12",
-    //         brandName: '比亚迪',
-    //         companyName: '比亚迪科技有限公司',
-    //         ordered: '100',
-    //         status: "1"
-    // }
 </script>
 </body>
 </html>

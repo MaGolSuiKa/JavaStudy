@@ -1,8 +1,10 @@
 package com.geekaca.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.pojo.Brand;
 import com.geekaca.service.BrandService;
+import com.geekaca.util.JwtUtil;
 import com.geekaca.util.Result;
 
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Map;
 
 @WebServlet(urlPatterns = "/add")
 public class AddServlet extends HttpServlet {
@@ -27,6 +30,8 @@ public class AddServlet extends HttpServlet {
         BufferedReader br = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
         String line = br.readLine();
         System.out.println("line: " + line);
+
+
         //JSON String -> Brand
         Brand brand = JSON.parseObject(line, Brand.class);
         StringBuilder msg = new StringBuilder();
@@ -52,9 +57,7 @@ public class AddServlet extends HttpServlet {
         }
         System.out.println("add brand");
 
-
         int add = brandService.addBrand(brand);
-
         if (add > 0) {
             //增加成功
             // 返回 code 200

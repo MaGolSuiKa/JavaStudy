@@ -52,6 +52,10 @@
              // alert(parse.code);
              if (parse.code == 200){
                  //登陆成功
+                 console.log(parse.data);
+                 let token = parse.data;
+                 //前端存储本地
+                 localStorage.setItem("token", token);
                  window.location.href = "/LearnJSON/brandList.html";
              }else{
                  //登陆失败

@@ -17,7 +17,23 @@ public class BrandService {
         sqlSession.close();
         return brands;
     }
+    public List<Brand> getAllBrands(Integer pageNo, Integer pageSize) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        //limit 的第一个参数
+        int start = (pageNo - 1) * pageSize;
 
+        List<Brand> brands = brandMapper.selectAll(start, pageSize);
+        sqlSession.close();
+        return brands;
+    }
+    public int getAllBrandsCount(){
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        int count = brandMapper.selectAllCount();
+        sqlSession.close();
+        return count;
+    }
     public int addBrand(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
@@ -34,13 +50,14 @@ public class BrandService {
         return brand;
     }
 
-//    public List<Brand> searchByName(String input) {
-//        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
-//        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
-//        List<Brand> brands = brandMapper.selectByName(input);
-//        sqlSession.close();
-//        return brands;
-//    }
+    public List<Brand> searchWithPage(Brand brand,Integer pageNo, Integer pageSize) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        int start = (pageNo - 1) * pageSize;
+        List<Brand> brands = brandMapper.selectWithPage(brand,start, pageSize);
+        sqlSession.close();
+        return brands;
+    }
     public List<Brand> searchByName(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);

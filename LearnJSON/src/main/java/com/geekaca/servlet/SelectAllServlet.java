@@ -1,6 +1,7 @@
 package com.geekaca.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.geekaca.pojo.Brand;
 import com.geekaca.service.BrandService;
 
@@ -8,6 +9,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(urlPatterns ="/all")
@@ -16,26 +18,32 @@ public class SelectAllServlet extends HttpServlet {
     private BrandService brandService = new BrandService();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //调用mybatis
+        String pageNo = req.getParameter("pageNo");
+        String cntPerPage = req.getParameter("cntPerPage");
+        if (pageNo == null){
+            pageNo = "1";
+        }
+        if (cntPerPage == null){
+            cntPerPage = "5";
+        }
+        int pNo = Integer.parseInt(pageNo);
+        int pageSize = Integer.parseInt(cntPerPage);
         //1. 调用service查询
-        List<Brand> brands = brandService.getAllBrands();
-        /**
-         * 以往   放入request区间（Vue是无法识别的），利用JSP展示  ，java的范畴，运行于服务端
-         *
-         * 现在  前后端分离， Vue运行 是要脱离Java环境，无需java解析的
-         */
-        //2. 转为JSON
-        String jsonString = JSON.toJSONString(brands);
+        List<Brand> brands = brandService.getAllBrands(pNo, pageSize);
+        // 单独执行一个查询，查询符合条件的总记录条数
+        int allBrandsCount = brandService.getAllBrandsCount();
 
-        //3. 写数据
-        //之前   text/html 告诉浏览器，给你返回的是html页面，可以直接展示
-        //现在  text/json   告诉浏览器，给你返回的是JSON结构的数据
-        response.setContentType("text/json;charset=utf-8");
-        response.getWriter().write(jsonString);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("cnt", allBrandsCount);
+        jsonObject.put("brands", brands);
+
+        resp.setHeader("Content-Type", "text/json;charset=utf-8");
+        // 直接返回给前端
+        PrintWriter writer = resp.getWriter();
+        writer.write(jsonObject.toJSONString());
+        writer.flush();
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.doGet(request, response);
-    }
 }

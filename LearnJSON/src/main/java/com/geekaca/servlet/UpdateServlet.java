@@ -1,8 +1,10 @@
 package com.geekaca.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.pojo.Brand;
 import com.geekaca.service.BrandService;
+import com.geekaca.util.JwtUtil;
 import com.geekaca.util.Result;
 
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Map;
 
 @WebServlet(urlPatterns = "/update")
 public class UpdateServlet extends HttpServlet {
@@ -24,6 +27,7 @@ public class UpdateServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ServletInputStream ips = req.getInputStream();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
         String line = br.readLine();
         System.out.println("line: " + line);
