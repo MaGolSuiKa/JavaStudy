@@ -10,7 +10,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns ="/selectAllServlet")
+@WebServlet(urlPatterns ="/all")
 public class SelectAllServlet extends HttpServlet {
 
     private BrandService brandService = new BrandService();

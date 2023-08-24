@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.mapper.UserMapper">
+    <insert id="insertUser">
+        insert into tb_user(username, password, user_type)
+        values (#{username}, #{password}, #{userType});
+    </insert>
+
+    <select id="selectByUnamePass" resultType="java.lang.Integer">
+        select COUNT(*) as cnt
+        from tb_user
+        where username = #{username}
+          and password = #{password};
+    </select>
+    <select id="selectUserName" resultType="java.lang.Integer">
+        select COUNT(*) as cnt
+        from tb_user
+        where username = #{username};
+    </select>
+</mapper>

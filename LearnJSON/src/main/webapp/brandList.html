@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue显示JSON数据</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- elementUI 组件 搜索表单    model 指定 数据绑定
+        你在输入框中输入的值会被绑定到brand 变量的属性上
+    -->
+    <el-form :inline="true" :model="brand" class="demo-form-inline">
+
+        <el-form-item label="当前状态">
+            <el-select v-model="brand.status" placeholder="当前状态">
+                <el-option label="启用" value="1"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+                <el-option label="空" value=null></el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item label="企业名称">
+            <el-input v-model="brand.companyName" placeholder="企业名称"></el-input>
+        </el-form-item>
+
+        <el-form-item label="品牌名称">
+            <el-input v-model="brand.brandName" placeholder="品牌名称"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="onSearch">查询</el-button>
+        </el-form-item>
+    </el-form>
+    <!--按钮-->
+
+    <el-row>
+
+        <el-button type="danger" plain @click="batchDel()">批量删除</el-button>
+        <el-button type="primary" plain @click="dialogType=1, dialogVisible = true, dialogTitle= '新增'">新增</el-button>
+
+    </el-row>
+    <!--添加数据对话框表单
+        默认是隐藏的
+        visible.sync 设置 对话框是否显示
+        title 设置对话框的标题   和 dialogTitle 变量绑定
+        :before-close  当对话框被关闭时候 会触发的函数
+    -->
+    <el-dialog
+            :before-close="beforeClose"
+            :title="dialogTitle"
+            :visible.sync="dialogVisible"
+            width="30%">
+
+        <el-form ref="form" :model="brand" label-width="80px">
+            <el-form-item label="品牌名称">
+                <el-input v-model="brand.brandName"></el-input>
+            </el-form-item>
+
+            <el-form-item label="企业名称">
+                <el-input v-model="brand.companyName"></el-input>
+            </el-form-item>
+
+            <el-form-item label="排序">
+                <el-input v-model="brand.ordered"></el-input>
+            </el-form-item>
+
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="brand.description"></el-input>
+            </el-form-item>
+
+            <el-form-item label="状态">
+                <el-switch v-model="brand.status"
+                           active-value="1"
+                           inactive-value="0"
+                ></el-switch>
+            </el-form-item>
+
+
+            <el-form-item>
+<!--                 新增和修改提交 都是同一个按钮-->
+                <el-button type="primary" @click="addBrand()">提交</el-button>
+                <el-button @click="dialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+    <!-- el-table-column   label 设置表格标题  prop 使用哪个属性展示值-->
+    <template>
+        <el-table :data="myTableData">
+            <el-table-column
+                    prop="id"
+                    label="品牌编号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="brandName"
+                    label="品牌名称"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="companyName"
+                    label="公司名"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="状态"
+                    align="center">
+                <template scope="scope">
+                    <p v-if="scope.row.status == 1"> 启用</p>
+                    <p v-if="scope.row.status == 0"> 禁用</p>
+                </template>
+            </el-table-column>
+            <!-- 单独的一列 放修改 ，删除按钮-->
+            <el-table-column
+                    align="center"
+                    label="操作">
+                <template slot-scope="scope">
+                    <el-row>
+                        <el-button type="primary" @click="onEdit(0, scope.row)">修改</el-button>
+                        <el-button type="danger" @click="onDelete(scope.row)">删除</el-button>
+                    </el-row>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<!-- 用来发送HTTP请求 -->
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        mounted() {
+            //当页面加载完成后，发送异步请求，获取数据
+            this.selectAll();
+        },
+        methods: {
+            // 查询所有数据
+            selectAll() {
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/LearnJSON/all"
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    _this.myTableData = resp.data;
+                })
+            },
+            onSearch(){
+                // console.log(this.brand);
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/LearnJSON/search",
+                    data:_this.brand
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    _this.myTableData = resp.data;
+                })
+            },
+            //新增
+            addBrand(){
+                // console.log(this.brand);
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+
+                //要根据当前是新增还是修改，改变提交的servlet
+                var toUrl = "http://localhost:8080/LearnJSON/add";
+                if (_this.dialogType == 0){
+                    toUrl = "http://localhost:8080/LearnJSON/update";
+                }
+                axios({
+                    method: "post",
+                    url: toUrl,
+                    data: _this.brand
+                }).then(function (resp) {
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    _this.brand = {};
+                    _this.dialogVisible = false;
+                    if (parse.code == 200){
+                        _this.selectAll();
+                        // 弹出消息提示
+                        _this.$message({
+                            message: '恭喜你，增加成功',
+                            type: 'success'
+                        });
+
+                    }
+                })
+            },
+            //修改
+            //  新增和修改用的是同一个对话框，所以需要一个变量来标识 当前到底是新增 打开的对话框，
+            // 还是 修改打开的，点击提交的时候，要根据是新增，还是修改来决定提交给不同的servlet
+            //0:修改   1:新增
+            onEdit(type, row) {
+                var _this = this;
+                _this.dialogType = type;
+                _this.dialogTitle = '修改'
+                _this.dialogVisible = true;
+                console.log(row)
+                _this.brand = row;
+
+            },
+            beforeClose(done){
+                this.brand = {};
+                done();
+            },
+            onDelete(row){
+                console.log(row.id);
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/LearnJSON/delete?id="+row.id
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    if (parse.code == 200){
+                        // 弹出消息提示
+                        _this.$message({
+                            message: '恭喜你，删除成功',
+                            type: 'success'
+                        });
+                        _this.selectAll();
+                    }
+                })
+            },
+        },
+        data: {
+            //控制对话框的显示还是隐藏
+            dialogVisible: false,
+            dialogTitle: '',
+            brand: {
+                brandName:'',
+                companyName:'',
+                status:''
+            },
+            myTableData: []
+        }
+    })
+
+
+    // {
+    //     id: "9",
+    //         brandName: '三星',
+    //     companyName: '三星有限公司',
+    //     ordered: '100',
+    //     status: "1"
+    // }, {
+    //     id: "10",
+    //         brandName: '华为',
+    //         companyName: '华为科技有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }, {
+    //     id: "11",
+    //         brandName: '苹果',
+    //         companyName: '苹果有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }, {
+    //     id: "12",
+    //         brandName: '比亚迪',
+    //         companyName: '比亚迪科技有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }
+</script>
+</body>
+</html>

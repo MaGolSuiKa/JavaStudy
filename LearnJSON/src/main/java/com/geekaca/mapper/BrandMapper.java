@@ -13,7 +13,8 @@ public interface BrandMapper {
     Brand selectById(Integer id);
 
     //模糊查询
-    List<Brand> selectByName(String searchInput);
+    //List<Brand> selectByName(String searchInput);
+    List<Brand> selectByName(Brand brand);
 
     //添加品牌内容
     int insertBrand(Brand brand);

@@ -125,12 +125,20 @@
                     align="center"
                     label="排序">
             </el-table-column>
+<!--            <el-table-column-->
+<!--                    prop="status"-->
+<!--                    align="center"-->
+<!--                    label="当前状态">-->
+<!--            </el-table-column>-->
             <el-table-column
                     prop="status"
-                    align="center"
-                    label="当前状态">
+                    label="状态"
+                    align="center">
+                <template scope="scope">
+                    <p v-if="scope.row.status == 1"> 启用</p>
+                    <p v-if="scope.row.status == 0"> 禁用</p>
+                </template>
             </el-table-column>
-
             <el-table-column
                     align="center"
                     label="操作"

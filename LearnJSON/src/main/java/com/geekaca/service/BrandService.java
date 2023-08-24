@@ -34,10 +34,17 @@ public class BrandService {
         return brand;
     }
 
-    public List<Brand> searchByName(String input) {
+//    public List<Brand> searchByName(String input) {
+//        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+//        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+//        List<Brand> brands = brandMapper.selectByName(input);
+//        sqlSession.close();
+//        return brands;
+//    }
+    public List<Brand> searchByName(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
-        List<Brand> brands = brandMapper.selectByName(input);
+        List<Brand> brands = brandMapper.selectByName(brand);
         sqlSession.close();
         return brands;
     }
