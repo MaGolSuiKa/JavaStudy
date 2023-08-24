@@ -42,9 +42,25 @@
     <select id="selectByName" resultMap="brandMap">
         select *
         from tb_brand
-        where (brand_name like concat('%', #{brandName}, '%'))
-           or (company_name like concat('%', #{companyName}, '%'))
-           or (status like concat('%', #{status}, '%'));
+--         where (brand_name like concat('%', #{brandName}, '%'))
+--            or (company_name like concat('%', #{companyName}, '%'))
+--            or (status = #{status});
+        <where>
+            <choose>
+                <when test="brandName != null and brandName != ''">
+                    brand_name like concat('%', #{brandName}, '%')
+                </when>
+                <when test="companyName != null and companyName != ''">
+                    company_name like concat('%', #{companyName}, '%')
+                </when>
+                <when test="status != null">
+                    status = #{status}
+                </when>
+                <otherwise>
+                    status = 1
+                </otherwise>
+            </choose>
+        </where>
     </select>
 
 </mapper>

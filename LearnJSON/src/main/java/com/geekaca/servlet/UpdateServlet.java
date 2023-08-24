@@ -24,7 +24,7 @@ public class UpdateServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ServletInputStream ips = req.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(ips));
+        BufferedReader br = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
         String line = br.readLine();
         System.out.println("line: " + line);
         //JSON String -> Brand
