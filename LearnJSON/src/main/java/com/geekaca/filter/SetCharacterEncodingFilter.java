@@ -15,7 +15,7 @@ public class SetCharacterEncodingFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         req.setCharacterEncoding("UTF-8");
         //resp.setHeader("Content-Type", " text/html; charset=UTF-8");
-        resp.setHeader("Content-Type", " text/json; charset=UTF-8");
+        //resp.setHeader("Content-Type", " text/json; charset=UTF-8");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

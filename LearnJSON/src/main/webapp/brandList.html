@@ -21,20 +21,21 @@
     -->
     <el-form :inline="true" :model="brand" class="demo-form-inline">
 
-        <el-form-item label="当前状态">
-            <el-select v-model="brand.status" placeholder="当前状态">
-                <el-option label="启用" value="1"></el-option>
-                <el-option label="禁用" value="0"></el-option>
-                <el-option label="空" value=null></el-option>
-            </el-select>
+
+        <el-form-item label="品牌名称">
+            <el-input v-model="brand.brandName" placeholder="品牌名称"></el-input>
         </el-form-item>
 
         <el-form-item label="企业名称">
             <el-input v-model="brand.companyName" placeholder="企业名称"></el-input>
         </el-form-item>
 
-        <el-form-item label="品牌名称">
-            <el-input v-model="brand.brandName" placeholder="品牌名称"></el-input>
+        <el-form-item label="当前状态">
+            <el-select v-model="brand.status" placeholder="当前状态">
+                <el-option label="启用" value="1"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+                <el-option label="任意" value=null></el-option>
+            </el-select>
         </el-form-item>
 
         <el-form-item>
@@ -87,7 +88,7 @@
 
 
             <el-form-item>
-<!--                 新增和修改提交 都是同一个按钮-->
+                <!--                 新增和修改提交 都是同一个按钮-->
                 <el-button type="primary" @click="addBrand()">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
@@ -162,14 +163,14 @@
                     _this.myTableData = resp.data;
                 })
             },
-            onSearch(){
+            onSearch() {
                 // console.log(this.brand);
                 var _this = this;
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "post",
                     url: "http://localhost:8080/LearnJSON/search",
-                    data:_this.brand
+                    data: _this.brand
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
@@ -177,14 +178,14 @@
                 })
             },
             //新增
-            addBrand(){
+            addBrand() {
                 // console.log(this.brand);
                 var _this = this;
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
 
                 //要根据当前是新增还是修改，改变提交的servlet
                 var toUrl = "http://localhost:8080/LearnJSON/add";
-                if (_this.dialogType == 0){
+                if (_this.dialogType == 0) {
                     toUrl = "http://localhost:8080/LearnJSON/update";
                 }
                 axios({
@@ -196,7 +197,7 @@
                     let parse = JSON.parse(s);
                     _this.brand = {};
                     _this.dialogVisible = false;
-                    if (parse.code == 200){
+                    if (parse.code == 200) {
                         _this.selectAll();
                         // 弹出消息提示
                         _this.$message({
@@ -220,23 +221,23 @@
                 _this.brand = row;
 
             },
-            beforeClose(done){
+            beforeClose(done) {
                 this.brand = {};
                 done();
             },
-            onDelete(row){
+            onDelete(row) {
                 console.log(row.id);
                 var _this = this;
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "get",
-                    url: "http://localhost:8080/LearnJSON/delete?id="+row.id
+                    url: "http://localhost:8080/LearnJSON/delete?id=" + row.id
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
                     let s = JSON.stringify(resp.data);
                     let parse = JSON.parse(s);
-                    if (parse.code == 200){
+                    if (parse.code == 200) {
                         // 弹出消息提示
                         _this.$message({
                             message: '恭喜你，删除成功',
@@ -252,9 +253,9 @@
             dialogVisible: false,
             dialogTitle: '',
             brand: {
-                brandName:'',
-                companyName:'',
-                status:''
+                brandName: '',
+                companyName: '',
+                status: ''
             },
             myTableData: []
         }
