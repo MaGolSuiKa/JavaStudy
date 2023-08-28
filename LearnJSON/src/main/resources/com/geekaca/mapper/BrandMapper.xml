@@ -30,10 +30,18 @@
         from tb_brand
         where id = #{brandId};
     </delete>
-    <delete id="deleteBrands">
+    <!--    <delete id="deleteBrands">-->
+    <!--        delete-->
+    <!--        from tb_brand-->
+    <!--        where id in (${brandIds})-->
+    <!--    </delete>-->
+    <delete id="deleteBrands" >
         delete
         from tb_brand
-        where id in (${brandIds})
+        where id in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
     </delete>
     <select id="selectBrand" resultMap="brandMap">
         select *
@@ -63,16 +71,18 @@
         </where>
     </select>
     <select id="selectAll" resultMap="brandMap">
-        select * from tb_brand  limit #{start}, #{pageSize}
+        select *
+        from tb_brand limit #{start}, #{pageSize}
     </select>
     <select id="selectAllCount" resultType="java.lang.Integer">
-        select count(*) from tb_brand
+        select count(*)
+        from tb_brand
     </select>
     <select id="selectWithPage" resultMap="brandMap">
         select * from tb_brand
         <where>
             <if test="brand.brandName != null and brand.brandName != '' ">
-                 brand_name like concat('%', #{brand.brandName}, '%')
+                brand_name like concat('%', #{brand.brandName}, '%')
             </if>
             <if test="brand.companyName != null and brand.companyName != '' ">
                 and company_name like concat('%', #{brand.companyName}, '%')
@@ -90,7 +100,7 @@
         select count(*) from tb_brand
         <where>
             <if test="brand.brandName != null and brand.brandName != '' ">
-                 brand_name like concat('%', #{brand.brandName}, '%')
+                brand_name like concat('%', #{brand.brandName}, '%')
             </if>
             <if test="brand.companyName != null and brand.companyName != '' ">
                 and company_name like concat('%', #{brand.companyName}, '%')

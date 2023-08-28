@@ -25,7 +25,8 @@ public interface BrandMapper {
 
     //删除品牌内容
     int deleteBrand(@Param("brandId") Integer id);
-    int deleteBrands(@Param("brandIds") String ids);
+//    int deleteBrands(@Param("brandIds") String ids);
+    int deleteBrands(Integer[] ids);
 
 
     int selectAllCount();

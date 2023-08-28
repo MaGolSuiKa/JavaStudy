@@ -91,7 +91,14 @@ public class BrandService {
         return i;
     }
 
-    public int deleteBrands(String ids) {
+//    public int deleteBrands(String ids) {
+//        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+//        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+//        int i = brandMapper.deleteBrands(ids);
+//        sqlSession.close();
+//        return i;
+//    }
+    public int deleteBrands(Integer[] ids) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         int i = brandMapper.deleteBrands(ids);
