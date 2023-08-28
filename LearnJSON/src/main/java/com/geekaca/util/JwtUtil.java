@@ -46,6 +46,7 @@ public class JwtUtil {
                 // 可以将基本信息放到claims中
                 .withClaim("id", user.getId()) //userId
                 .withClaim("userName", user.getUsername())//userName
+                .withClaim("userType", user.getUserType())//userType
 
                 .withExpiresAt(expireDate) //超时设置,设置过期的日期
                 .withIssuedAt(new Date()) //签发时间

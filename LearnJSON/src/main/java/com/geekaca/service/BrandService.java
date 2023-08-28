@@ -22,7 +22,6 @@ public class BrandService {
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         //limit 的第一个参数
         int start = (pageNo - 1) * pageSize;
-
         List<Brand> brands = brandMapper.selectAll(start, pageSize);
         sqlSession.close();
         return brands;
@@ -50,13 +49,23 @@ public class BrandService {
         return brand;
     }
 
-    public List<Brand> searchWithPage(Brand brand,Integer pageNo, Integer pageSize) {
+    public List<Brand> searchWithPage(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
-        int start = (pageNo - 1) * pageSize;
-        List<Brand> brands = brandMapper.selectWithPage(brand,start, pageSize);
+        int start = (brand.getPageNo() - 1) * brand.getPageSize();
+        brand.setPageNo(start);
+        List<Brand> brands = brandMapper.selectWithPage(brand);
         sqlSession.close();
         return brands;
+    }
+    public int getBrandCount(Brand brand){
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        int start = (brand.getPageNo() - 1) * brand.getPageSize();
+        brand.setPageNo(start);
+        int count = brandMapper.selectCount(brand);
+        sqlSession.close();
+        return count;
     }
     public List<Brand> searchByName(Brand brand) {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
@@ -78,6 +87,14 @@ public class BrandService {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         int i = brandMapper.deleteBrand(id);
+        sqlSession.close();
+        return i;
+    }
+
+    public int deleteBrands(String ids) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        int i = brandMapper.deleteBrands(ids);
         sqlSession.close();
         return i;
     }

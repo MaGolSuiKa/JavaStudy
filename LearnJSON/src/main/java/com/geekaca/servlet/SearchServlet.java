@@ -25,8 +25,6 @@ public class SearchServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("JSTL find");
 
-        ServletInputStream ips = req.getInputStream();
-
         String pageNo = req.getParameter("pageNo");
         String cntPerPage = req.getParameter("cntPerPage");
         if (pageNo == null) {
@@ -38,23 +36,20 @@ public class SearchServlet extends HttpServlet {
         int pNo = Integer.parseInt(pageNo);
         int pageSize = Integer.parseInt(cntPerPage);
 
-
+        ServletInputStream ips = req.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
         String line = br.readLine();
         System.out.println("line: " + line);
         Brand brand = JSON.parseObject(line, Brand.class);
+        brand.setPageNo(pNo);
+        brand.setPageSize(pageSize);
 
-//        List<Brand> brandList = brandService.searchByName(brand);
-        List<Brand> brandList = brandService.searchWithPage(brand, pNo, pageSize);
-        int allBrandsCount = brandService.getAllBrandsCount();
-//        //2. 转为JSON
-//        String jsonString = JSON.toJSONString(brandList);
-//        //3. 写数据
-//        resp.setContentType("text/json;charset=utf-8");
-//        resp.getWriter().write(jsonString);
+        List<Brand> brandList = brandService.searchWithPage(brand);
+        int BrandCount = brandService.getBrandCount(brand);
+
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("cnt", allBrandsCount);
+        jsonObject.put("cnt", BrandCount);
         jsonObject.put("brands", brandList);
         resp.setHeader("Content-Type", "text/json;charset=utf-8");
         // 直接返回给前端

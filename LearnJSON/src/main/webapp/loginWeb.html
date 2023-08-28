@@ -12,7 +12,7 @@
     <h2>{{err}}</h2>
   <form action="#" method="post">
     用户名:<input v-model="username"><br>
-    密码：<input v-model = "pass"/><br>
+    密码：<input type="password" v-model = "pass"/><br>
     <input type="button" value="登陆" @click="login()"/>
   </form>
 </div>
@@ -53,9 +53,10 @@
              if (parse.code == 200){
                  //登陆成功
                  console.log(parse.data);
-                 let token = parse.data;
+                 let userInfo = parse.data;
                  //前端存储本地
-                 localStorage.setItem("token", token);
+                 localStorage.setItem("token", userInfo.token);
+                 localStorage.setItem("userType", userInfo.userType);
                  window.location.href = "/LearnJSON/brandList.html";
              }else{
                  //登陆失败

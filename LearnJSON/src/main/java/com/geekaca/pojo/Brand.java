@@ -15,6 +15,11 @@ public class Brand {
     private Integer status;
     // 类型
     private Integer typeId;
+    private String typeName;
+    //页码
+    private Integer pageNo;
+    private Integer pageSize;
+
 
     public Integer getId() {
         return id;
@@ -70,6 +75,30 @@ public class Brand {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     @Override

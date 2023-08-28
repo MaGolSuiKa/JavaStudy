@@ -29,12 +29,13 @@ public class DeleteServlet extends HttpServlet {
         if (id == null || "".equals(id.trim())){
             return;
         }
+        resp.setHeader("Content-Type", "text/json;charset=utf-8");
         PrintWriter writer = resp.getWriter();
         Result result = new Result();
-
         int i = brandService.deleteBrand(Integer.parseInt(id));
         //req.getRequestDispatcher("/all").forward(req, resp);
         result.setCode(200);
+        result.setMsg("删除成功");
         String s = JSON.toJSONString(result);
         writer.write(s);
         writer.flush();

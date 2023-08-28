@@ -30,4 +30,14 @@ public class UserService {
         sqlSession.close();
         return i;
     }
+
+    public User checkLogin(String uname, String password) {
+        SqlSession sqlSession = SqlSessionFactoryUtils.openSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User();
+        user.setUsername(uname);
+        user.setPassword(password);
+        User userOut = userMapper.selectUserInfo(user);
+        return userOut;
+    }
 }

@@ -30,26 +30,31 @@ public class LoginServlet extends HttpServlet {
 
         JSONObject jsonObject = JSON.parseObject(s, JSONObject.class);
         Object uname = jsonObject.get("uname");
-        Object pwd = jsonObject.get("pwd");
         System.out.println(uname + " pass:" + jsonObject.get("pwd"));
+        Object pwd = jsonObject.get("pwd");
 
+        User user = userService.checkLogin(uname.toString(), pwd.toString());
         resp.setHeader("Content-Type", "text/json;charset=utf-8");
-        User inputUser = new User(uname.toString(),pwd.toString());
-        int isLogin = userService.findUser(inputUser);
+//        User inputUser = new User(uname.toString(),pwd.toString());
+//        int isLogin = userService.findUser(inputUser);
 
         PrintWriter writer = resp.getWriter();
         Result result = new Result();
-        if (isLogin>0){
-            String token = JwtUtil.createToken(inputUser);
-            result.setData(token);
+        if (user != null){
+            String token = JwtUtil.createToken(user);
+
             result.setCode(200);
+            user.setPassword("");
+            user.setToken(token);
+            result.setData(user);
+            System.out.println("登陆成功");
             result.setMsg("登陆成功");
         }else{
             result.setCode(400);
             result.setMsg("登陆失败");
         }
-        String jsonString = JSON.toJSONString(result);
 
+        String jsonString = JSON.toJSONString(result);
         writer.write(jsonString);
         writer.flush();
     }

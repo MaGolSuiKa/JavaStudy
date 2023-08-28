@@ -15,7 +15,7 @@ public interface BrandMapper {
     //模糊查询
     //List<Brand> selectByName(String searchInput);
     List<Brand> selectByName(Brand brand);
-    List<Brand> selectWithPage(Brand brand,@Param("start") Integer start, @Param("pageSize") Integer pageSize);
+    List<Brand> selectWithPage(@Param("brand")Brand brand);
 
     //添加品牌内容
     int insertBrand(Brand brand);
@@ -25,7 +25,9 @@ public interface BrandMapper {
 
     //删除品牌内容
     int deleteBrand(@Param("brandId") Integer id);
+    int deleteBrands(@Param("brandIds") String ids);
 
 
     int selectAllCount();
+    int selectCount(@Param("brand")Brand brand);
 }

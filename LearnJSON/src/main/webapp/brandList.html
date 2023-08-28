@@ -44,16 +44,17 @@
                            :label="item.typeName"
                            :value="item.typeId"
                 ></el-option>
-
+                <el-option label="任意" value=null></el-option>
             </el-select>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSearch">查询</el-button>
+            <el-button type="primary" @click="logout">退出登陆</el-button>
         </el-form-item>
     </el-form>
     <!--按钮-->
 
-    <el-row>
+    <el-row v-if="userType == 0">
 
         <el-button type="danger" plain @click="batchDel()">批量删除</el-button>
         <el-button type="primary" plain @click="dialogType=1, dialogVisible = true, dialogTitle= '新增'">新增</el-button>
@@ -115,11 +116,20 @@
     </el-dialog>
     <!-- el-table-column   label 设置表格标题  prop 使用哪个属性展示值-->
     <template>
-        <el-table :data="myTableData">
+        <el-table :data="myTableData"
+                  @selection-change="handleSelectionChange">
+<!--            type="selection"  在每一行前面加上 checkbox 复选框-->
+            <el-table-column
+                    type="selection"
+                    width="55"
+                    :key="1" >
+
+            </el-table-column>
             <el-table-column
                     prop="id"
                     label="品牌编号"
-                    align="center">
+                    align="center"
+                    :key="2">
             </el-table-column>
             <el-table-column
                     prop="brandName"
@@ -149,7 +159,8 @@
             <!-- 单独的一列 放修改 ，删除按钮-->
             <el-table-column
                     align="center"
-                    label="操作">
+                    label="操作"
+                    v-if="userType == 0">
                 <template slot-scope="scope">
                     <el-row>
                         <el-button type="primary" @click="onEdit(0, scope.row)">修改</el-button>
@@ -159,6 +170,13 @@
             </el-table-column>
         </el-table>
     </template>
+    <!--分页工具条
+https://element-plus.gitee.io/en-US/component/pagination.html#attributes
+size-change ：当修改每页显示条数时候，触发的函数
+current-change：  点击当前第几页时候 ，触发函数
+page-size 指定每页显示几条记录
+total: 总记录条数
+-->
     <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -179,6 +197,8 @@
     new Vue({
         el: "#app",
         mounted() {
+            //提取本地存储的用户类型
+            this.userType = localStorage.getItem("userType");
             //当页面加载完成后，发送异步请求，获取数据
             this.selectAll();
             this.selectAllTypes();
@@ -190,7 +210,7 @@
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "get",
-                    url: "http://localhost:8080/LearnJSON/all"
+                    url: "http://localhost:8080/LearnJSON/all?pageNo="+_this.currentPage +"&cntPerPage="+_this.pageSize
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
@@ -216,12 +236,13 @@
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/LearnJSON/search",
+                    url: "http://localhost:8080/LearnJSON/search?pageNo="+_this.currentPage +"&cntPerPage="+_this.pageSize,
                     data: _this.brand
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
-                    _this.myTableData = resp.data;
+                    _this.myTableData = resp.data.brands;
+                    _this.totalCnts = resp.data.cnt;
                 })
             },
             //新增
@@ -235,7 +256,10 @@
                 if (_this.dialogType == 0) {
                     toUrl = "http://localhost:8080/LearnJSON/update";
                 }
+                //从本地存储中拿出token ，发给后端
                 let token = localStorage.getItem("token");
+                // alert(token);
+                console.log(token);
                 axios({
                     method: "post",
                     url: toUrl,
@@ -255,7 +279,12 @@
                             message: '恭喜你，增加成功',
                             type: 'success'
                         });
-
+                    }
+                    else if(parse.code == 403){
+                        _this.$message({
+                            message: '非法访问',
+                            type: 'error'
+                        });
                     }
                 })
             },
@@ -320,6 +349,52 @@
                             type: 'success'
                         });
                         _this.selectAll();
+                    }else{
+                        _this.$message({
+                            message: '删除失败',
+                            type: 'error'
+                        });
+                    }
+                })
+            },
+            // 复选框选中后执行的方法
+            handleSelectionChange(val) {
+                var _this = this;
+                _this.multipleSelection = val;
+            },
+            logout(){
+                localStorage.clear();
+                window.location.href = "loginWeb.html";
+            },
+            //点批量删除按钮 触发
+            batchDel(){
+                var _this = this;
+                let arrIDs  = [];
+                //获得选中的行  的id 值，放入数组
+                for (let i = 0; i < _this.multipleSelection.length; i++) {
+                    arrIDs[i] = _this.multipleSelection[i].id;
+                }
+                //选中的id放入一个数组，发送后端接口
+                console.log(arrIDs);
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/LearnJSON/batchDelete",
+                    data: arrIDs
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    if (resp.data.code == 200){
+                        _this.$message({
+                            message: '恭喜你，删除成功',
+                            type: 'success'
+                        });
+                        _this.selectAll();
+                    }else{
+                        _this.$message({
+                            message: '删除失败',
+                            type: 'error'
+                        });
                     }
                 })
             },
@@ -334,16 +409,20 @@
             pageSize: 10,
             //来自于后端接口 总记录条数
             totalCnts: 20,
-
+            userType: 0,
             brand: {
                 brandName: '',
                 companyName: '',
-                status: ''
+                status: '',
+                pageNo: 1,
+                pageSize: 10,
             },
             //数据list
             myTableData: [],
             //所有品牌类别list
             allTypes: [],
+            //表格多选
+            multipleSelection:[],
         }
 
     })

@@ -30,6 +30,11 @@
         from tb_brand
         where id = #{brandId};
     </delete>
+    <delete id="deleteBrands">
+        delete
+        from tb_brand
+        where id in (${brandIds})
+    </delete>
     <select id="selectBrand" resultMap="brandMap">
         select *
         from tb_brand;
@@ -63,23 +68,40 @@
     <select id="selectAllCount" resultType="java.lang.Integer">
         select count(*) from tb_brand
     </select>
-    <select id="selectWithPage" resultMap="brandMap" parameterType="Brand">
+    <select id="selectWithPage" resultMap="brandMap">
         select * from tb_brand
         <where>
-            <if test="brandName != null and brandName != '' ">
-                brand_name like concat('%', #{brandName}, '%')
+            <if test="brand.brandName != null and brand.brandName != '' ">
+                 brand_name like concat('%', #{brand.brandName}, '%')
             </if>
-            <if test="companyName != null and companyName != '' ">
-                and company_name like concat('%', #{companyName}, '%')
+            <if test="brand.companyName != null and brand.companyName != '' ">
+                and company_name like concat('%', #{brand.companyName}, '%')
             </if>
-            <if test="status != null">
-                and status = #{status}
+            <if test="brand.status != null">
+                and status = #{brand.status}
             </if>
-            <if test="typeId != null">
-                and typeId = #{typeId}
+            <if test="brand.typeId != null">
+                and type_id = #{brand.typeId}
             </if>
         </where>
-        limit #{start}, #{pageSize};
+        limit #{brand.pageNo}, #{brand.pageSize};
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from tb_brand
+        <where>
+            <if test="brand.brandName != null and brand.brandName != '' ">
+                 brand_name like concat('%', #{brand.brandName}, '%')
+            </if>
+            <if test="brand.companyName != null and brand.companyName != '' ">
+                and company_name like concat('%', #{brand.companyName}, '%')
+            </if>
+            <if test="brand.status != null">
+                and status = #{brand.status}
+            </if>
+            <if test="brand.typeId != null">
+                and type_id = #{brand.typeId}
+            </if>
+        </where>
     </select>
 
 </mapper>
