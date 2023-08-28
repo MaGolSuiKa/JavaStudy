@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 上面的叫 XML 命名空间，用来约束XML schema 约束XML格式的 -->
+    <!--   把类 交给SPring 管理， 对象创建都交给Spring-->
+<!--    <bean id="myTeacher" class="com.geekaca.Teacher"/>-->
+
+    <bean id="bookD" class="com.geekaca.dao.BookDao">
+        <property name="dArray">
+            <array>
+                <value>100</value>
+                <value>20</value>
+                <value>4</value>
+            </array>
+
+        </property>
+        <!--list集合注入-->
+        <property name="dList">
+            <list>
+                <value>link</value>
+                <value>xyz</value>
+                <value>s</value>
+                <value>y</value>
+            </list>
+        </property>
+
+        <!--set集合注入-->
+        <property name="dSet">
+            <set>
+                <value>abc</value>
+                <value>abc</value>
+                <value>asd</value>
+                <value>sdf</value>
+            </set>
+        </property>
+        <property name="dMap">
+            <map>
+                <entry key="country" value="china"/>
+                <entry key="province" value="guangdong"/>
+                <entry key="city" value="shenzhen"/>
+            </map>
+        </property>
+        <!--Properties注入-->
+        <property name="dProperties">
+            <props>
+                <prop key="country">china</prop>
+                <prop key="province">guangdong</prop>
+                <prop key="city">shenzhen</prop>
+            </props>
+        </property>
+    </bean>
+    <!--     Spring IOC容器 发现 bookService 依赖一个属性 叫bookD, 就会创建对象注入进来-->
+    <bean id="bookService" class="com.geekaca.service.impl.BookServiceImpl" scope="singleton"
+          init-method="myInit" destroy-method="myDestory"
+    >
+        <property name="bookDao" ref="bookD"/>
+    </bean>
+
+    <!--    构造器注入-->
+    <bean id="brandService" class="com.geekaca.service.impl.BrandServiceImpl">
+        <constructor-arg index="0" ref="bookD"/>
+    </bean>
+
+    <bean id="brandService2" class="com.geekaca.service.impl.BrandServiceImpl">
+        <!--        bookDao 对应构造器 参数名字-->
+        <constructor-arg name="bookDao" ref="bookD"/>
+    </bean>
+</beans>
