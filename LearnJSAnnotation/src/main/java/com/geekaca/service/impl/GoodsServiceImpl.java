@@ -1,6 +1,6 @@
 package com.geekaca.service.impl;
 
-import com.geekaca.dao.GoodsDao;
+import com.geekaca.dao.GoodsMapper;
 import com.geekaca.domain.Goods;
 import com.geekaca.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +8,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Service("goodsService")
 @Scope("singleton")
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
-    private GoodsDao goodsDao;
+    private GoodsMapper goodsMapper;
 
     @Autowired
     private DataSource dataSource;
@@ -21,24 +22,25 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void save(Goods goods) {
         System.out.println("save");
-        goodsDao.save(goods);
+        goodsMapper.insert(goods);
     }
 
+
     @Override
-    public void delete(Goods goods) {
+    public void del(Goods goods) {
         System.out.println("delete");
-        goodsDao.delete(goods);
+        goodsMapper.delete(goods.getId());
     }
 
     @Override
-    public void search() {
+    public List<Goods> search() {
         System.out.println("search");
-        goodsDao.search();
+        return  goodsMapper.select();
     }
 
     @Override
-    public void update(Goods goods) {
+    public void change(Goods goods) {
         System.out.println("update");
-        goodsDao.update(goods);
+        goodsMapper.update(goods);
     }
 }

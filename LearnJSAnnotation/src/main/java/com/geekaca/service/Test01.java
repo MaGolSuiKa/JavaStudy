@@ -10,10 +10,9 @@ public class Test01 {
         //获取一个注解方式声明的IOC容器
         ApplicationContext ctx = new AnnotationConfigApplicationContext(MySpringConfig.class);
 
+        GoodsService goodsService = (GoodsService) ctx.getBean("goodsService");
         //title, price
         Goods goods1 = new Goods("蔬菜",10.5);
-
-        GoodsService goodsService = (GoodsService) ctx.getBean("goodsService");
         goodsService.save(goods1);
         //goodsService.search();
     }

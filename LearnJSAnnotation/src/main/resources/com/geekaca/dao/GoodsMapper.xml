@@ -2,12 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.geekaca.dao.GoodsDao">
+<mapper namespace="com.geekaca.dao.GoodsMapper">
 
-
-    <insert id="save">
+    <insert id="insert">
         insert into tb_goods(title, price)
-        values #{title}, #{price});
+        values (#{title}, #{price});
     </insert>
     <update id="update">
         update tb_goods
@@ -20,7 +19,7 @@
         from tb_goods
         where id = #{id}
     </delete>
-    <select id="search">
+    <select id="select" resultType="com.geekaca.domain.Goods">
         select *
         from tb_goods
     </select>
