@@ -8,13 +8,12 @@ import javax.sql.DataSource;
 
 public class MybatisConfig {
 
-
     @Bean
     public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource){
-        SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
-        ssfb.setTypeAliasesPackage("com.geekaca.domain");
-        ssfb.setDataSource(dataSource);
-        return ssfb;
+        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setTypeAliasesPackage("com.geekaca.domain");
+        return factoryBean;
     }
 
     @Bean

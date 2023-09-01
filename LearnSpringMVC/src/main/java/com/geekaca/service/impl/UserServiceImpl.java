@@ -12,12 +12,14 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public boolean login(User user) {
+    public int login(User user) {
        int i = userMapper.selectUser(user);
-       if (i == 1){
-           return true;
-       }else {
-           return false;
-       }
+       return i;
+    }
+
+    @Override
+    public int register(User user) {
+        int i = userMapper.insertUser(user);
+        return i;
     }
 }
