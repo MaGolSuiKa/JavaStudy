@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.dao.BrandMapper">
+    <resultMap id="brandMap" type="com.geekaca.domain.Brand">
+        <id property="id" column="id"/>
+        <result property="brandName" column="brand_name"/>
+        <result property="companyName" column="company_name"/>
+        <result property="typeId" column="type_id"/>
+    </resultMap>
+
+    <insert id="insertBrand">
+        insert into tb_brand(brand_name, company_name, ordered, description, status, type_id)
+        values (#{brandName}, #{companyName}, #{ordered}, #{description}, #{status}, #{typeId})
+    </insert>
+
+
+    <update id="updateBrand">
+        update tb_brand
+        <set>
+            <if test="brandName !=null">
+                brand_name = #{brandName}
+            </if>
+            <if test="brandName !=null">
+                company_name = #{companyName}
+            </if>
+            <if test="brandName !=null">
+                ordered = #{ordered}
+            </if>
+            <if test="brandName !=null">
+                description = #{description}
+            </if>
+            <if test="brandName !=null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete
+        from tb_brand
+        where id = #{id}
+    </delete>
+
+    <select id="selectAllBrands" resultMap="brandMap">
+        select *
+        from tb_brand limit #{(pageNo - 1) * pageSize}, #{pageSize};
+    </select>
+    <select id="selectByInput" resultMap="brandMap">
+        select *
+        from tb_brand
+        where id = #{input}
+           or brand_name like concat('%', #{input}, '%')
+           or company_name like concat('%', #{input}, '%')
+           or status = #{input}
+           or type_id = #{input}
+    </select>
+</mapper>
