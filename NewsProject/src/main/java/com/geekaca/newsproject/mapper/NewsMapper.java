@@ -3,6 +3,8 @@ package com.geekaca.newsproject.mapper;
 import com.geekaca.newsproject.domain.News;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author magol
 * @description 针对表【tb_news】的数据库操作Mapper
@@ -25,5 +27,9 @@ public interface NewsMapper {
     int updateByPrimaryKey(News record);
 
     News selectByIdWithComment(Long id);
+
+    List<News> selectAll();
+
+    List<News> selectByInput(String input);
 
 }
