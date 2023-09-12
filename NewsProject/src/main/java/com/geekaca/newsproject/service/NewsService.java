@@ -11,4 +11,8 @@ public interface NewsService {
     public boolean update(News news);
     public boolean delete(Long id);
     public News getById(Long id);
+
+    public News getByIdWithComment(Long id);
+    public List<News> getAll();
+    public List<News> getByInput(String input);
 }

@@ -39,4 +39,22 @@ public class NewsServiceImpl implements NewsService {
         News news = nm.selectByPrimaryKey(id);
         return news;
     }
+
+    @Override
+    public News getByIdWithComment(Long id) {
+        News news = nm.selectByIdWithComment(id);
+        return news;
+    }
+
+    @Override
+    public List<News> getAll() {
+        List<News> newsList = nm.selectAll();
+        return newsList;
+    }
+
+    @Override
+    public List<News> getByInput(String input) {
+        List<News> news = nm.selectByInput(input);
+        return news;
+    }
 }

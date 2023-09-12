@@ -55,4 +55,17 @@ public class NewsProjectApplicationTests {
             System.out.println(news);
         });
     }
+
+    @Autowired
+    private NewsService ns;
+
+    @Test
+    public void testGetAll(){
+        List<News> all = ns.getAll();
+        Assertions.assertNotNull(all);
+        Assertions.assertTrue(all.size()>0);
+        all.forEach((news)->{
+            System.out.println(news);
+        });
+    }
 }
