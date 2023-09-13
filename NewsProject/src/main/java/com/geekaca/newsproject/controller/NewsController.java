@@ -2,6 +2,8 @@ package com.geekaca.newsproject.controller;
 
 import com.geekaca.newsproject.domain.News;
 import com.geekaca.newsproject.service.NewsService;
+import com.geekaca.newsproject.utils.Code;
+import com.geekaca.newsproject.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
