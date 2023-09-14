@@ -1,6 +1,7 @@
 package com.geekaca.newsproject.mapper;
 
 import com.geekaca.newsproject.domain.AdminUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author magol
@@ -22,4 +23,5 @@ public interface AdminUserMapper {
 
     int updateByPrimaryKey(AdminUser record);
 
+    AdminUser login(@Param("uname") String username, @Param("passwd")String password);
 }

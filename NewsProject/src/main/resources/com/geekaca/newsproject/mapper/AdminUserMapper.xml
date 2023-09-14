@@ -23,6 +23,15 @@
         from tb_admin_user
         where  admin_user_id = #{adminUserId,jdbcType=INTEGER} 
     </select>
+    <select id="login" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            tb_admin_user
+        WHERE
+            login_user_name = #{uname}
+          AND login_password = #{passwd}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from tb_admin_user
