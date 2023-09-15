@@ -1,45 +1,52 @@
 package com.geekaca.newsproject.utils;
 
-public class Result {
-    private Object data;
-    private Integer code;
-    private String msg;
+import java.io.Serializable;
+
+public class Result<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private int resultCode;
+    private String message;
+    //T 代表的是泛型
+    private T data;
 
     public Result() {
     }
 
-    public Result(Integer code,Object data) {
-        this.data = data;
-        this.code = code;
+    public Result(int resultCode, String message) {
+        this.resultCode = resultCode;
+        this.message = message;
     }
 
-    public Result(Integer code, Object data, String msg) {
-        this.data = data;
-        this.code = code;
-        this.msg = msg;
+    public int getResultCode() {
+        return resultCode;
     }
 
-    public Object getData() {
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
+    @Override
+    public String toString() {
+        return "Result{" +
+                "resultCode=" + resultCode +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

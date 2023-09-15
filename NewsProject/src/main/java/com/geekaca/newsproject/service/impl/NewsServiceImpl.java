@@ -3,6 +3,7 @@ package com.geekaca.newsproject.service.impl;
 import com.geekaca.newsproject.domain.News;
 import com.geekaca.newsproject.mapper.NewsMapper;
 import com.geekaca.newsproject.service.NewsService;
+import com.geekaca.newsproject.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +57,14 @@ public class NewsServiceImpl implements NewsService {
     public List<News> getByInput(String input) {
         List<News> news = nm.selectByInput(input);
         return news;
+    }
+
+    @Override
+    public PageResult getPageNews(Integer pageNO, Integer pageSize) {
+        int start = (pageNO - 1) * pageSize;
+        List<News> newsList = nm.selectByPage(start, pageSize);
+        int count = nm.selectNewsCount();
+        PageResult pageResult = new PageResult(newsList, count, pageSize, pageNO);
+        return pageResult;
     }
 }

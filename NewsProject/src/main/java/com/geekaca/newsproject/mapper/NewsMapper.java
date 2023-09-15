@@ -2,6 +2,7 @@ package com.geekaca.newsproject.mapper;
 
 import com.geekaca.newsproject.domain.News;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,4 +33,7 @@ public interface NewsMapper {
 
     List<News> selectByInput(String input);
 
+    List<News> selectByPage(@Param("start") Integer start, @Param("size") Integer size);
+
+    int selectNewsCount();
 }
