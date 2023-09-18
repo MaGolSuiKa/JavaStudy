@@ -8,14 +8,15 @@ import java.util.List;
 
 @Transactional
 public interface NewsService {
-    public boolean save(News news);
-    public boolean update(News news);
-    public boolean delete(Long id);
+    List<News> getAllNews();
 
-    public News getById(Long id);
-    public News getByIdWithComment(Long id);
-    public List<News> getAll();
-    public List<News> getByInput(String input);
-    //带分页
+    News getById(Long newsID);
+
+
     PageResult getPageNews(Integer pageNO, Integer pageSize);
+
+
+    boolean saveNews(News news);
+    //把文章的访问量+1
+    int updateNewsViews(Long newsId);
 }

@@ -1,6 +1,7 @@
 package com.geekaca.newsproject.mapper;
 
 import com.geekaca.newsproject.domain.NewsComment;
+import com.geekaca.newsproject.utils.PageBean;
 
 import java.util.List;
 
@@ -25,5 +26,9 @@ public interface NewsCommentMapper {
     int updateByPrimaryKeySelective(NewsComment record);
 
     int updateByPrimaryKey(NewsComment record);
+
+    List<NewsComment> findNewsCommentList(PageBean pageBean);
+
+    Boolean checkUpdateDone(Integer[] ids);
 
 }

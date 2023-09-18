@@ -2,6 +2,8 @@ package com.geekaca.newsproject.mapper;
 
 import com.geekaca.newsproject.domain.Config;
 
+import java.util.List;
+
 /**
 * @author magol
 * @description 针对表【tb_config】的数据库操作Mapper
@@ -21,5 +23,9 @@ public interface ConfigMapper {
     int updateByPrimaryKeySelective(Config record);
 
     int updateByPrimaryKey(Config record);
+
+    List<Config> selectAll();
+
+    Config selectByPrimaryName(String configName);
 
 }

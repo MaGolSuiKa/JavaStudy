@@ -227,4 +227,26 @@
             update_time        = #{updateTime,jdbcType=TIMESTAMP}
         where news_id = #{newsId,jdbcType=BIGINT}
     </update>
+
+    <select id="selectNewsAndCommentsById" resultMap="NewsMap">
+        SELECT
+            *
+        FROM
+            (SELECT
+                 nc.*,
+                 tnc.commentator,
+                 tnc.comment_body,
+                 tnc.comment_create_time
+             FROM
+                 tb_news nc
+                     LEFT JOIN tb_news_comment tnc ON nc.news_id = tnc.news_id) nw
+        WHERE
+            nw.news_id = #{newsId}
+        ORDER BY nw.comment_create_time DESC
+    </select>
+
+    <update id="increateViews">
+        update tb_news set news_views = news_views + 1
+        where news_id = #{newsId}
+    </update>
 </mapper>

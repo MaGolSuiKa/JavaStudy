@@ -36,4 +36,7 @@ public interface NewsMapper {
     List<News> selectByPage(@Param("start") Integer start, @Param("size") Integer size);
 
     int selectNewsCount();
+
+    News selectNewsAndCommentsById(Long id);
+    int increateViews(@Param("newsId") Long newsId);
 }

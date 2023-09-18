@@ -22,6 +22,17 @@
         from tb_config
         where  config_name = #{configName,jdbcType=VARCHAR} 
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_config
+    </select>
+    <select id="selectByPrimaryName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_config
+        where config_name = #{configName,jdbcType=VARCHAR}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from tb_config
