@@ -7,6 +7,7 @@ import com.geekaca.newsproject.utils.Result;
 import com.geekaca.newsproject.utils.ResultCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,7 +28,7 @@ public class CommentController {
         Object page = params.get("page");
         Object limit = params.get("limit");
         if (ObjectUtils.isEmpty(params.get("page")) || ObjectUtils.isEmpty(params.get("limit"))) {
-            return ResultCode.genFailResult("参数异常！");
+            return ResultCode.genFailResult("参数异常");
         }
         //string -> Integer
 
@@ -50,7 +51,7 @@ public class CommentController {
     @ResponseBody
     public Result checkDone(@RequestBody Integer[] ids) {
         if (ids.length < 1) {
-            return ResultCode.genFailResult("参数异常！");
+            return ResultCode.genFailResult("参数异常");
         }
         if (commentService.checkDone(ids)) {
             return ResultCode.genSuccessResult();
@@ -58,30 +59,27 @@ public class CommentController {
             return ResultCode.genFailResult("审核失败");
         }
     }
-//
-//    @PostMapping("/comments/reply")
-//    @ResponseBody
-//    public Result checkDone(@RequestParam("commentId") Long commentId,
-//                            @RequestParam("replyBody") String replyBody) {
-//        if (commentId == null || commentId < 1 || !StringUtils.hasText(replyBody)) {
-//            return ResultGenerator.genFailResult("参数异常！");
-//        }
-//        if (commentService.reply(commentId, replyBody)) {
-//            return ResultGenerator.genSuccessResult();
-//        } else {
-//            return ResultGenerator.genFailResult("回复失败");
-//        }
-//    }
-//
+
+    @PostMapping("/comments/reply")
+    @ResponseBody
+    public Result checkDone(@RequestParam("commentId") Long commentId,
+                            @RequestParam("replyBody") String replyBody) {
+        if (commentId == null || commentId < 1 || !StringUtils.hasText(replyBody)) {
+            return ResultCode.genFailResult("参数异常");
+        }
+        if (commentService.reply(commentId, replyBody)) {
+            return ResultCode.genSuccessResult();
+        } else {
+            return ResultCode.genFailResult("回复失败");
+        }
+    }
+
    @PostMapping("/comments/delete")
    @ResponseBody
    public Result delete(@RequestBody Integer[] ids) {
-        for(int i=0 ;i< 99;i++){
-            System.out.println(i);
-        }
         return ResultCode.genSuccessResult();
    }
-//
+
     @GetMapping("/comments")
     public String list(HttpServletRequest request) {
         request.setAttribute("path", "comments");

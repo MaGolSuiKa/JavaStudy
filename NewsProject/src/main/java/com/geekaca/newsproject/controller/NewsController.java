@@ -57,6 +57,7 @@ public class NewsController {
         return "newsList";
 
     }
+
     //单个值的传递
     @GetMapping("/toPage")
     public String toPage(HttpServletRequest req){
@@ -64,6 +65,7 @@ public class NewsController {
         //要用@Controller 跳转到名字为hello的页面
         return "hello";
     }
+
     //从控制器向页面传递对象
     @GetMapping("/newsDetail/{newsID}")
     public String toDetail(HttpServletRequest request, @PathVariable("newsID") Long newsID){
@@ -71,6 +73,7 @@ public class NewsController {
         request.setAttribute("newsInfo", news);
         return "newsDetail";
     }
+
     //详情页
     @GetMapping({"/blog/{newsId}", "/article/{newsId}"})
     public String detail(HttpServletRequest request, @PathVariable("newsId") Long newsId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
@@ -82,6 +85,7 @@ public class NewsController {
         int i = newsService.updateNewsViews(newsId);
         return "blog/" + theme + "/detail";
     }
+
     @PostMapping(value = "/blog/comment")
     @ResponseBody
     public Result comment(HttpServletRequest request, HttpSession session,
