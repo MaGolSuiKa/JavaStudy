@@ -1,6 +1,9 @@
 package com.geekaca.newsproject.mapper;
 
 import com.geekaca.newsproject.domain.NewsTag;
+import com.geekaca.newsproject.domain.TagNewsCount;
+
+import java.util.List;
 
 /**
 * @author magol
@@ -21,5 +24,9 @@ public interface NewsTagMapper {
     int updateByPrimaryKeySelective(NewsTag record);
 
     int updateByPrimaryKey(NewsTag record);
+
+    List<NewsTag> selectAll();
+
+    List<TagNewsCount> selectTagNewsCounts();
 
 }
