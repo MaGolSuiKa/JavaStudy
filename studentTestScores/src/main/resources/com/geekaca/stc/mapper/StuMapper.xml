@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.stc.mapper.StuMapper">
+
+    <resultMap id="BaseResultMap" type="com.geekaca.stc.domain.Stu">
+            <id property="stuId" column="stu_id" jdbcType="INTEGER"/>
+            <result property="stuName" column="stu_name" jdbcType="VARCHAR"/>
+            <result property="stuJoindate" column="stu_joindate" jdbcType="DATE"/>
+            <result property="stuGender" column="stu_gender" jdbcType="INTEGER"/>
+            <result property="stuNo" column="stu_no" jdbcType="VARCHAR"/>
+            <result property="classNo" column="class_no" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        stu_id,stu_name,stu_joindate,
+        stu_gender,stu_no,class_no
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_stu
+        where  stu_id = #{stuId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_stu
+        where  stu_id = #{stuId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="stu_id" keyProperty="stuId" parameterType="com.geekaca.stc.domain.Stu" useGeneratedKeys="true">
+        insert into tb_stu
+        ( stu_id,stu_name,stu_joindate
+        ,stu_gender,stu_no,class_no
+        )
+        values (#{stuId,jdbcType=INTEGER},#{stuName,jdbcType=VARCHAR},#{stuJoindate,jdbcType=DATE}
+        ,#{stuGender,jdbcType=INTEGER},#{stuNo,jdbcType=VARCHAR},#{classNo,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="stu_id" keyProperty="stuId" parameterType="com.geekaca.stc.domain.Stu" useGeneratedKeys="true">
+        insert into tb_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="stuId != null">stu_id,</if>
+                <if test="stuName != null">stu_name,</if>
+                <if test="stuJoindate != null">stu_joindate,</if>
+                <if test="stuGender != null">stu_gender,</if>
+                <if test="stuNo != null">stu_no,</if>
+                <if test="classNo != null">class_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="stuId != null">#{stuId,jdbcType=INTEGER},</if>
+                <if test="stuName != null">#{stuName,jdbcType=VARCHAR},</if>
+                <if test="stuJoindate != null">#{stuJoindate,jdbcType=DATE},</if>
+                <if test="stuGender != null">#{stuGender,jdbcType=INTEGER},</if>
+                <if test="stuNo != null">#{stuNo,jdbcType=VARCHAR},</if>
+                <if test="classNo != null">#{classNo,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.stc.domain.Stu">
+        update tb_stu
+        <set>
+                <if test="stuName != null">
+                    stu_name = #{stuName,jdbcType=VARCHAR},
+                </if>
+                <if test="stuJoindate != null">
+                    stu_joindate = #{stuJoindate,jdbcType=DATE},
+                </if>
+                <if test="stuGender != null">
+                    stu_gender = #{stuGender,jdbcType=INTEGER},
+                </if>
+                <if test="stuNo != null">
+                    stu_no = #{stuNo,jdbcType=VARCHAR},
+                </if>
+                <if test="classNo != null">
+                    class_no = #{classNo,jdbcType=INTEGER},
+                </if>
+        </set>
+        where   stu_id = #{stuId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.stc.domain.Stu">
+        update tb_stu
+        set 
+            stu_name =  #{stuName,jdbcType=VARCHAR},
+            stu_joindate =  #{stuJoindate,jdbcType=DATE},
+            stu_gender =  #{stuGender,jdbcType=INTEGER},
+            stu_no =  #{stuNo,jdbcType=VARCHAR},
+            class_no =  #{classNo,jdbcType=INTEGER}
+        where   stu_id = #{stuId,jdbcType=INTEGER} 
+    </update>
+</mapper>

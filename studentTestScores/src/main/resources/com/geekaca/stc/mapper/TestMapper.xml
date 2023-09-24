@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.stc.mapper.TestMapper">
+
+    <resultMap id="BaseResultMap" type="com.geekaca.stc.domain.Test">
+        <id property="testId" column="test_id" jdbcType="INTEGER"/>
+        <result property="stuNo" column="stu_no" jdbcType="VARCHAR"/>
+        <result property="testSubject" column="test_subject" jdbcType="INTEGER"/>
+        <result property="testScores" column="test_scores" jdbcType="FLOAT"/>
+        <result property="testDate" column="test_date" jdbcType="DATE"/>
+        <association property="subjects" column="id" javaType="com.geekaca.stc.domain.Subjects">
+            <id property="subId" column="sub_id"/>
+            <result property="subName" column="sub_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        test_id
+        ,stu_no,test_subject,
+        test_scores,test_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_test
+        where test_id = #{testId,jdbcType=INTEGER}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tb_test
+        where test_id = #{testId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="test_id" keyProperty="testId" parameterType="com.geekaca.stc.domain.Test"
+            useGeneratedKeys="true">
+        insert into tb_test
+        ( test_id, stu_no, test_subject
+        , test_scores, test_date)
+        values ( #{testId,jdbcType=INTEGER}, #{stuNo,jdbcType=VARCHAR}, #{testSubject,jdbcType=INTEGER}
+               , #{testScores,jdbcType=FLOAT}, #{testDate,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" keyColumn="test_id" keyProperty="testId" parameterType="com.geekaca.stc.domain.Test"
+            useGeneratedKeys="true">
+        insert into tb_test
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testId != null">test_id,</if>
+            <if test="stuNo != null">stu_no,</if>
+            <if test="testSubject != null">test_subject,</if>
+            <if test="testScores != null">test_scores,</if>
+            <if test="testDate != null">test_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testId != null">#{testId,jdbcType=INTEGER},</if>
+            <if test="stuNo != null">#{stuNo,jdbcType=VARCHAR},</if>
+            <if test="testSubject != null">#{testSubject,jdbcType=INTEGER},</if>
+            <if test="testScores != null">#{testScores,jdbcType=FLOAT},</if>
+            <if test="testDate != null">#{testDate,jdbcType=DATE},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.stc.domain.Test">
+        update tb_test
+        <set>
+            <if test="stuNo != null">
+                stu_no = #{stuNo,jdbcType=VARCHAR},
+            </if>
+            <if test="testSubject != null">
+                test_subject = #{testSubject,jdbcType=INTEGER},
+            </if>
+            <if test="testScores != null">
+                test_scores = #{testScores,jdbcType=FLOAT},
+            </if>
+            <if test="testDate != null">
+                test_date = #{testDate,jdbcType=DATE},
+            </if>
+        </set>
+        where test_id = #{testId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.stc.domain.Test">
+        update tb_test
+        set stu_no       = #{stuNo,jdbcType=VARCHAR},
+            test_subject = #{testSubject,jdbcType=INTEGER},
+            test_scores  = #{testScores,jdbcType=FLOAT},
+            test_date    = #{testDate,jdbcType=DATE}
+        where test_id = #{testId,jdbcType=INTEGER}
+    </update>
+
+    <select id="getScoresAVG" resultType="java.lang.Double">
+        SELECT AVG(t.test_scores)
+        FROM tb_test t
+        WHERE t.test_subject = #{subId}
+          AND t.stu_no IN (SELECT s.stu_no
+                           FROM tb_stu s
+                           WHERE s.class_no = #{classId});
+    </select>
+    <select id="getScoresOfStu"  resultMap="BaseResultMap">
+        select *
+        from tb_test t,
+             tb_subjects j
+        where t.stu_no = #{stuId}
+          and t.test_subject = j.sub_id
+    </select>
+</mapper>

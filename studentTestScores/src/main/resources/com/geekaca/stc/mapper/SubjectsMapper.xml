@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.stc.mapper.SubjectsMapper">
+
+    <resultMap id="BaseResultMap" type="com.geekaca.stc.domain.Subjects">
+            <id property="subId" column="sub_id" jdbcType="INTEGER"/>
+            <result property="subName" column="sub_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sub_id,sub_name
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_subjects
+        where  sub_id = #{subId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_subjects
+        where  sub_id = #{subId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="sub_id" keyProperty="subId" parameterType="com.geekaca.stc.domain.Subjects" useGeneratedKeys="true">
+        insert into tb_subjects
+        ( sub_id,sub_name)
+        values (#{subId,jdbcType=INTEGER},#{subName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="sub_id" keyProperty="subId" parameterType="com.geekaca.stc.domain.Subjects" useGeneratedKeys="true">
+        insert into tb_subjects
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="subId != null">sub_id,</if>
+                <if test="subName != null">sub_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="subId != null">#{subId,jdbcType=INTEGER},</if>
+                <if test="subName != null">#{subName,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.stc.domain.Subjects">
+        update tb_subjects
+        <set>
+                <if test="subName != null">
+                    sub_name = #{subName,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   sub_id = #{subId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.stc.domain.Subjects">
+        update tb_subjects
+        set 
+            sub_name =  #{subName,jdbcType=VARCHAR}
+        where   sub_id = #{subId,jdbcType=INTEGER} 
+    </update>
+</mapper>
