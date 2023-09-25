@@ -78,7 +78,7 @@
         where class_id = #{classId,jdbcType=INTEGER}
     </update>
 
-    <select id="selectClassMembers" resultType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectClassMembers" resultMap="BaseResultMap">
         select c.class_name,count(*)
         from tb_stu s,
              tb_class c
