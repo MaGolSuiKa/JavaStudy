@@ -1,0 +1,33 @@
+//求平均成绩
+SELECT 
+    AVG(t.test_scores)
+FROM
+    tb_test t
+WHERE
+    t.test_subject = 3
+        AND t.stu_no IN (SELECT 
+            s.stu_no
+        FROM
+            tb_stu s
+        WHERE
+            s.class_no = 1);
+
+//查询单人所有成绩
+SELECT 
+    *
+FROM
+    tb_test t,
+    tb_subjects j
+WHERE
+    t.stu_no = 2000102
+        AND t.test_subject = j.sub_id
+
+//查询每个班级有多少人
+SELECT 
+    c.class_name, COUNT(*)
+FROM
+    tb_stu s,
+    tb_class c
+WHERE
+    s.class_no = c.class_id
+GROUP BY c.class_name
