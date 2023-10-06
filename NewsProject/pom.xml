@@ -57,7 +57,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-        <!--        logback 和slf4j 门面框架 配置-->
+<!--        logback 和slf4j 门面框架 配置-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -84,17 +84,23 @@
             <artifactId>hutool-captcha</artifactId>
             <version>5.8.7</version>
         </dependency>
-        <!--         针对加密相关的  md5-->
+<!--         针对加密相关的  md5-->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-crypto</artifactId>
-            <version>5.8.7</version>
+             <groupId>cn.hutool</groupId>
+             <artifactId>hutool-crypto</artifactId>
+             <version>5.8.7</version>
         </dependency>
 
         <!--Thymeleaf 启动器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+
         </dependency>
     </dependencies>
 
