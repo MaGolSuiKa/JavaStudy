@@ -6,5 +6,5 @@ import com.geekaca.mall.utils.PageResult;
 import java.util.List;
 
 public interface GoodsInfoService {
-    PageResult findAllGoods(Integer pageNo, Integer pageSize);
+    PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName,Integer goodsSellStatus);
 }

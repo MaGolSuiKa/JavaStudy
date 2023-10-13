@@ -25,7 +25,8 @@ public interface GoodsInfoMapper {
 
     int updateByPrimaryKey(GoodsInfo record);
 
-    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize);
+    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
+    @Param("goodsName") String goodsName,@Param("goodsSellStatus") Integer goodsSellStatus);
 
     int findGoodsCount();
 }

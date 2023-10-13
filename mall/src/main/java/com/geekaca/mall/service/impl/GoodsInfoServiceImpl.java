@@ -15,8 +15,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     private GoodsInfoMapper goodsInfoMapper;
 
     @Override
-    public PageResult findAllGoods(Integer pageNo, Integer pageSize) {
-        List<GoodsInfo> goodsList = goodsInfoMapper.findGoodsList((pageNo - 1) * pageSize, pageSize);
+    public PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName,Integer goodsSellStatus) {
+        List<GoodsInfo> goodsList = goodsInfoMapper.findGoodsList((pageNo - 1) * pageSize, pageSize,goodsName,goodsSellStatus);
         int goodsCount = goodsInfoMapper.findGoodsCount();
         PageResult pageResult = new PageResult(goodsList, goodsCount, pageSize, pageNo);
         return pageResult;
