@@ -1,5 +1,10 @@
 package com.geekaca.mall.service;
 
-public interface GoodsInfoService {
+import com.geekaca.mall.domain.GoodsInfo;
+import com.geekaca.mall.utils.PageResult;
 
+import java.util.List;
+
+public interface GoodsInfoService {
+    PageResult findAllGoods(Integer pageNo, Integer pageSize);
 }
