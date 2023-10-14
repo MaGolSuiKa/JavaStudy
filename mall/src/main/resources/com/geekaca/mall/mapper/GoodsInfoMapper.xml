@@ -184,10 +184,10 @@
         WHERE
         goodInfo.goods_category_id = cate.category_id
         <if test="goodsName != null">
-            and goodInfo.goods_name like cancat('%',#{goodsName},'%'),
+            and goodInfo.goods_name like concat('%',#{goodsName},'%')
         </if>
         <if test="goodsSellStatus != null">
-            and goodInfo.goods_sell_status = goodsSellStatus
+            and goodInfo.goods_sell_status = #{goodsSellStatus}
         </if>
         limit #{limit}, #{pageSize}
     </select>

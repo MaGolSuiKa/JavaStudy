@@ -42,11 +42,12 @@ public class GoodsController {
         if (pageSize == null){
             pageSize = 20;
         }
-
+        if (goodsSellStatus == null){
+            goodsSellStatus = 0;
+        }
         PageResult pageResult = goodsInfoService.findAllGoods(pageNumber, pageSize,goodsName,goodsSellStatus);
         //还需要一个查询，查询符合条件的记录条数
         Result result = ResultGenerator.genSuccessResult();
-
         result.setData(pageResult);
 
         return result;
