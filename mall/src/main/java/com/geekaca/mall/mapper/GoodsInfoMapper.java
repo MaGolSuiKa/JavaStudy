@@ -1,23 +1,28 @@
 package com.geekaca.mall.mapper;
 
+import com.geekaca.mall.controller.vo.FrontPageVo;
+import com.geekaca.mall.controller.vo.HotGoodsesVO;
 import com.geekaca.mall.domain.GoodsInfo;
+import com.geekaca.mall.utils.PageQueryUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
-* @author magol
-* @description 针对表【tb_newbee_mall_goods_info】的数据库操作Mapper
-* @createDate 2023-10-13 10:26:25
-* @Entity com.geekaca.mall.domain.GoodsInfo
-*/
+ * @author magol
+ * @description 针对表【tb_newbee_mall_goods_info】的数据库操作Mapper
+ * @createDate 2023-10-13 10:26:25
+ * @Entity com.geekaca.mall.domain.GoodsInfo
+ */
+@Mapper
 public interface GoodsInfoMapper {
 
     int deleteByPrimaryKey(Long id);
 
     int insert(GoodsInfo record);
 
-    int insertSelective(GoodsInfo record);
+    int addGoods(GoodsInfo record);
 
     GoodsInfo selectByPrimaryKey(Long id);
 
@@ -25,8 +30,27 @@ public interface GoodsInfoMapper {
 
     int updateByPrimaryKey(GoodsInfo record);
 
-    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
-    @Param("goodsName") String goodsName,@Param("goodsSellStatus") Integer goodsSellStatus);
+    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize, @Param("goodsName") String goodsName);
 
-    int findGoodsCount();
+    int findGoodsCount(@Param("goodsName") String goodsName);
+
+    List<GoodsInfo> selectgoodsall();
+
+    //商品模糊搜索
+    List<GoodsInfo> selectPageByName(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,@Param("goodsName") String goodsName);
+
+    List<HotGoodsesVO>  findHotGoodsList();
+
+    int UpdateSellStatus(@Param("orderIds") Long[] orderIds,@Param("sellStatus") int sellStatus);
+
+    List<GoodsInfo> selectGoodsByCategoryId(@Param("categoryId") Long categoryId);
+
+    List<GoodsInfo> findGoodsListBySearch(PageQueryUtil pageUtil);
+
+    int getTotalGoodsBySearch(PageQueryUtil pageUtil);
+
+    //模糊查询
+    List<GoodsInfo> selectFrontAllByPage(FrontPageVo frontPageVo);
+
+    Integer selectFrontAllRecord(FrontPageVo frontPageVo);
 }

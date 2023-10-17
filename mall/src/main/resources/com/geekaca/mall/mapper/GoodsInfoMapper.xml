@@ -22,7 +22,13 @@
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
-
+    <resultMap id="hotGoodsMap" type="com.geekaca.mall.controller.vo.HotGoodsesVO">
+        <id property="goodsId" column="goods_id" jdbcType="BIGINT"/>
+        <result property="sellingPrice" column="selling_price" jdbcType="INTEGER"/>
+        <result property="goodsCoverImg" column="goods_cover_img" jdbcType="VARCHAR"/>
+        <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+        <result property="configName" column="config_name" jdbcType="VARCHAR"/>
+    </resultMap>
     <sql id="Base_Column_List">
         goods_id
         ,goods_name,goods_intro,
@@ -64,44 +70,78 @@
                , #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=INTEGER}
                , #{updateTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" keyColumn="goods_id" keyProperty="goodsId"
+    <insert id="addGoods" keyColumn="goods_id" keyProperty="goodsId"
             parameterType="com.geekaca.mall.domain.GoodsInfo" useGeneratedKeys="true">
         insert into tb_newbee_mall_goods_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="goodsId != null">goods_id,</if>
-            <if test="goodsName != null">goods_name,</if>
-            <if test="goodsIntro != null">goods_intro,</if>
-            <if test="goodsCategoryId != null">goods_category_id,</if>
-            <if test="goodsCoverImg != null">goods_cover_img,</if>
-            <if test="goodsCarousel != null">goods_carousel,</if>
-            <if test="goodsDetailContent != null">goods_detail_content,</if>
-            <if test="originalPrice != null">original_price,</if>
-            <if test="sellingPrice != null">selling_price,</if>
-            <if test="stockNum != null">stock_num,</if>
-            <if test="tag != null">tag,</if>
-            <if test="goodsSellStatus != null">goods_sell_status,</if>
-            <if test="createUser != null">create_user,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateUser != null">update_user,</if>
-            <if test="updateTime != null">update_time,</if>
+            <if test="goodsCategoryId != null">goods_category_id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsIntro != null">
+                goods_intro,
+            </if>
+            <if test="originalPrice != null">
+                original_price,
+            </if>
+            <if test="sellingPrice != null">
+                selling_price ,
+            </if>
+            <if test="stockNum != null">
+                stock_num ,
+            </if>
+            <if test="tag != null">
+                tag ,
+            </if>
+            <if test="goodsSellStatus != null">
+                goods_sell_status ,
+            </if>
+            <if test="goodsCoverImg != null">
+                goods_cover_img ,
+            </if>
+            <if test="goodsDetailContent != null">
+                goods_detail_content ,
+            </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="goodsId != null">#{goodsId,jdbcType=BIGINT},</if>
-            <if test="goodsName != null">#{goodsName,jdbcType=VARCHAR},</if>
-            <if test="goodsIntro != null">#{goodsIntro,jdbcType=VARCHAR},</if>
-            <if test="goodsCategoryId != null">#{goodsCategoryId,jdbcType=BIGINT},</if>
-            <if test="goodsCoverImg != null">#{goodsCoverImg,jdbcType=VARCHAR},</if>
-            <if test="goodsCarousel != null">#{goodsCarousel,jdbcType=VARCHAR},</if>
-            <if test="goodsDetailContent != null">#{goodsDetailContent,jdbcType=VARCHAR},</if>
-            <if test="originalPrice != null">#{originalPrice,jdbcType=INTEGER},</if>
-            <if test="sellingPrice != null">#{sellingPrice,jdbcType=INTEGER},</if>
-            <if test="stockNum != null">#{stockNum,jdbcType=INTEGER},</if>
-            <if test="tag != null">#{tag,jdbcType=VARCHAR},</if>
-            <if test="goodsSellStatus != null">#{goodsSellStatus,jdbcType=TINYINT},</if>
-            <if test="createUser != null">#{createUser,jdbcType=INTEGER},</if>
-            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
-            <if test="updateUser != null">#{updateUser,jdbcType=INTEGER},</if>
-            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="goodsCategoryId != null">
+                #{goodsCategoryId,jdbcType=BIGINT},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=BIGINT},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIntro != null">
+                #{goodsIntro,jdbcType=VARCHAR},
+            </if>
+            <if test="originalPrice != null">
+                #{originalPrice,jdbcType=INTEGER},
+            </if>
+            <if test="sellingPrice != null">
+                #{sellingPrice,jdbcType=INTEGER},
+            </if>
+            <if test="stockNum != null">
+                #{stockNum,jdbcType=INTEGER},
+            </if>
+            <if test="tag != null">
+                #{tag,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsSellStatus != null">
+                #{goodsSellStatus,jdbcType=INTEGER},
+            </if>
+            <if test="goodsCoverImg != null">
+                #{goodsCoverImg,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsDetailContent != null">
+                #{goodsDetailContent,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.mall.domain.GoodsInfo">
@@ -174,27 +214,138 @@
             update_time          = #{updateTime,jdbcType=TIMESTAMP}
         where goods_id = #{goodsId,jdbcType=BIGINT}
     </update>
+    <update id="UpdateSellStatus">
+        update tb_newbee_mall_goods_info
+        set goods_sell_status=#{sellStatus},update_time=now() where goods_id in
+        <foreach item="id" collection="orderIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="findGoodsList" resultMap="BaseResultMap">
+
         SELECT
         goodInfo.* , category_name
         FROM
         tb_newbee_mall_goods_info goodInfo,
         tb_newbee_mall_goods_category cate
         WHERE
-        goodInfo.goods_category_id = cate.category_id
-        <if test="goodsName != null">
-            and goodInfo.goods_name like concat('%',#{goodsName},'%')
+        1=1
+        <if test="goodsName !=null and goodsName!=''">
+            and goodInfo.goods_name like CONCAT('%',#{goodsName},'%')
         </if>
-        <if test="goodsSellStatus != null">
-            and goodInfo.goods_sell_status = #{goodsSellStatus}
-        </if>
+        and goodInfo.goods_category_id = cate.category_id
         limit #{limit}, #{pageSize}
     </select>
     <select id="findGoodsCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM tb_newbee_mall_goods_info goodInfo,
-             tb_newbee_mall_goods_category cate
-        WHERE goodInfo.goods_category_id = cate.category_id
+        tb_newbee_mall_goods_category cate
+        <where>
+            goodInfo.goods_category_id = cate.category_id
+
+            <if test="goodsName != null">
+                and goods_name like concat('%', #{goodsName}, '%')
+            </if>
+            <if test="goodsName != null">
+                and goods_name like concat('%', #{goodsName}, '%')
+            </if>
+        </where>
+
+    </select>
+    <select id="selectgoodsall" resultMap="BaseResultMap">
+        select *
+        from tb_newbee_mall_goods_info
+    </select>
+    <select id="selectPageByName" resultMap="BaseResultMap">
+        select *
+        from tb_newbee_mall_goods_info
+        <where>
+            <if test="goodsName != null">
+                goods_name like concat('%', #{goodsName}, '%')
+            </if>
+        </where>
+        limit #{limit}, #{pageSize}
+    </select>
+    <select id="findHotGoodsList" resultMap="BaseResultMap">
+        SELECT goodInfo.goods_id,
+               goodInfo.selling_price,
+               goodInfo.goods_cover_img,
+               cfg.config_name,
+               goodInfo.goods_name
+        FROM tb_newbee_mall_index_config cfg,
+             tb_newbee_mall_goods_info goodInfo
+        WHERE cfg.goods_id = goodInfo.goods_id
+          and cfg.config_type = 3
+    </select>
+    <select id="selectGoodsByCategoryId" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            tb_newbee_mall_goods_info
+        WHERE
+            goods_category_id = #{categoryId}
+    </select>
+    <select id="findGoodsListBySearch" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+            <if test="goodsSellStatus!=null">
+                and goods_sell_status = #{goodsSellStatus}
+            </if>
+        </where>
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+    <select id="getTotalGoodsBySearch" resultType="java.lang.Integer">
+        select count(*) from tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+            <if test="goodsSellStatus!=null">
+                and goods_sell_status = #{goodsSellStatus}
+            </if>
+        </where>
+    </select>
+    <!--    前台根据关键字和分类id进行模糊搜索-->
+    <select id="selectFrontAllByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and goods_name like CONCAT('%',#{keyword},'%')
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+        </where>
+        order by #{orderBy} desc
+        limit #{startIndex}, #{pageRecord}
+    </select>
+    <!--    前端模糊查询返回总记录条数-->
+    <select id="selectFrontAllRecord" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM mall_db_v2.tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and goods_name like CONCAT('%',#{keyword},'%')
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+        </where>
     </select>
 </mapper>
