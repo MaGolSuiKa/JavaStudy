@@ -53,4 +53,6 @@ public interface GoodsInfoMapper {
 
     //根据id查找某一个商品的详细数据
     GoodsInfo getGoodsById(Long goodsCategoryId);
+
+    List<GoodsInfo> selectByPrimaryKeys(List<Long> goodsIdsList);
 }
