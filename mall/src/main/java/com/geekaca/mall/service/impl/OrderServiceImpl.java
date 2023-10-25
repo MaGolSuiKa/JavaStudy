@@ -3,10 +3,12 @@ package com.geekaca.mall.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.geekaca.mall.common.NewBeeMallException;
 import com.geekaca.mall.common.ServiceResultEnum;
+import com.geekaca.mall.controller.front.param.ShoppingCartItemVO;
 import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.controller.vo.OrderItemVO;
 import com.geekaca.mall.domain.Order;
-import com.geekaca.mall.mapper.OrderMapper;
+import com.geekaca.mall.domain.UserAddress;
+import com.geekaca.mall.mapper.*;
 import com.geekaca.mall.utils.PageQueryUtil;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,14 @@ import java.util.List;
 public class OrderServiceImpl implements com.geekaca.mall.service.OrderService {
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
+    @Autowired
+    private ShoppingCartItemMapper shoppingCartItemMapper;
+    @Autowired
+    private GoodsInfoMapper goodsInfoMapper;
+    @Autowired
+    private OrderAddressMapper orderAddressMapper;
 
     @Override
     public PageResult getOrdersPage(PageQueryUtil pageUtil) {
@@ -29,28 +39,34 @@ public class OrderServiceImpl implements com.geekaca.mall.service.OrderService {
 
     @Override
     public String checkDone(Long[] ids) {
-        if (orderMapper.checkDone(ids) == 0)
-        return "操作失败";
-        else {
+        if (orderMapper.checkDone(ids) == 0) {
+            return "操作失败";
+        } else {
             return "success";
         }
     }
 
     @Override
     public String checkOut(Long[] ids) {
-        if (orderMapper.checkOut(ids) == 0)
+        if (orderMapper.checkOut(ids) == 0) {
             return "操作失败";
-        else {
+        } else {
             return "success";
         }
     }
 
     @Override
     public String closeOrder(Long[] ids) {
-        if (orderMapper.closeOrder(ids) == 0)
+        if (orderMapper.closeOrder(ids) == 0) {
             return "操作失败";
-        else {
+        } else {
             return "success";
         }
+    }
+
+    @Override
+    public String saveOrder(long userId, UserAddress address, List<ShoppingCartItemVO> itemsForSave) {
+
+        return null;
     }
 }
