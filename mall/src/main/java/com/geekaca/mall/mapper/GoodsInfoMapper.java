@@ -1,6 +1,6 @@
 package com.geekaca.mall.mapper;
 
-import com.geekaca.mall.controller.vo.FrontPageVo;
+import com.geekaca.mall.controller.admin.param.GoodsUpdateParam;
 import com.geekaca.mall.controller.vo.HotGoodsesVO;
 import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.utils.PageQueryUtil;
@@ -41,16 +41,16 @@ public interface GoodsInfoMapper {
 
     List<HotGoodsesVO>  findHotGoodsList();
 
-    int UpdateSellStatus(@Param("orderIds") Long[] orderIds,@Param("sellStatus") int sellStatus);
-
-    List<GoodsInfo> selectGoodsByCategoryId(@Param("categoryId") Long categoryId);
+    //修改商品状态
+    int updateSellStatus(@Param("orderIds") Long[] orderIds,@Param("sellStatus") int sellStatus);
 
     List<GoodsInfo> findGoodsListBySearch(PageQueryUtil pageUtil);
 
     int getTotalGoodsBySearch(PageQueryUtil pageUtil);
 
-    //模糊查询
-    List<GoodsInfo> selectFrontAllByPage(FrontPageVo frontPageVo);
+    //修改商品数据
+    int updateGoods(GoodsInfo goodsInfo);
 
-    Integer selectFrontAllRecord(FrontPageVo frontPageVo);
+    //根据id查找某一个商品的详细数据
+    GoodsInfo getGoodsById(Long goodsCategoryId);
 }

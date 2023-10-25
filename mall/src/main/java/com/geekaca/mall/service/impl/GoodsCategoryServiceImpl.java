@@ -53,6 +53,7 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         if (ids.length < 1) {
             return false;
         }
+        //todo: 先检查  这些要删除的类别，是否有商品在引用他的id，如果有，提示： 当前类别下存在商品，不允许删除，
         //删除分类数据
         return categoryMapper.deleteByIds(ids) > 0;
     }
@@ -141,5 +142,10 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         int totalCategoryCounts = categoryMapper.getTotalCategoryCounts(pageQueryUtil);
         PageResult pageResult = new PageResult(categoryList, totalCategoryCounts, pageQueryUtil.getLimit(), pageQueryUtil.getPage());
         return pageResult;
+    }
+
+    @Override
+    public GoodsCategory getCategoryByid(Long categoryId) {
+        return categoryMapper.selectByPrimaryKey(categoryId);
     }
 }

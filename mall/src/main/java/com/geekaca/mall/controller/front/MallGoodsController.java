@@ -1,13 +1,13 @@
 package com.geekaca.mall.controller.front;
 
+
+import cn.hutool.core.bean.BeanUtil;
 import com.geekaca.mall.common.Constants;
 import com.geekaca.mall.common.NewBeeMallException;
-import com.geekaca.mall.controller.vo.FrontPageVo;
+import com.geekaca.mall.controller.vo.GoodsDetailVO;
+import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageQueryUtil;
-import com.geekaca.mall.common.NewBeeMallException;
-import com.geekaca.mall.controller.vo.FrontPageVo;
-import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
@@ -29,10 +29,14 @@ public class MallGoodsController {
     private GoodsInfoService goodsInfoService;
 
     @GetMapping("/goods/detail/{goodsId}")
-    public Result getGoodsById(@PathVariable("goodsId") Long goodsId) {
-
-
-        return null;
+    public Result<GoodsDetailVO> getGoodsById(@PathVariable("goodsId") Long goodsId) {
+        GoodsInfo goods = goodsInfoService.getGoodsById(goodsId);
+        GoodsDetailVO goodsDetailVO = new GoodsDetailVO();
+        //集合拷贝
+        BeanUtil.copyProperties(goods, goodsDetailVO);
+        //图片地址
+        goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));
+        return ResultGenerator.genSuccessResult(goodsDetailVO);
     }
 
     @GetMapping("/search")
@@ -42,29 +46,25 @@ public class MallGoodsController {
                          @RequestParam(required = false) @ApiParam(value = "排序关键字") String orderBy,
                          @RequestParam(required = false) @ApiParam(value = "页码") Integer pageNumber
     ) {
-
-     FrontPageVo frontPageVo = new FrontPageVo();
-
+        Map params = new HashMap();
+//        FrontPageVo frontPageVo = new FrontPageVo();
         if (goodsCategoryId == null && !StringUtils.hasText(keyword)) {
             NewBeeMallException.fail("搜索参数错误");
         }
         if (pageNumber == null || pageNumber < 1) {
             pageNumber = 1;
         }
+        params.put("goodsCategoryId", goodsCategoryId);
+        params.put("page", pageNumber);
+        params.put("limit", Constants.GOODS_SEARCH_PAGE_LIMIT);
+        params.put("keyword", keyword);
+        params.put("orderBy", orderBy);
+        params.put("goodsSellStatus", Constants.SELL_STATUS_UP);
+        //封装商品数据
+        PageQueryUtil pageUtil = new PageQueryUtil(params);
+        PageResult pageResult = goodsInfoService.searchGoods(pageUtil);
+        return ResultGenerator.genSuccessResult(pageResult);
 
-        frontPageVo.setPageNumber(pageNumber);
-        frontPageVo.setKeyword(keyword);
-        frontPageVo.setGoodsCategoryId(goodsCategoryId);
-        frontPageVo.setOrderBy(orderBy);
-        //对keyword做过滤 去掉空格
-        if (StringUtils.hasText(keyword)) {
-            frontPageVo.setKeyword(keyword);
-        }
-        if (StringUtils.hasText(orderBy)) {
-            frontPageVo.setOrderBy(orderBy);
-        }
 
-        PageResult result = goodsInfoService.searchFrontGoods(frontPageVo);
-        return ResultGenerator.genSuccessResult(result);
     }
 }

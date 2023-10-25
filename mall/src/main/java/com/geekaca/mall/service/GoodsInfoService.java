@@ -2,11 +2,10 @@ package com.geekaca.mall.service;
 
 import com.geekaca.mall.controller.admin.param.CategoryParam;
 import com.geekaca.mall.controller.admin.param.GoodsAddParam;
-//<<<<<<< HEAD
+
+import com.geekaca.mall.controller.admin.param.GoodsUpdateParam;
+import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.utils.PageQueryUtil;
-//=======
-import com.geekaca.mall.controller.vo.FrontPageVo;
-//>>>>>>> cb75049 (前台 搜索)
 import com.geekaca.mall.utils.PageResult;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,9 +14,13 @@ public interface GoodsInfoService {
 
     Boolean addGood(GoodsAddParam goodsAddParam);
 
-    boolean updateSellStatus(Long[] ids,int sellStatus);
-//
-//    PageResult searchGoods(PageQueryUtil pageUtil);
 
-    PageResult searchFrontGoods(FrontPageVo frontPageVo);
+    Boolean updateGoods(GoodsUpdateParam goodsUpdateParam);
+
+    boolean updateSellStatus(Long[] ids, int sellStatus);
+
+    PageResult searchGoods(PageQueryUtil pageUtil);
+
+    GoodsInfo getGoodsById(Long goodsId);
+//    PageResult searchFrontGoods(FrontPageVo frontPageVo);
 }

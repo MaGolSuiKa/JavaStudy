@@ -3,9 +3,13 @@ package com.geekaca.mall.controller.admin;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.geekaca.mall.common.Constants;
+import com.geekaca.mall.common.ServiceResultEnum;
 import com.geekaca.mall.controller.admin.param.BatchIdParam;
 import com.geekaca.mall.controller.admin.param.GoodsAddParam;
+import com.geekaca.mall.controller.admin.param.GoodsUpdateParam;
+import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.domain.GoodsInfo;
+import com.geekaca.mall.service.GoodsCategoryService;
 import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
@@ -17,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -26,6 +32,8 @@ public class GoodsController {
 
     @Autowired
     private GoodsInfoService goodsInfoService;
+    @Autowired
+    private GoodsCategoryService categoryService;
 
     /**
      * test
@@ -73,17 +81,68 @@ public class GoodsController {
      */
     @RequestMapping(value = "/goods/status/{sellStatus}", method = RequestMethod.PUT)
     @ApiOperation(value = "批量修改销售状态", notes = "批量修改销售状态")
-    public Result delete(@RequestBody BatchIdParam batchIdParam, @PathVariable("sellStatus") int sellStatus) {
+    public Result updateStatus(@RequestBody BatchIdParam batchIdParam, @PathVariable("sellStatus") int sellStatus) {
         if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return ResultGenerator.genFailResult("参数异常！");
         }
         if (sellStatus != Constants.SELL_STATUS_UP && sellStatus != Constants.SELL_STATUS_DOWN) {
             return ResultGenerator.genFailResult("状态异常！");
         }
-        if (goodsInfoService.updateSellStatus(batchIdParam.getIds(),sellStatus)) {
+        if (goodsInfoService.updateSellStatus(batchIdParam.getIds(), sellStatus)) {
             return ResultGenerator.genSuccessResult();
         } else {
             return ResultGenerator.genFailResult("修改失败");
         }
+    }
+
+    /**
+     * 修改
+     *
+     * @RequestBody 设置 把用户提交的JSON数据 转换为 Java 对象
+     * @Valid 搭配  @NotNull(message = "商品id不能为空")
+     * @Min(value = 1, message = "商品id不能为空")  使用，实现对用户提交参数的校验
+     */
+    @RequestMapping(value = "/goods", method = RequestMethod.PUT)
+    @ApiOperation(value = "修改商品信息", notes = "修改商品信息")
+    public Result update(@RequestBody @Valid GoodsUpdateParam goodsUpdateParam) {
+        Boolean updateGoods = goodsInfoService.updateGoods(goodsUpdateParam);
+        if (updateGoods == true) {
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult("修改失败");
+        }
+    }
+
+    /**
+     * 详情
+     */
+    @GetMapping("/goods/{id}")
+    @ApiOperation(value = "获取单条商品信息", notes = "根据id查询")
+    public Result info(@PathVariable("id") Long id) {
+        Map goodsInfo = new HashMap(8);
+        //根据id查找商品信息
+        GoodsInfo goodsById = goodsInfoService.getGoodsById(id);
+        if (goodsById == null) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.DATA_NOT_EXIST.getResult());
+        }
+        //查找商品类别（三级分类）
+        GoodsCategory thirdCategory;
+        GoodsCategory secondCategory = null;
+        GoodsCategory firstCategory = null;
+        Long categoryId = goodsById.getGoodsCategoryId();
+        thirdCategory = categoryService.getCategoryByid(categoryId);
+        if (thirdCategory != null) {
+            goodsInfo.put("thirdCategory", thirdCategory);
+            secondCategory = categoryService.getCategoryByid(thirdCategory.getParentId());
+            if (secondCategory != null) {
+                goodsInfo.put("secondCategory", secondCategory);
+                firstCategory = categoryService.getCategoryByid(secondCategory.getParentId());
+                if (firstCategory != null) {
+                    goodsInfo.put("firstCategory", firstCategory);
+                }
+            }
+        }
+        goodsInfo.put("goods", goodsById);
+        return ResultGenerator.genSuccessResult(goodsInfo);
     }
 }
