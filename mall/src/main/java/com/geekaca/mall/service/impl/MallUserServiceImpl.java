@@ -45,7 +45,9 @@ public class MallUserServiceImpl implements MallUserService {
         String token = JwtUtil.createToken(user.getUserId().toString(), user.getLoginName());
         //token储存进redis
         try (Jedis jedis = JedisPoolUtil.getJedis();) {
-            jedis.set("uid:user:" + user.getUserId(), token);
+            String userKey = "uid:user:" + user.getUserId();
+            jedis.set(userKey, token);
+            jedis.expire(userKey, 60 * 60 * 3);
         }
         return token;
     }
