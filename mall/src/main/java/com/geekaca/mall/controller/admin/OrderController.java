@@ -60,20 +60,17 @@ public class OrderController {
         return ResultGenerator.genSuccessResult(itemService.getItemByOrderId(orderId));
     }
 
-    /**
-     * 配货完成
-     */
     @RequestMapping(value = "/orders/checkDone", method = RequestMethod.PUT)
     @ApiOperation(value = "修改订单状态为配货成功", notes = "批量修改")
     public Result checkDone(@RequestBody BatchIdParam batchIdParam) {
-        if (batchIdParam==null||batchIdParam.getIds().length < 1) {
+        if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return ResultGenerator.genFailResult("参数异常！");
         }
-        String result = orderService.checkDone(batchIdParam.getIds());
-        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+        String checkDone = orderService.checkDone(batchIdParam.getIds());
+        if (ServiceResultEnum.SUCCESS.getResult().equals(checkDone)) {
             return ResultGenerator.genSuccessResult();
         } else {
-            return ResultGenerator.genFailResult(result);
+            return ResultGenerator.genFailResult(checkDone);
         }
     }
 
@@ -83,14 +80,14 @@ public class OrderController {
     @RequestMapping(value = "/orders/checkOut", method = RequestMethod.PUT)
     @ApiOperation(value = "修改订单状态为已出库", notes = "批量修改")
     public Result checkOut(@RequestBody BatchIdParam batchIdParam) {
-        if (batchIdParam==null||batchIdParam.getIds().length < 1) {
+        if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return ResultGenerator.genFailResult("参数异常！");
         }
-        String result = orderService.checkOut(batchIdParam.getIds());
-        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+        String checkOut = orderService.checkOut(batchIdParam.getIds());
+        if (ServiceResultEnum.SUCCESS.getResult().equals(checkOut)) {
             return ResultGenerator.genSuccessResult();
         } else {
-            return ResultGenerator.genFailResult(result);
+            return ResultGenerator.genFailResult(checkOut);
         }
     }
 
@@ -100,14 +97,14 @@ public class OrderController {
     @RequestMapping(value = "/orders/close", method = RequestMethod.PUT)
     @ApiOperation(value = "修改订单状态为商家关闭", notes = "批量修改")
     public Result closeOrder(@RequestBody BatchIdParam batchIdParam) {
-        if (batchIdParam==null||batchIdParam.getIds().length < 1) {
+        if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return ResultGenerator.genFailResult("参数异常！");
         }
-        String result = orderService.closeOrder(batchIdParam.getIds());
-        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+        String closeOrder = orderService.closeOrder(batchIdParam.getIds());
+        if (ServiceResultEnum.SUCCESS.getResult().equals(closeOrder)) {
             return ResultGenerator.genSuccessResult();
         } else {
-            return ResultGenerator.genFailResult(result);
+            return ResultGenerator.genFailResult(closeOrder);
         }
     }
 }

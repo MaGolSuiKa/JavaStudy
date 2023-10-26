@@ -13,6 +13,7 @@ import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+
 import java.util.List;
 
 @Service
@@ -94,6 +95,6 @@ public class MallUserServiceImpl implements MallUserService {
 
     @Override
     public Boolean lockUsers(Long[] ids, int lockStatus) {
-        return userMapper.lockUserBatch(ids,lockStatus)==ids.length;
+        return userMapper.lockUserBatch(ids, lockStatus) == ids.length;
     }
 }

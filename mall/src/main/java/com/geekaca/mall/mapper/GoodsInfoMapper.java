@@ -2,7 +2,6 @@ package com.geekaca.mall.mapper;
 
 import com.geekaca.mall.controller.admin.param.GoodsUpdateParam;
 import com.geekaca.mall.controller.vo.HotGoodsesVO;
-import com.geekaca.mall.controller.vo.StockNumDTO;
 import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.utils.PageQueryUtil;
 import org.apache.ibatis.annotations.Mapper;
@@ -54,9 +53,4 @@ public interface GoodsInfoMapper {
 
     //根据id查找某一个商品的详细数据
     GoodsInfo getGoodsById(Long goodsCategoryId);
-
-    List<GoodsInfo> selectByPrimaryKeys(List<Long> goodsIdsList);
-
-    int updateStockNum(@Param("stockNumDTOS") List<StockNumDTO> stockNumDTOS);
-
 }
