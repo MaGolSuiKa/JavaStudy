@@ -267,6 +267,7 @@
         where goods_id = #{goodsId,jdbcType=BIGINT}
     </update>
 
+
     <select id="findGoodsList" resultMap="BaseResultMap">
 
         SELECT
@@ -378,4 +379,11 @@
         </foreach>
         );
     </select>
+
+    <update id="updateStockNum">
+        <foreach collection="stockNumDTOS" item="stockNumDTO">
+            update tb_newbee_mall_goods_info set stock_num = stock_num-#{stockNumDTO.goodsCount}
+            where goods_id = #{stockNumDTO.goodsId} and stock_num>=#{stockNumDTO.goodsCount} and goods_sell_status = 0;
+        </foreach>
+    </update>
 </mapper>
