@@ -1,6 +1,7 @@
 package com.geekaca.mall.service;
 
 import com.geekaca.mall.controller.front.param.ShoppingCartItemVO;
+import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.domain.UserAddress;
 import com.geekaca.mall.utils.PageQueryUtil;
 import com.geekaca.mall.utils.PageResult;
@@ -35,4 +36,10 @@ public interface OrderService {
     String closeOrder(Long[] ids);
 
     String saveOrder(long userId, UserAddress address, List<ShoppingCartItemVO> itemsForSave);
+
+    OrderDetailVO getOrderDetailByOrderNo(String orderNo, long userId);
+
+    PageResult getMyOrders(PageQueryUtil pageUtil);
+
+    String cancelOrder(String orderNo, long userId);
 }

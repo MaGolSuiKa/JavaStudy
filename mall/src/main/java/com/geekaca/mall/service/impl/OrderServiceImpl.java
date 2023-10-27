@@ -2,11 +2,11 @@ package com.geekaca.mall.service.impl;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import com.geekaca.mall.common.Constants;
-import com.geekaca.mall.common.NewBeeMallException;
-import com.geekaca.mall.common.NewBeeMallOrderStatusEnum;
-import com.geekaca.mall.common.ServiceResultEnum;
+import com.geekaca.mall.common.*;
 import com.geekaca.mall.controller.front.param.ShoppingCartItemVO;
+import com.geekaca.mall.controller.vo.MallOrderListVO;
+import com.geekaca.mall.controller.vo.OrderDetailVO;
+import com.geekaca.mall.controller.vo.OrderItemVO;
 import com.geekaca.mall.controller.vo.StockNumDTO;
 import com.geekaca.mall.domain.*;
 import com.geekaca.mall.mapper.*;
@@ -20,12 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Slf4j
@@ -109,7 +112,7 @@ public class OrderServiceImpl implements com.geekaca.mall.service.OrderService {
                 } else {
                     return ServiceResultEnum.DB_ERROR.getResult();
                 }
-            }else {
+            } else {
                 //订单此时不可执行出库操作
                 if (orderNos.length() > 0 && orderNos.length() < 100) {
                     return orderNos + "订单的状态不是支付成功或配货完成无法执行出库操作";
@@ -238,5 +241,102 @@ public class OrderServiceImpl implements com.geekaca.mall.service.OrderService {
         }
         NewBeeMallException.fail(ServiceResultEnum.SHOPPING_ITEM_ERROR.getResult());
         return ServiceResultEnum.SHOPPING_ITEM_ERROR.getResult();
+    }
+
+    @Override
+    public OrderDetailVO getOrderDetailByOrderNo(String orderNo, long userId) {
+        Order newBeeMallOrder = orderMapper.selectByOrderNo(orderNo);
+        if (newBeeMallOrder == null) {
+            NewBeeMallException.fail(ServiceResultEnum.DATA_NOT_EXIST.getResult());
+        }
+        if (userId != (newBeeMallOrder.getUserId())) {
+            NewBeeMallException.fail(ServiceResultEnum.REQUEST_FORBIDEN_ERROR.getResult());
+        }
+        List<OrderItem> orderItems = orderItemMapper.selectByOrderId(newBeeMallOrder.getOrderId());
+        //获取订单项数据
+        if (CollectionUtils.isEmpty(orderItems)) {
+            NewBeeMallException.fail(ServiceResultEnum.ORDER_ITEM_NOT_EXIST_ERROR.getResult());
+        }
+        List<OrderItemVO> newBeeMallOrderItemVOS = BeanUtil.copyToList(orderItems, OrderItemVO.class);
+        OrderDetailVO orderDetailVO = new OrderDetailVO();
+        BeanUtil.copyProperties(newBeeMallOrder, orderDetailVO);
+        orderDetailVO.setOrderStatusString(NewBeeMallOrderStatusEnum.getNewBeeMallOrderStatusEnumByStatus(orderDetailVO.getOrderStatus()).getName());
+        orderDetailVO.setPayTypeString(PayTypeEnum.getPayTypeEnumByType(orderDetailVO.getPayType()).getName());
+        orderDetailVO.setMallOrderItemVOS(newBeeMallOrderItemVOS);
+        return orderDetailVO;
+    }
+
+    @Override
+    public PageResult getMyOrders(PageQueryUtil pageUtil) {
+        int total = orderMapper.getTotalMallOrders(pageUtil);
+        List<Order> newBeeMallOrders = orderMapper.findMallOrderList(pageUtil);
+        List<MallOrderListVO> orderListVOS = new ArrayList<>();
+        if (total > 0) {
+            //数据转换 将实体类转成vo
+            orderListVOS = BeanUtil.copyToList(newBeeMallOrders, MallOrderListVO.class);
+
+            //设置订单状态中文显示值
+            for (MallOrderListVO newBeeMallOrderListVO : orderListVOS) {
+                newBeeMallOrderListVO.setOrderStatusString(NewBeeMallOrderStatusEnum.getNewBeeMallOrderStatusEnumByStatus(newBeeMallOrderListVO.getOrderStatus()).getName());
+            }
+            List<Long> orderIds = newBeeMallOrders.stream().map(Order::getOrderId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(orderIds)) {
+                List<OrderItem> orderItems = orderItemMapper.selectByOrderIds(orderIds);
+                Map<Long, List<OrderItem>> itemByOrderIdMap = orderItems.stream().collect(groupingBy(OrderItem::getOrderId));
+                for (MallOrderListVO newBeeMallOrderListVO : orderListVOS) {
+                    //封装每个订单列表对象的订单项数据
+                    if (itemByOrderIdMap.containsKey(newBeeMallOrderListVO.getOrderId())) {
+                        List<OrderItem> orderItemListTemp = itemByOrderIdMap.get(newBeeMallOrderListVO.getOrderId());
+                        //将MallOrderItem对象列表转换成MallOrderItemVO对象列表
+                        List<OrderItemVO> newBeeMallOrderItemVOS = BeanUtil.copyToList(orderItemListTemp, OrderItemVO.class);
+                        newBeeMallOrderListVO.setMallOrderItemVOS(newBeeMallOrderItemVOS);
+                    }
+                }
+            }
+        }
+        PageResult pageResult = new PageResult(orderListVOS, total, pageUtil.getLimit(), pageUtil.getPage());
+        return pageResult;
+    }
+
+    @Override
+    public String cancelOrder(String orderNo, long userId) {
+        Order newBeeMallOrder = orderMapper.selectByOrderNo(orderNo);
+        if (newBeeMallOrder != null) {
+            //验证是否是当前userId下的订单，否则报错
+            if (userId != (newBeeMallOrder.getUserId())) {
+                NewBeeMallException.fail(ServiceResultEnum.NO_PERMISSION_ERROR.getResult());
+            }
+            //订单状态判断
+            if (newBeeMallOrder.getOrderStatus().intValue() == NewBeeMallOrderStatusEnum.ORDER_SUCCESS.getOrderStatus()
+                    || newBeeMallOrder.getOrderStatus().intValue() == NewBeeMallOrderStatusEnum.ORDER_CLOSED_BY_MALLUSER.getOrderStatus()
+                    || newBeeMallOrder.getOrderStatus().intValue() == NewBeeMallOrderStatusEnum.ORDER_CLOSED_BY_EXPIRED.getOrderStatus()
+                    || newBeeMallOrder.getOrderStatus().intValue() == NewBeeMallOrderStatusEnum.ORDER_CLOSED_BY_JUDGE.getOrderStatus()) {
+                return ServiceResultEnum.ORDER_STATUS_ERROR.getResult();
+            }
+            //修改订单状态&&恢复库存
+            if (orderMapper.closeOrder(Collections.singletonList(newBeeMallOrder.getOrderId()), NewBeeMallOrderStatusEnum.ORDER_CLOSED_BY_MALLUSER.getOrderStatus()) > 0 && recoverStockNum(Collections.singletonList(newBeeMallOrder.getOrderId()))) {
+                return ServiceResultEnum.SUCCESS.getResult();
+            } else {
+                return ServiceResultEnum.DB_ERROR.getResult();
+            }
+        }
+        return ServiceResultEnum.ORDER_NOT_EXIST_ERROR.getResult();
+    }
+    /**
+     * 恢复库存
+     */
+    public Boolean recoverStockNum(List<Long> orderIds) {
+        //查询对应的订单项
+        List<OrderItem> newBeeMallOrderItems = orderItemMapper.selectByOrderIds(orderIds);
+        //获取对应的商品id和商品数量并赋值到StockNumDTO对象中
+        List<StockNumDTO> stockNumDTOS = BeanUtil.copyToList(newBeeMallOrderItems, StockNumDTO.class);
+        //执行恢复库存的操作
+        int updateStockNumResult = goodsInfoMapper.recoverStockNum(stockNumDTOS);
+        if (updateStockNumResult < 1) {
+            NewBeeMallException.fail(ServiceResultEnum.CLOSE_ORDER_ERROR.getResult());
+            return false;
+        } else {
+            return true;
+        }
     }
 }

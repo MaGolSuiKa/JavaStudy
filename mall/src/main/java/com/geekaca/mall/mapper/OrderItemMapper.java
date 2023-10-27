@@ -32,4 +32,6 @@ public interface OrderItemMapper {
     List<OrderItem> selectByOrderId(Long orderId);
 
     int insertBatch(@Param("orderItems") List<OrderItem> orderItems);
+
+    List<OrderItem> selectByOrderIds(@Param("orderIds")List<Long> orderIds);
 }

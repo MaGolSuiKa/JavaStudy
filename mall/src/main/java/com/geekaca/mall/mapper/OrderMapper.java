@@ -18,6 +18,8 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
+    Order selectByOrderNo(String orderNo);
+
     int deleteByPrimaryKey(Long id);
 
     int insert(Order record);
@@ -46,4 +48,7 @@ public interface OrderMapper {
     //关闭订单
     int closeOrder(@Param("orderIds") List<Long> orderIds, @Param("orderStatus") int orderStatus);
 
+    int getTotalMallOrders(PageQueryUtil pageUtil);
+
+    List<Order> findMallOrderList(PageQueryUtil pageUtil);
 }

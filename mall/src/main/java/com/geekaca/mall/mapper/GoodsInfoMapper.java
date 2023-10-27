@@ -57,4 +57,7 @@ public interface GoodsInfoMapper {
 
     int updateStockNum(@Param("stockNumDTOS") List<StockNumDTO> stockNumDTOS);
     List<GoodsInfo> selectByPrimaryKeys(List<Long> goodsIdsList);
+
+    int recoverStockNum(@Param("stockNumDTOS") List<StockNumDTO> stockNumDTOS);
+
 }
