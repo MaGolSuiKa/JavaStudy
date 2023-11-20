@@ -1,0 +1,76 @@
+然后考虑这样几个需求：
+1，查询某个学生的某段时间的 出勤和作业情况
+SELECT 
+    cla.name,
+    stu.name,
+    att.state,
+    att.att_date,
+    att.homework,
+    att.comment
+FROM
+    attendance att
+        LEFT JOIN
+    classes cla ON att.class_id = cla.class_id
+        LEFT JOIN
+    student stu ON att.stu_id = stu.stu_id
+WHERE
+    att.stu_id = 1
+        AND att.att_date >= 20230610
+        AND att.att_date <= 20230614
+2，查询某个学生都学过哪些课程
+SELECT 
+    stu.name,
+    stu.start_date,
+    cla.name,
+    cla.start_time,
+    cla.end_time,
+    cur.curriculum_name,
+    pha.phase_name
+FROM
+    student stu
+        LEFT JOIN
+    stu_class sc ON stu.stu_id = sc.stu_id
+        LEFT JOIN
+    classes cla ON cla.class_id = sc.class_id
+        LEFT JOIN
+    curriculum cur ON cla.cur_id = cur.curriculum_id
+        LEFT JOIN
+    phase pha ON cla.phase_id = pha.phase_id
+WHERE
+    stu.stu_id = 2
+
+3，查询某个班级所有学生情况
+SELECT 
+    cla.name,
+    cur.curriculum_name,
+    pha.phase_name,
+    stu.name,
+    stu.start_date,
+    stu.comment
+FROM
+    classes cla
+        LEFT JOIN
+    stu_class sc ON cla.class_id = sc.class_id
+        LEFT JOIN
+    student stu ON stu.stu_id = sc.stu_id
+        LEFT JOIN
+    curriculum cur ON cla.cur_id = cur.curriculum_id
+        LEFT JOIN
+    phase pha ON cla.phase_id = pha.phase_id
+WHERE
+    cla.class_id = 1
+4，查询当前处于 比如 ：Javaweb阶段的学生
+SELECT 
+    cla.name, cur.curriculum_name, pha.phase_name, stu.name
+FROM
+    classes cla
+        LEFT JOIN
+    stu_class sc ON cla.class_id = sc.class_id
+        LEFT JOIN
+    student stu ON stu.stu_id = sc.stu_id
+        LEFT JOIN
+    curriculum cur ON cla.cur_id = cur.curriculum_id
+        LEFT JOIN
+    phase pha ON cla.phase_id = pha.phase_id
+WHERE
+    cla.phase_id = 1
