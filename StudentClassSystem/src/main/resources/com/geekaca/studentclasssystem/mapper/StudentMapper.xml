@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.studentclasssystem.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.geekaca.studentclasssystem.domain.Student">
+            <id property="stuId" column="stu_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="startDate" column="start_date" jdbcType="DATE"/>
+            <result property="comment" column="comment" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        stu_id,name,start_date,
+        comment
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from student
+        where  stu_id = #{stuId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from student
+        where  stu_id = #{stuId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="stu_id" keyProperty="stuId" parameterType="com.geekaca.studentclasssystem.domain.Student" useGeneratedKeys="true">
+        insert into student
+        ( stu_id,name,start_date
+        ,comment)
+        values (#{stuId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=DATE}
+        ,#{comment,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="stu_id" keyProperty="stuId" parameterType="com.geekaca.studentclasssystem.domain.Student" useGeneratedKeys="true">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="stuId != null">stu_id,</if>
+                <if test="name != null">name,</if>
+                <if test="startDate != null">start_date,</if>
+                <if test="comment != null">comment,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="stuId != null">#{stuId,jdbcType=INTEGER},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="startDate != null">#{startDate,jdbcType=DATE},</if>
+                <if test="comment != null">#{comment,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.studentclasssystem.domain.Student">
+        update student
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="startDate != null">
+                    start_date = #{startDate,jdbcType=DATE},
+                </if>
+                <if test="comment != null">
+                    comment = #{comment,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   stu_id = #{stuId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.studentclasssystem.domain.Student">
+        update student
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            start_date =  #{startDate,jdbcType=DATE},
+            comment =  #{comment,jdbcType=VARCHAR}
+        where   stu_id = #{stuId,jdbcType=INTEGER} 
+    </update>
+</mapper>

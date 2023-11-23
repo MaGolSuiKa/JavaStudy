@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.studentclasssystem.mapper.StuClassMapper">
+
+    <resultMap id="BaseResultMap" type="com.geekaca.studentclasssystem.domain.StuClass">
+            <id property="stuClassId" column="stu_class_id" jdbcType="INTEGER"/>
+            <result property="stuId" column="stu_id" jdbcType="INTEGER"/>
+            <result property="classId" column="class_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        stu_class_id,stu_id,class_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from stu_class
+        where  stu_class_id = #{stuClassId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from stu_class
+        where  stu_class_id = #{stuClassId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="stu_class_id" keyProperty="stuClassId" parameterType="com.geekaca.studentclasssystem.domain.StuClass" useGeneratedKeys="true">
+        insert into stu_class
+        ( stu_class_id,stu_id,class_id
+        )
+        values (#{stuClassId,jdbcType=INTEGER},#{stuId,jdbcType=INTEGER},#{classId,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="stu_class_id" keyProperty="stuClassId" parameterType="com.geekaca.studentclasssystem.domain.StuClass" useGeneratedKeys="true">
+        insert into stu_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="stuClassId != null">stu_class_id,</if>
+                <if test="stuId != null">stu_id,</if>
+                <if test="classId != null">class_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="stuClassId != null">#{stuClassId,jdbcType=INTEGER},</if>
+                <if test="stuId != null">#{stuId,jdbcType=INTEGER},</if>
+                <if test="classId != null">#{classId,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.studentclasssystem.domain.StuClass">
+        update stu_class
+        <set>
+                <if test="stuId != null">
+                    stu_id = #{stuId,jdbcType=INTEGER},
+                </if>
+                <if test="classId != null">
+                    class_id = #{classId,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   stu_class_id = #{stuClassId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.studentclasssystem.domain.StuClass">
+        update stu_class
+        set 
+            stu_id =  #{stuId,jdbcType=INTEGER},
+            class_id =  #{classId,jdbcType=VARCHAR}
+        where   stu_class_id = #{stuClassId,jdbcType=INTEGER} 
+    </update>
+</mapper>
