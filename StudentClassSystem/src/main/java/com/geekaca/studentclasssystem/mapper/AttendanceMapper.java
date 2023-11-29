@@ -1,6 +1,10 @@
 package com.geekaca.studentclasssystem.mapper;
 
 import com.geekaca.studentclasssystem.domain.Attendance;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author magol
@@ -8,6 +12,7 @@ import com.geekaca.studentclasssystem.domain.Attendance;
 * @createDate 2023-11-23 15:55:03
 * @Entity com.geekaca.studentclasssystem.domain.Attendance
 */
+@Mapper
 public interface AttendanceMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -22,4 +27,6 @@ public interface AttendanceMapper {
 
     int updateByPrimaryKey(Attendance record);
 
+    List<Attendance> getAttById(@Param("stuId")Long id, @Param("startDate")String startDate, @Param("endDate")String endDate);
+    int findAttCount();
 }

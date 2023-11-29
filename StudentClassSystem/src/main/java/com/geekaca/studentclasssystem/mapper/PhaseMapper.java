@@ -1,6 +1,10 @@
 package com.geekaca.studentclasssystem.mapper;
 
 import com.geekaca.studentclasssystem.domain.Phase;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author magol
@@ -8,6 +12,7 @@ import com.geekaca.studentclasssystem.domain.Phase;
 * @createDate 2023-11-23 15:55:03
 * @Entity com.geekaca.studentclasssystem.domain.Phase
 */
+@Mapper
 public interface PhaseMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -22,4 +27,6 @@ public interface PhaseMapper {
 
     int updateByPrimaryKey(Phase record);
 
+    List<Phase> getStuListByPhase(@Param("phaseId")Integer phaseId);
+    int findPhaCount();
 }

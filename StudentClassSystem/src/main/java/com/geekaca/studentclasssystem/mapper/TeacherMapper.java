@@ -1,6 +1,7 @@
 package com.geekaca.studentclasssystem.mapper;
 
 import com.geekaca.studentclasssystem.domain.Teacher;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author magol
@@ -8,6 +9,7 @@ import com.geekaca.studentclasssystem.domain.Teacher;
 * @createDate 2023-11-23 15:55:03
 * @Entity com.geekaca.studentclasssystem.domain.Teacher
 */
+@Mapper
 public interface TeacherMapper {
 
     int deleteByPrimaryKey(Long id);

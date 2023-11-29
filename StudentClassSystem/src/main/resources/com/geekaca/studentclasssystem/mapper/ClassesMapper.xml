@@ -27,6 +27,7 @@
         where  class_id = #{classId,jdbcType=INTEGER} 
     </select>
 
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from classes
         where  class_id = #{classId,jdbcType=INTEGER} 
@@ -94,6 +95,34 @@
             start_time =  #{startTime,jdbcType=DATE},
             end_time =  #{endTime,jdbcType=DATE},
             teacher_id =  #{teacherId,jdbcType=INTEGER}
-        where   class_id = #{classId,jdbcType=INTEGER} 
+        where   class_id = #{classId,jdbcType=INTEGER}
     </update>
+
+    <select id="getStuListByClasses" resultType="com.geekaca.studentclasssystem.domain.Classes">
+        SELECT
+            cla.name,
+            cur.curriculum_name,
+            pha.phase_name,
+            stu.name,
+            stu.start_date,
+            stu.comment
+        FROM
+            classes cla
+                LEFT JOIN
+            stu_class sc ON cla.class_id = sc.class_id
+                LEFT JOIN
+            student stu ON stu.stu_id = sc.stu_id
+                LEFT JOIN
+            curriculum cur ON cla.cur_id = cur.curriculum_id
+                LEFT JOIN
+            phase pha ON cla.phase_id = pha.phase_id
+        WHERE
+            cla.class_id = #{classId}
+    </select>
+    <select id="findClaCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            classes
+    </select>
 </mapper>

@@ -23,6 +23,7 @@
         where  stu_id = #{stuId,jdbcType=INTEGER} 
     </select>
 
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from student
         where  stu_id = #{stuId,jdbcType=INTEGER} 
@@ -72,4 +73,33 @@
             comment =  #{comment,jdbcType=VARCHAR}
         where   stu_id = #{stuId,jdbcType=INTEGER} 
     </update>
+
+    <select id="getClassListByStu" resultType="com.geekaca.studentclasssystem.domain.Student">
+        SELECT
+            stu.name,
+            stu.start_date,
+            cla.name,
+            cla.start_time,
+            cla.end_time,
+            cur.curriculum_name,
+            pha.phase_name
+        FROM
+            student stu
+                LEFT JOIN
+            stu_class sc ON stu.stu_id = sc.stu_id
+                LEFT JOIN
+            classes cla ON cla.class_id = sc.class_id
+                LEFT JOIN
+            curriculum cur ON cla.cur_id = cur.curriculum_id
+                LEFT JOIN
+            phase pha ON cla.phase_id = pha.phase_id
+        WHERE
+            stu.stu_id = #{stuId,jdbcType=INTEGER}
+    </select>
+    <select id="findStuCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            student
+    </select>
 </mapper>

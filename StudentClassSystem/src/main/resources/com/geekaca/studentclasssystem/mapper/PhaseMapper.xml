@@ -20,6 +20,7 @@
         where  phase_id = #{phaseId,jdbcType=INTEGER} 
     </select>
 
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from phase
         where  phase_id = #{phaseId,jdbcType=INTEGER} 
@@ -55,4 +56,25 @@
             phase_name =  #{phaseName,jdbcType=VARCHAR}
         where   phase_id = #{phaseId,jdbcType=INTEGER} 
     </update>
+
+    <select id="getStuListByPhase" resultType="com.geekaca.studentclasssystem.domain.Phase">
+        SELECT
+            cla.name, cur.curriculum_name, pha.phase_name, stu.name
+        FROM
+            classes cla
+                LEFT JOIN
+            stu_class sc ON cla.class_id = sc.class_id
+                LEFT JOIN
+            student stu ON stu.stu_id = sc.stu_id
+                LEFT JOIN
+            curriculum cur ON cla.cur_id = cur.curriculum_id
+                LEFT JOIN
+            phase pha ON cla.phase_id = pha.phase_id
+        WHERE
+            cla.phase_id = #{phaseId}
+    </select>
+    <select id="findPhaCount" resultType="java.lang.Integer">
+        select count (*)
+        from classes
+    </select>
 </mapper>

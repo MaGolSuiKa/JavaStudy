@@ -1,6 +1,7 @@
 package com.geekaca.studentclasssystem.mapper;
 
 import com.geekaca.studentclasssystem.domain.StuClass;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author magol
@@ -8,6 +9,7 @@ import com.geekaca.studentclasssystem.domain.StuClass;
 * @createDate 2023-11-23 15:55:03
 * @Entity com.geekaca.studentclasssystem.domain.StuClass
 */
+@Mapper
 public interface StuClassMapper {
 
     int deleteByPrimaryKey(Long id);
