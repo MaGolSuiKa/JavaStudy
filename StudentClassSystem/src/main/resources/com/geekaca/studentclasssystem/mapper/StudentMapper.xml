@@ -6,9 +6,26 @@
 
     <resultMap id="BaseResultMap" type="com.geekaca.studentclasssystem.domain.Student">
             <id property="stuId" column="stu_id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="startDate" column="start_date" jdbcType="DATE"/>
-            <result property="comment" column="comment" jdbcType="VARCHAR"/>
+            <result property="stuName" column="stu_name" jdbcType="VARCHAR"/>
+            <result property="stuStartDate" column="stu_start_date" jdbcType="DATE"/>
+            <result property="stuComment" column="stu_comment" jdbcType="VARCHAR"/>
+            <association property="classes" javaType="com.geekaca.studentclasssystem.domain.Classes">
+                <id property="classId" column="class_id" jdbcType="INTEGER"/>
+                <result property="className" column="class_name" jdbcType="VARCHAR"/>
+                <result property="curId" column="cur_id" jdbcType="INTEGER"/>
+                <result property="phaseId" column="phase_id" jdbcType="INTEGER"/>"
+                <result property="startTime" column="start_time" jdbcType="DATE"/>
+                <result property="endTime" column="end_time" jdbcType="DATE"/>
+            </association>
+            <association property="curriculum" javaType="com.geekaca.studentclasssystem.domain.Curriculum">
+                <id property="curriculumId" column="curriculum_id" jdbcType="INTEGER"/>
+                <result property="curriculumName" column="curriculum_name" jdbcType="VARCHAR"/>
+            </association>
+            <association property="phase" javaType="com.geekaca.studentclasssystem.domain.Phase">
+                <id property="phaseId" column="phase_id" jdbcType="INTEGER"/>
+                <result property="phaseName" column="phase_name" jdbcType="VARCHAR"/>
+            </association>
+
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -76,9 +93,9 @@
 
     <select id="getClassListByStu" resultType="com.geekaca.studentclasssystem.domain.Student">
         SELECT
-            stu.name,
+            stu.stu_name,
             stu.start_date,
-            cla.name,
+            cla.class_name,
             cla.start_time,
             cla.end_time,
             cur.curriculum_name,

@@ -54,8 +54,8 @@ public class AttServiceImpl implements AttService {
 
     @Override
     public PageResult getStuListByPhase(Integer phaseId) {
-        List<Phase> stuListByPhase = phaseMapper.getStuListByPhase(phaseId);
-        int phaCount = phaseMapper.findPhaCount();
+        List<Classes> stuListByPhase = claMapper.getStuListByPhase(phaseId);
+        int phaCount = claMapper.findClaCount();
         PageResult pageResult = new PageResult(stuListByPhase, phaCount, phaCount, 1);
         return pageResult;
     }

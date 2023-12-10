@@ -18,7 +18,7 @@ public class Classes implements Serializable {
     /**
      * 班级名称
      */
-    private String name;
+    private String className;
 
     /**
      * 课程id
@@ -45,6 +45,11 @@ public class Classes implements Serializable {
      */
     private Integer teacherId;
 
+    private Student  student;
+    private Teacher  teacher;
+    private Curriculum curriculum;
+    private Phase   phase;
+
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -60,7 +65,7 @@ public class Classes implements Serializable {
         }
         Classes other = (Classes) that;
         return (this.getClassId() == null ? other.getClassId() == null : this.getClassId().equals(other.getClassId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getClassName() == null ? other.getClassName() == null : this.getClassName().equals(other.getClassName()))
             && (this.getCurId() == null ? other.getCurId() == null : this.getCurId().equals(other.getCurId()))
             && (this.getPhaseId() == null ? other.getPhaseId() == null : this.getPhaseId().equals(other.getPhaseId()))
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
@@ -73,7 +78,7 @@ public class Classes implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getClassId() == null) ? 0 : getClassId().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getClassName() == null) ? 0 : getClassName().hashCode());
         result = prime * result + ((getCurId() == null) ? 0 : getCurId().hashCode());
         result = prime * result + ((getPhaseId() == null) ? 0 : getPhaseId().hashCode());
         result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
@@ -89,7 +94,7 @@ public class Classes implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", classId=").append(classId);
-        sb.append(", name=").append(name);
+        sb.append(", className=").append(className);
         sb.append(", curId=").append(curId);
         sb.append(", phaseId=").append(phaseId);
         sb.append(", startTime=").append(startTime);

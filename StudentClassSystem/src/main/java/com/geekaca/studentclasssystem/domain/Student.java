@@ -18,17 +18,21 @@ public class Student implements Serializable {
     /**
      * 姓名
      */
-    private String name;
+    private String stuName;
 
     /**
      * 入学时间
      */
-    private Date startDate;
+    private Date stuStartDate;
 
     /**
      * 备注
      */
-    private String comment;
+    private String stuComment;
+
+    private Classes  classes;
+    private Curriculum curriculum;
+    private Phase   phase;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,9 +49,9 @@ public class Student implements Serializable {
         }
         Student other = (Student) that;
         return (this.getStuId() == null ? other.getStuId() == null : this.getStuId().equals(other.getStuId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getStartDate() == null ? other.getStartDate() == null : this.getStartDate().equals(other.getStartDate()))
-            && (this.getComment() == null ? other.getComment() == null : this.getComment().equals(other.getComment()));
+            && (this.getStuName() == null ? other.getStuName() == null : this.getStuName().equals(other.getStuName()))
+            && (this.getStuStartDate() == null ? other.getStuStartDate() == null : this.getStuStartDate().equals(other.getStuStartDate()))
+            && (this.getStuComment() == null ? other.getStuComment() == null : this.getStuComment().equals(other.getStuComment()));
     }
 
     @Override
@@ -55,9 +59,9 @@ public class Student implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getStuId() == null) ? 0 : getStuId().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getStartDate() == null) ? 0 : getStartDate().hashCode());
-        result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
+        result = prime * result + ((getStuName() == null) ? 0 : getStuName().hashCode());
+        result = prime * result + ((getStuStartDate() == null) ? 0 : getStuStartDate().hashCode());
+        result = prime * result + ((getStuComment() == null) ? 0 : getStuComment().hashCode());
         return result;
     }
 
@@ -68,9 +72,9 @@ public class Student implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", stuId=").append(stuId);
-        sb.append(", name=").append(name);
-        sb.append(", startDate=").append(startDate);
-        sb.append(", comment=").append(comment);
+        sb.append(", stuName=").append(stuName);
+        sb.append(", stuStartDate=").append(stuStartDate);
+        sb.append(", stuComment=").append(stuComment);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -9,7 +9,7 @@ import java.util.List;
 /**
 * @author magol
 * @description 针对表【student(学生表)】的数据库操作Mapper
-* @createDate 2023-11-23 15:55:03
+* @createDate 2023-12-11 03:16:12
 * @Entity com.geekaca.studentclasssystem.domain.Student
 */
 @Mapper
@@ -28,5 +28,6 @@ public interface StudentMapper {
     int updateByPrimaryKey(Student record);
 
     List<Student> getClassListByStu(@Param("stuId")Long studentId);
+
     int findStuCount();
 }
