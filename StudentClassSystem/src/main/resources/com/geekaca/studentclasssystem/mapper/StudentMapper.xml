@@ -13,7 +13,7 @@
                 <id property="classId" column="class_id" jdbcType="INTEGER"/>
                 <result property="className" column="class_name" jdbcType="VARCHAR"/>
                 <result property="curId" column="cur_id" jdbcType="INTEGER"/>
-                <result property="phaseId" column="phase_id" jdbcType="INTEGER"/>"
+                <result property="phaseId" column="phase_id" jdbcType="INTEGER"/>
                 <result property="startTime" column="start_time" jdbcType="DATE"/>
                 <result property="endTime" column="end_time" jdbcType="DATE"/>
             </association>
